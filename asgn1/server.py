@@ -7,4 +7,4 @@ END_STRING = '--- THE END ---'
 
 # Create and initialize server_socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind('', SERVER_PORT)
+server_socket.bind(('', SERVER_PORT))
