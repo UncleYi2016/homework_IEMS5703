@@ -17,8 +17,7 @@ while True:
     print('Client %s:%d connected to server' % (address, port))
     while True:
         data = client_socket.recv(BUFFER_SIZE)
-        print('data')
-
+        print(data)
         client_socket.sendall(b'receive: ' + data)
         if(data == END_STRING):
             break
