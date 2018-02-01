@@ -20,5 +20,8 @@ while True:
         print(data)
         client_socket.sendall(b'receive: ' + data)
         if(data == END_STRING):
+            print('true')
             break
+        else:
+            print('false')
     client_socket.close()
