@@ -8,9 +8,11 @@ END_STRING = '--- THE END ---'
 # Create and initialize server_socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('', SERVER_PORT))
+server_socket.listen(10)
 
 threads = []
 while True:
     (client_socket, client_address) = server_socket.accept()
-    print(client_socket)
+    (address, port) = client_socket.getsockname()
+    print('Client %s:%d connected to server' % (address, port))
     client_socket.close()
