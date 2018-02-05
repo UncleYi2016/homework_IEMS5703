@@ -15,7 +15,6 @@ msg = input('Send message')
 dp.set_data(msg)
 data = json.dumps(dp.__dict__)
 print(data)
-dp.__data = '2'
 print(dp.__data)
 client_socket.sendall(bytes(data, encoding = 'utf-8'))
 client_socket.send(END_STRING)
