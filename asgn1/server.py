@@ -21,7 +21,7 @@ while True:
         print(data_package_json)
         client_socket.sendall(data_package_json)
         dp_jobj = json.loads(data_package_json)
-        dp = data_package(dp_jboj['data'])
+        dp = data_package(dp_jobj['data'])
         if(dp.get_data() == END_STRING):
             print('true')
             break
