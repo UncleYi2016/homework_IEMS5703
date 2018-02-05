@@ -13,7 +13,7 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', SERVER_PORT))
 msg = input('Send message')
 dp.set_data(msg)
-data = json.dumps(dp)
+data = json.dumps(dp, default=obj2dict)
 print(data)
 dp.__data = '2'
 client_socket.sendall(bytes(data, encoding = 'utf-8'))
