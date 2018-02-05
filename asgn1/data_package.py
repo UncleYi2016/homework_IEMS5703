@@ -8,4 +8,4 @@ class data_package:
         self.data = data
     
     def __str__(self):
-        return data
+        return self.data
