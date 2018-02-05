@@ -1,3 +1,5 @@
+import json
+
 class data_package:
     __data = ''
 
@@ -15,3 +17,6 @@ class data_package:
     
     def set_data(self, data):
         self.__data = data
+    
+    def to_json(self):
+        return json.dumps(self.__dict__)
