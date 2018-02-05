@@ -4,8 +4,8 @@ from data_package import data_package
 
 SERVER_PORT = 55703
 BUFFER_SIZE = 2048
-END_STRING = '--- THE END ---'.encode('utf-8')
-END_PACKAGE = data_package(END_STRING.encode('utf-8'))
+END_STRING = '--- THE END ---'
+END_PACKAGE = data_package(END_STRING)
 
 dp = data_package('test')
 print(dp)
