@@ -1,5 +1,6 @@
 import socket
 import json
+from data_package import data_package
 
 SERVER_PORT = 55703
 BUFFER_SIZE = 2048
@@ -16,10 +17,12 @@ while True:
     (address, port) = client_socket.getsockname()
     print('Client %s:%d connected to server' % (address, port))
     while True:
-        data = client_socket.recv(BUFFER_SIZE)
-        print(data)
-        client_socket.sendall(b'receive: ' + data)
-        if(data == END_STRING):
+        data_package_json = client_socket.recv(BUFFER_SIZE)
+        print(data_package_json)
+        client_socket.sendall(data_package_json)
+        dp_jobj = json.loads(data_package_json)
+        dp = data_package(dp_jboj['data'])
+        if(dp.get_data() == END_STRING):
             print('true')
             break
         else:
