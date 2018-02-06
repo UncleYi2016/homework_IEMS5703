@@ -16,7 +16,6 @@ while(msg != END_STRING):
     msg = input('Send message: ')
 # print(data)
 client_socket.sendall(bytes(data, encoding = 'utf-8'))
-client_socket.send(bytes(END_PACKAGE, encoding = 'utf-8'))
 data2 = client_socket.recv(BUFFER_SIZE)
 print(data2)
 client_socket.close()
