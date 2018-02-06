@@ -1,10 +1,11 @@
 import socket
 import json
-from data_package import data_package
+import logging
 
 SERVER_PORT = 55703
 BUFFER_SIZE = 2048
 END_STRING = '[END]'
+logging.basicConfig(level=logging.DEBUG)
 
 # Create and initialize server_socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,9 +18,11 @@ while True:
     (address, port) = client_socket.getsockname()
     print('Client %s:%d connected to server' % (address, port))
     while True:
+        logging.debug('Receive start')
         data = client_socket.recv(BUFFER_SIZE)
-        
+        logging.debug('Receive end')
         data = str(data)
+        logging.info(data)
         index = data.find(END_STRING)
         if(index > -1):
             data = data[0:index]
