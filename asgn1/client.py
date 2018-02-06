@@ -1,11 +1,12 @@
 import socket
 import json
-from data_package import data_package
+import logging
 
 SERVER_PORT = 55703
 BUFFER_SIZE = 2048
 END_STRING = '[END]'
-END_PACKAGE = data_package(END_STRING)
+
+logging.basicConfig(level = logging.DEBUG)
 
 dp = data_package('test')
 print(dp)
@@ -19,7 +20,9 @@ while continue_send:
     client_socket.sendall(bytes(msg, encoding = 'utf-8'))
     if(msg.find(END_STRING) <= -1):
         continue_send = False
+    data2 = client_socket.recv(BUFFER_SIZE)
+    logging.info(data2)
 # print(data)
-data2 = client_socket.recv(BUFFER_SIZE)
-print(data2)
+
+
 client_socket.close()
