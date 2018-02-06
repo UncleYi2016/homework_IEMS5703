@@ -29,5 +29,7 @@ while True:
             break
         else:
             pass
+        logging.debug('Send start')
         client_socket.sendall(bytes(data, encoding = 'utf-8'))
+        logging.debug('Send end')
     client_socket.close()
