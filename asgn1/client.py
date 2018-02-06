@@ -13,11 +13,12 @@ print(dp)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', SERVER_PORT))
 msg = ''
-while True:
+continue_send = True
+while continue_send:
     msg = input('Send message: ')
     client_socket.sendall(bytes(msg, encoding = 'utf-8'))
     if(msg.find(END_STRING) <= -1):
-        break
+        continue_send = False
 # print(data)
 data2 = client_socket.recv(BUFFER_SIZE)
 print(data2)
