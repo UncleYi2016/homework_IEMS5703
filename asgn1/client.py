@@ -15,7 +15,7 @@ client_socket.connect(('localhost', SERVER_PORT))
 msg = ''
 while(msg != END_STRING):
     msg = input('Send message: ')
-    client_socket.sendall(bytes(data, encoding = 'utf-8'))
+    client_socket.sendall(bytes(msg, encoding = 'utf-8'))
 # print(data)
 data2 = client_socket.recv(BUFFER_SIZE)
 print(data2)
