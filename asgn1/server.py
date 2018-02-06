@@ -24,6 +24,7 @@ while True:
         data = str(data)
         logging.info(data)
         index = data.find(END_STRING)
+        logging.info('index - %d', index)
         if(index > -1):
             data = data[0:index]
             break
