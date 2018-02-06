@@ -12,6 +12,7 @@ print(dp)
 # Create and initialize client_socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', SERVER_PORT))
+msg = ''
 while(msg != END_STRING):
     msg = input('Send message: ')
 # print(data)
