@@ -18,6 +18,7 @@ while True:
     print('Client %s:%d connected to server' % (address, port))
     while True:
         data = client_socket.recv(BUFFER_SIZE)
+        
         data = str(data)
         index = data.find(END_STRING)
         if(index > -1):

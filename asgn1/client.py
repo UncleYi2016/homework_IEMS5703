@@ -13,7 +13,7 @@ print(dp)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', SERVER_PORT))
 msg = ''
-while(msg != END_STRING):
+while(msg.find(END_STRING) <= -1):
     msg = input('Send message: ')
     client_socket.sendall(bytes(msg, encoding = 'utf-8'))
 # print(data)
