@@ -21,8 +21,8 @@ while True:
         index = data.find(END_STRING)
         if(index > -1):
             data = data[0:index]
-            client_socket.sendall(data)
             break
         else:
-            print('false')
+            pass
+        client_socket.sendall(data)
     client_socket.close()
