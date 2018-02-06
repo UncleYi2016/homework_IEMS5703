@@ -17,13 +17,10 @@ while True:
     (address, port) = client_socket.getsockname()
     print('Client %s:%d connected to server' % (address, port))
     while True:
-        data_package_json = client_socket.recv(BUFFER_SIZE)
-        print(data_package_json)
-        client_socket.sendall(data_package_json)
-        dp_jobj = json.loads(data_package_json)
-        dp = data_package(dp_jobj['data'])
-        if(dp.get_data() == END_STRING):
-            print('true')
+        data = client_socket.recv(BUFFER_SIZE)
+        if((index = data.find(END_STRING)) > -1):
+            data = data[0:index]
+            client_socket.sendall(data)
             break
         else:
             print('false')

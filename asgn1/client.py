@@ -4,7 +4,7 @@ from data_package import data_package
 
 SERVER_PORT = 55703
 BUFFER_SIZE = 2048
-END_STRING = '--- THE END ---'
+END_STRING = '[END]'
 END_PACKAGE = data_package(END_STRING)
 
 dp = data_package('test')
@@ -12,12 +12,11 @@ print(dp)
 # Create and initialize client_socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', SERVER_PORT))
-msg = input('Send message')
-dp.set_data(msg)
-data = dp.to_json()
-print(data)
+while(msg != END_STRING):
+    msg = input('Send message: ')
+# print(data)
 client_socket.sendall(bytes(data, encoding = 'utf-8'))
-client_socket.send(bytes(END_PACKAGE.to_json(), encoding = 'utf-8'))
+client_socket.send(bytes(END_PACKAGE, encoding = 'utf-8'))
 data2 = client_socket.recv(BUFFER_SIZE)
 print(data2)
 client_socket.close()
