@@ -15,7 +15,7 @@ continue_send = True
 while continue_send:
     msg = input('Send message: ')
     client_socket.sendall(bytes(msg, encoding = 'utf-8'))
-    if(msg.find(END_STRING) <= -1):
+    if(msg.find(END_STRING) > -1):
         continue_send = False
     data2 = client_socket.recv(BUFFER_SIZE)
     logging.info(data2)
