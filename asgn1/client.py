@@ -11,11 +11,12 @@ logging.basicConfig(level = logging.INFO)
 # Create and initialize client_socket
 if __name__ == '__main__':
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            client_socket.connect((SERVER_ADDRESS, SERVER_PORT))
-        except Exception as err:
-            logging.info('Cannot connect to server at %s:%d', SERVER_ADDRESS, SERVER_PORT)
-            logging.debug(err)
+    try:
+        client_socket.connect((SERVER_ADDRESS, SERVER_PORT))
+        logging.info('Connected to server.')
+    except Exception as err:
+        logging.info('Cannot connect to server at %s:%d', SERVER_ADDRESS, SERVER_PORT)
+        logging.debug(err)
     msg = ''
     continue_send = True
     try:
