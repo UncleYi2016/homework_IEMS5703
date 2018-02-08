@@ -28,8 +28,7 @@ if __name__ == '__main__':
             data2 = client_socket.recv(BUFFER_SIZE)
             logging.info(data2)
         # print(data)
-
         client_socket.close()
-    except Exception as err:
         logging.info('Disconnected to server')
+    except Exception as err:
         login.debug(err)
