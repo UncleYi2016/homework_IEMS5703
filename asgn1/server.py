@@ -1,6 +1,7 @@
 import socket
 import json
 import logging
+from threading import Thread
 
 SERVER_PORT = 55703
 BUFFER_SIZE = 2048
@@ -13,10 +14,8 @@ server_socket.bind(('', SERVER_PORT))
 server_socket.listen(10)
 
 threads = []
-while True:
-    (client_socket, client_address) = server_socket.accept()
-    (address, port) = client_socket.getsockname()
-    print('Client %s:%d connected to server' % (address, port))
+
+def comm_between_socket(client_socket):
     while True:
         logging.debug('Receive start')
         data = client_socket.recv(BUFFER_SIZE)
@@ -33,4 +32,13 @@ while True:
         logging.debug('Send start')
         client_socket.sendall(bytes(data, encoding = 'utf-8'))
         logging.debug('Send end')
-    client_socket.close()
+        client_socket.close()
+
+while True:
+    (client_socket, client_address) = server_socket.accept()
+    (address, port) = client_socket.getsockname()
+    print('Client %s:%d connected to server' % (address, port))
+    comm_thread = Thread(target=comm_between_socket, args=(client_socket,))
+    threads.start()
+
+
