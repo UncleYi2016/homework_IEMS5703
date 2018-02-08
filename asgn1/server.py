@@ -39,7 +39,7 @@ while True:
     (client_socket, client_address) = server_socket.accept()
     (address, port) = client_socket.getsockname()
     print('Client %s:%d connected to server' % (address, port))
-    comm_thread = Thread(target=comm_between_socket, args=(client_socket,))
+    comm_thread = Thread(target=comm_between_socket, args=(client_socket,), daemon=True)
     comm_thread.start()
 
 
