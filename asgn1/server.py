@@ -32,7 +32,8 @@ def comm_between_socket(client_socket):
         logging.debug('Send start')
         client_socket.sendall(bytes(data, encoding = 'utf-8'))
         logging.debug('Send end')
-        client_socket.close()
+    logging.debug('Close connect')
+    client_socket.close()
 
 while True:
     (client_socket, client_address) = server_socket.accept()
