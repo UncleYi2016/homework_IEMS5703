@@ -26,6 +26,7 @@ def comm_between_socket(client_socket):
         logging.info('index - %d', index)
         if(index > -1):
             data = data[0:index]
+            logging.debug('Cut : %s' data)
             break
         logging.debug('Send start')
         client_socket.sendall(bytes(data, encoding = 'utf-8'))
