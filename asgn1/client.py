@@ -7,7 +7,7 @@ SERVER_ADDRESS = 'localhost'
 BUFFER_SIZE = 2048
 END_STRING = '[END]'
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level = logging.DEBUG)
 # Create and initialize client_socket
 if __name__ == '__main__':
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,6 +28,8 @@ if __name__ == '__main__':
             data2 = client_socket.recv(BUFFER_SIZE)
             logging.info(data2)
         # print(data)
-        #client_socket.close()
-    except Exception :
-        logging.info('Connectio')
+
+        client_socket.close()
+    except Exception as err:
+        logging.info('Disconnected to server')
+        login.debug(err)

@@ -6,7 +6,7 @@ from threading import Thread
 SERVER_PORT = 55703
 BUFFER_SIZE = 2048
 END_STRING = '[END]'
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 # Create and initialize server_socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
