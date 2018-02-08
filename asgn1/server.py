@@ -4,7 +4,7 @@ import logging
 from threading import Thread
 
 SERVER_PORT = 55703
-BUFFER_SIZE = 2048
+BUFFER_SIZE = 10
 END_STRING = '[END]'
 logging.basicConfig(level=logging.DEBUG)
 
@@ -24,7 +24,7 @@ def comm_between_socket(client_socket):
         data = str(data)
         logging.info(data)
         index = data.find(END_STRING)
-        logging.info('index - %d', index)
+        logging.debug('index - %d', index)
         if(index > -1):
             data = data[0:index]
             logging.debug('Cut : %s', data)
@@ -32,7 +32,7 @@ def comm_between_socket(client_socket):
         logging.debug('Send start')
         client_socket.sendall(bytes(data, encoding = 'utf-8'))
         logging.debug('Send end')
-    logging.debug('Close connect')
+    logging.debug('Client disconnected')
     client_socket.close()
 
 while True:
