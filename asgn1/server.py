@@ -16,7 +16,8 @@ server_socket.listen(10)
 threads = []
 
 def comm_between_socket(client_socket):
-    while True:
+    continue_transmit = True
+    while continue_transmit:
         logging.debug('Receive start')
         data = client_socket.recv(BUFFER_SIZE)
         logging.debug('Receive end')
@@ -27,7 +28,7 @@ def comm_between_socket(client_socket):
         if(index > -1):
             data = data[0:index]
             logging.debug('Cut : %s', data)
-            break
+            continue_transmit = False
         logging.debug('Send start')
         client_socket.sendall(bytes(data, encoding = 'utf-8'))
         logging.debug('Send end')

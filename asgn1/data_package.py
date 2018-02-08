@@ -18,5 +18,5 @@ class data_package:
     def set_data(self, data):
         self.data = data
     
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    # def to_json(self):
+    #     return json.dumps(self.__dict__)

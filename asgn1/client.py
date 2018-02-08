@@ -20,6 +20,4 @@ while continue_send:
     data2 = client_socket.recv(BUFFER_SIZE)
     logging.info(data2)
 # print(data)
-
-
 client_socket.close()
