@@ -1,6 +1,7 @@
 import socket
 import json
 import logging
+import nltk
 from threading import Thread
 
 SERVER_PORT = 55703
