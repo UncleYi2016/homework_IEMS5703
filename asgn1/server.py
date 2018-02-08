@@ -39,6 +39,6 @@ while True:
     (address, port) = client_socket.getsockname()
     print('Client %s:%d connected to server' % (address, port))
     comm_thread = Thread(target=comm_between_socket, args=(client_socket,))
-    threads.start()
+    comm_thread.start()
 
 
