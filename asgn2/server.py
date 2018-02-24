@@ -18,7 +18,8 @@ logging.basicConfig(
 def child_process(request_queue):
     logging.debug('Creation successed')
     while True:
-        client_socket = request_queue.get()
+        handle = socket_queue.get()
+        client_socket = multiprocessing.reduction.rebuild_socket(handle)
         logging.info('Client %s connected', client_socket)
     thread_pool = []
     # for i in range(4):
@@ -46,4 +47,5 @@ if __name__ == '__main__':
     server_socket.listen(20)
     while True:
         (client_socket, client_address) = server_socket.accept()
-        request_queue.put(client_socket)
+        handle = multiprocessing.reduction.reduce_socket(client_socket)
+        request_queue.put(handle)
