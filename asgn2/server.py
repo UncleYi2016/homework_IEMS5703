@@ -6,6 +6,8 @@ from threading import Thread
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
+BUFFER_SIZE = 2048
+END_STRING = '[END]'
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
@@ -20,6 +22,22 @@ def child_process(request_queue):
     while True:
         client_socket = request_queue.get()
         logging.info('Client %s connected', client_socket.getsockname())
+        try:
+            continue_transmit = True
+            while continue_transmit:
+                data = client_socket.recv(BUFFER_SIZE)
+                data_str += data.decode('utf-8')
+                logging.info(data_str)
+                index = data_str.find(END_STRING)   # index is the index of special string '[END]'
+                logging.debug('index - %d', index)
+                
+                # Once detect the special string '[END]', process the data and send result back to client
+                if(index > -1):
+                    data_str = data_str[0:index]
+        except Exception as err:
+        # If connection broken, show it.
+        logging.info('Connection broken')
+        logging.debug(err)
     # thread_pool = []
     # for i in range(4):
     #     wt = Thread(target=worker_thread, args=(None,), daemon=True)
@@ -49,5 +67,5 @@ if __name__ == '__main__':
     server_socket.listen(20)
     while True:
         (client_socket, client_address) = server_socket.accept()
-        logging.debug('Accept client %s', client_socket)
+        logging.debug('Accept client %s', client_socket.getsockname()
         request_queue.put(client_socket)
