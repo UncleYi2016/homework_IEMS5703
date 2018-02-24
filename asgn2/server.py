@@ -1,31 +1,32 @@
 import logging
 import socket
 import sys
-from multiprocessing import Process
+from multiprocessing import Process, Queue
 from threading import Thread
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
-REQUEST_QUEUE = []
+
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.DEBUG)
+    level=logging.INFO)
 
 '''
     define child process
 '''
 
-def child_process():
+def child_process(request_queue):
     logging.debug('Creation successed')
     thread_pool = []
-    for i in range(4):
-        wt = Thread(target=worker_thread, args=(None,), daemon=True)
-        logging.debug('Create thread %s', wt.name)
+    # for i in range(4):
+    #     wt = Thread(target=worker_thread, args=(None,), daemon=True)
+    #     logging.debug('Create thread %s', wt.name)
 
 def worker_thread(client_socket):
     pass
 
 if __name__ == '__main__':
+    request_queue = Queue()
     try:
         port_number = int(sys.argv[1])
         num_process = int(sys.argv[2])
@@ -33,7 +34,7 @@ if __name__ == '__main__':
         logging.info('Program should be started with <port> <number of process>')
         sys.exit()
     for i in range(5):
-        cp = Process(target=child_process, args=())
+        cp = Process(target=child_process, args=(request_queue,))
         cp.start()
         cp.join()
         logging.info('Create process %s', cp.name)
@@ -42,4 +43,4 @@ if __name__ == '__main__':
     server_socket.listen(20)
     while True:
         (client_socket, client_address) = server_socket.accept()
-        REQUEST_QUEUE.append(client_socket)
+        request_queue.put(client_socket)
