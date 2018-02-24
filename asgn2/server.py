@@ -27,7 +27,7 @@ if __name__ == '__main__':
         logging.info('Program should be started with <port> <number of process>')
         sys.exit()
     for i in range(num_process):
-        cp = Process(target=child_process, args=(,))
+        cp = Process(target=child_process, args=())
         cp.start()
         cp.join()
         logging.info('Create process %s', p.processName)
