@@ -2,6 +2,7 @@ import logging
 import socket
 import sys
 from multiprocessing import Process
+from threading import Thread
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
@@ -16,6 +17,10 @@ logging.basicConfig(
 
 def child_process():
     logging.debug('Creation successed')
+    thread_pool = []
+    for i in range(4):
+        wt = Thread(target=worker_thread, args=(None,), daemon=True)
+        logging.debug('Create thread %s', wt.name)
 
 def worker_thread(client_socket):
     pass
