@@ -3,7 +3,7 @@ import socket
 import sys
 from multiprocessing import Process, Queue
 from threading import Thread
-import time
+import multiprocessing
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
