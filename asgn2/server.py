@@ -18,11 +18,10 @@ logging.basicConfig(
 
 def child_process(request_queue):
     logging.debug('Creation successed')
-    time.sleep(2)
-    # while True:
-    #     handle = request_queue.get()
-    #     client_socket = multiprocessing.reduction.rebuild_socket(handle)
-    #     logging.info('Client %s connected', client_socket)
+    while True:
+        handle = request_queue.get()
+        client_socket = multiprocessing.reduction.rebuild_socket(handle)
+        logging.info('Client %s connected', client_socket)
     # thread_pool = []
     # for i in range(4):
     #     wt = Thread(target=worker_thread, args=(None,), daemon=True)
