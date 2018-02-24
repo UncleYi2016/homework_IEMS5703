@@ -1,7 +1,7 @@
 import logging
 import socket
 import sys
-from multiprocessing import Pool
+from multiprocessing import Process
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
@@ -27,8 +27,10 @@ if __name__ == '__main__':
     except Exception as err:
         logging.info('Program should be started with <port> <number of process>')
         sys.exit()
-    with Pool(num_process) as cp:
-        cp.map(child_process, None)
+    for i in range(5):
+        cp = Process(target=child_process, args=())
+        cp.start()
+        cp.join()
         logging.info('Create process %s', cp.name)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((SERVER_ADDRESS, port_number))
