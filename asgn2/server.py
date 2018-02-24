@@ -18,6 +18,7 @@ logging.basicConfig(
 '''
 
 def child_process(request_queue):
+    data_str = ''
     logging.debug('Creation successed')
     while True:
         client_socket = request_queue.get()
