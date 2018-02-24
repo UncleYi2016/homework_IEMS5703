@@ -8,14 +8,14 @@ NUM_WORKER = 4
 REQUEST_QUEUE = []
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 
 '''
     define child process
 '''
 
 def child_process():
-    pass
+    logging.debug('Creation successed')
 
 def worker_thread(client_socket):
     pass
