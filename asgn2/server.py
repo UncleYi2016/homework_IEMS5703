@@ -22,6 +22,6 @@ if __name__ == '__main__':
         num_process = int(sys.argv[2])
     except Exception as err:
         logging.info('Program should be started with <port> <number of process>')
-        return
+        sys.exit()
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((SERVER_ADDRESS, port_number))
