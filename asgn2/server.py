@@ -3,7 +3,6 @@ import socket
 import sys
 from multiprocessing import Process, Queue
 from threading import Thread
-import multiprocessing
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
@@ -19,8 +18,7 @@ logging.basicConfig(
 def child_process(request_queue):
     logging.debug('Creation successed')
     while True:
-        handle = request_queue.get()
-        client_socket = multiprocessing.reduction.rebuild_socket(handle)
+        client_socket = request_queue.get()
         logging.info('Client %s connected', client_socket)
     # thread_pool = []
     # for i in range(4):
@@ -52,5 +50,4 @@ if __name__ == '__main__':
     while True:
         (client_socket, client_address) = server_socket.accept()
         logging.debug('Accept client %s', client_socket)
-        handle = multiprocessing.reduction.reduce_socket(client_socket)
-        request_queue.put(handle)
+        request_queue.put(client_socket)
