@@ -28,7 +28,7 @@ if __name__ == '__main__':
         logging.info('Program should be started with <port> <number of process>')
         sys.exit()
     with Pool(num_process) as cp:
-        cp.map(child_process)
+        cp.map(child_process, )
         logging.info('Create process %s', cp.name)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((SERVER_ADDRESS, port_number))
