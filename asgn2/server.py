@@ -2,7 +2,7 @@ import logging
 import socket
 import sys
 
-BIND_ADDRESS = '0.0.0.0'
+SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
 REQUEST_LIST = []
 logging.basicConfig(
