@@ -34,6 +34,7 @@ def child_process(request_queue):
                 # Once detect the special string '[END]', process the data and send result back to client
                 if(index > -1):
                     data_str = data_str[0:index]
+                    continue_transmit = False
         except Exception as err:
             # If connection broken, show it.
             logging.info('Connection broken')
