@@ -31,7 +31,7 @@ if __name__ == '__main__':
         cp = Process(target=child_process, args=())
         cp.start()
         cp.join()
-        logging.info('Create process %s', cp.processName)
+        logging.info('Create process %s', cp.name)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((SERVER_ADDRESS, port_number))
     server_socket.listen(20)
