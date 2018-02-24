@@ -33,6 +33,7 @@ def worker_thread(client_socket):
 
 if __name__ == '__main__':
     request_queue = Queue()
+    processes = []
     try:
         port_number = int(sys.argv[1])
         num_process = int(sys.argv[2])
@@ -42,8 +43,10 @@ if __name__ == '__main__':
     for i in range(5):
         cp = Process(target=child_process, args=(request_queue,))
         cp.start()
-        cp.join()
+        processes.append(cp)
         logging.info('Create process %s', cp.name)
+    for p in processes:
+        p.join()
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((SERVER_ADDRESS, port_number))
     server_socket.listen(20)
