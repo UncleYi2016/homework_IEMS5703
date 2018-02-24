@@ -35,9 +35,9 @@ def child_process(request_queue):
                 if(index > -1):
                     data_str = data_str[0:index]
         except Exception as err:
-        # If connection broken, show it.
-        logging.info('Connection broken')
-        logging.debug(err)
+            # If connection broken, show it.
+            logging.info('Connection broken')
+            logging.debug(err)
     # thread_pool = []
     # for i in range(4):
     #     wt = Thread(target=worker_thread, args=(None,), daemon=True)
