@@ -67,5 +67,5 @@ if __name__ == '__main__':
     server_socket.listen(20)
     while True:
         (client_socket, client_address) = server_socket.accept()
-        logging.debug('Accept client %s', client_socket.getsockname()
+        logging.debug('Accept client %s', client_socket.getsockname())
         request_queue.put(client_socket)
