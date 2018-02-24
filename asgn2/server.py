@@ -14,10 +14,10 @@ logging.basicConfig(
     define child process
 '''
 
-def child_process(self):
+def child_process():
     pass
 
-def worker_thread(self, client_socket):
+def worker_thread(client_socket):
     pass
 
 if __name__ == '__main__':
@@ -28,7 +28,7 @@ if __name__ == '__main__':
         logging.info('Program should be started with <port> <number of process>')
         sys.exit()
     with Pool(num_process) as cp:
-        cp.map(child_process, )
+        cp.map(child_process)
         logging.info('Create process %s', cp.name)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((SERVER_ADDRESS, port_number))
