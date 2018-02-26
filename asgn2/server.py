@@ -53,8 +53,9 @@ def worker_thread(client_socket):
             if(index > -1):
                 data_str = data_str[0:index]
                 continue_transmit = False
-            logging.info(data_str)
+            # logging.info(data_str)
         logging.debug('Transmit exited')
+        get_image_result(data_str)
 
     except Exception as err:
         # If connection broken, show it.
