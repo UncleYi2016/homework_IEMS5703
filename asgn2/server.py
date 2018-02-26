@@ -44,7 +44,6 @@ def worker_thread(client_socket):
             data = client_socket.recv(BUFFER_SIZE)
             logging.debug('Receive end')
             data_str += data.decode('utf-8')
-            logging.info(data_str)
             index = data_str.find(END_STRING)   # index is the index of special string '[END]'
             logging.debug('index - %d', index)
             
@@ -52,6 +51,8 @@ def worker_thread(client_socket):
             if(index > -1):
                 data_str = data_str[0:index]
                 continue_transmit = False
+            logging.info(data_str)
+        logging.debug('Transmit exited')
     except Exception as err:
         # If connection broken, show it.
         logging.info('Connection broken')
