@@ -29,6 +29,7 @@ def child_process(request_queue):
             client_socket = request_queue.get()
             logging.info('Client %s connected', client_socket.getsockname())
             wt = Thread(target=worker_thread, args=(None,), daemon=True)
+            wt.start()
             thread_pool.append(wt)
             logging.debug('Create thread %s', wt.name)
 
