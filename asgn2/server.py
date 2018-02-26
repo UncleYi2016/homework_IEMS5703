@@ -39,7 +39,9 @@ def worker_thread(client_socket):
     try:
         continue_transmit = True
         while continue_transmit:
+            logging.debug('Receive start')
             data = client_socket.recv(BUFFER_SIZE)
+            logging.debug('Receive end')
             data_str += data.decode('utf-8')
             logging.info(data_str)
             index = data_str.find(END_STRING)   # index is the index of special string '[END]'
