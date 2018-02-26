@@ -66,7 +66,8 @@ def worker_thread(client_socket):
 
 def get_image_result(url):
     logging.info('Client submitted URL %s', url)
-    request.urlretrieve(url, "image-%d.jpg" % time.time())
+    
+    request.urlretrieve(url, "image-%d.png" % time.time())
 
 if __name__ == '__main__':
     request_queue = Queue()
