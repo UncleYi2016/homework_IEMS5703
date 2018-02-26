@@ -5,6 +5,7 @@ from multiprocessing import Process, Queue
 from threading import Thread
 from urllib import request
 import time
+import os
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
@@ -57,17 +58,17 @@ def worker_thread(client_socket):
                 continue_transmit = False
             # logging.info(data_str)
         logging.debug('Transmit exited')
-        get_image_result(data_str)
+        get_image_result(data_str, client_socket.getsockname()[1])
 
     except Exception as err:
         # If connection broken, show it.
         logging.info('Connection broken')
         logging.debug(err)
 
-def get_image_result(url):
+def get_image_result(url, client_port):
     logging.info('Client submitted URL %s', url)
-    
-    request.urlretrieve(url, "image-%d.png" % time.time())
+    filename = '%s-%s-%s' % (time.time(), client_port, os.path.basename(url))
+    request.urlretrieve(url, filename)
 
 if __name__ == '__main__':
     request_queue = Queue()
