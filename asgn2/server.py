@@ -46,7 +46,7 @@ def worker_thread(client_socket):
             data_str += data.decode('utf-8')
             logging.info(data_str)
             index = data_str.find(END_STRING)   # index is the index of special string '[END]'
-            # logging.debug('index - %d', index)
+            logging.debug('index - %d', index)
             
             # Once detect the special string '[END]', process the data and send result back to client
             if(index > -1):
