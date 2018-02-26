@@ -55,10 +55,14 @@ def worker_thread(client_socket):
                 continue_transmit = False
             logging.info(data_str)
         logging.debug('Transmit exited')
+
     except Exception as err:
         # If connection broken, show it.
         logging.info('Connection broken')
         logging.debug(err)
+
+def get_image_result(url):
+    logging.info('Client submitted URL %s', url)
 
 if __name__ == '__main__':
     request_queue = Queue()
