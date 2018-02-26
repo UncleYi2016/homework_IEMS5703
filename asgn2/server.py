@@ -3,6 +3,8 @@ import socket
 import sys
 from multiprocessing import Process, Queue
 from threading import Thread
+from urllib import request
+import time
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
@@ -64,6 +66,7 @@ def worker_thread(client_socket):
 
 def get_image_result(url):
     logging.info('Client submitted URL %s', url)
+    request.urlretrieve(url, "image-%d.jpg" % time.time())
 
 if __name__ == '__main__':
     request_queue = Queue()
