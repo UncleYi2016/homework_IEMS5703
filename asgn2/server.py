@@ -18,35 +18,41 @@ logging.basicConfig(
 '''
 
 def child_process(request_queue):
-    data_str = ''
+    thread_pool = []
     logging.debug('Creation successed')
     while True:
-        client_socket = request_queue.get()
-        logging.info('Client %s connected', client_socket.getsockname())
-        try:
-            continue_transmit = True
-            while continue_transmit:
-                data = client_socket.recv(BUFFER_SIZE)
-                data_str += data.decode('utf-8')
-                logging.info(data_str)
-                index = data_str.find(END_STRING)   # index is the index of special string '[END]'
-                logging.debug('index - %d', index)
-                
-                # Once detect the special string '[END]', process the data and send result back to client
-                if(index > -1):
-                    data_str = data_str[0:index]
-                    continue_transmit = False
-        except Exception as err:
-            # If connection broken, show it.
-            logging.info('Connection broken')
-            logging.debug(err)
-    # thread_pool = []
-    # for i in range(4):
-    #     wt = Thread(target=worker_thread, args=(None,), daemon=True)
-    #     logging.debug('Create thread %s', wt.name)
+        '''
+            Create thread
+        '''
+        if len(thread_pool) < NUM_WORKER:
+            # TODO: Create a thread
+            client_socket = request_queue.get()
+            logging.info('Client %s connected', client_socket.getsockname())
+            wt = Thread(target=worker_thread, args=(None,), daemon=True)
+            thread_pool.append(wt)
+            logging.debug('Create thread %s', wt.name)
 
 def worker_thread(client_socket):
-    pass
+    data = b''
+    data_str = ''
+    index = -1
+    try:
+        continue_transmit = True
+        while continue_transmit:
+            data = client_socket.recv(BUFFER_SIZE)
+            data_str += data.decode('utf-8')
+            logging.info(data_str)
+            index = data_str.find(END_STRING)   # index is the index of special string '[END]'
+            # logging.debug('index - %d', index)
+            
+            # Once detect the special string '[END]', process the data and send result back to client
+            if(index > -1):
+                data_str = data_str[0:index]
+                continue_transmit = False
+    except Exception as err:
+        # If connection broken, show it.
+        logging.info('Connection broken')
+        logging.debug(err)
 
 if __name__ == '__main__':
     request_queue = Queue()
