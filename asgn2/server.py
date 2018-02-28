@@ -95,6 +95,8 @@ def get_image_result(url, graph):
         x = np.expand_dims(x, axis=0)
         x = preprocess_input(x)
         preds = model.predict(x)
+    
+    logging.debug(type(preds))
 
     return decode_predictions(preds[0])
 
