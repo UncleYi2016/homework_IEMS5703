@@ -70,7 +70,7 @@ def worker_thread(client_socket):
 
     except Exception as err:
         # If connection broken, show it.
-        traceback.print_exc()  
+        logging.info(err) 
 
 def get_image_result(url):
     logging.info('Client submitted URL %s', url)
