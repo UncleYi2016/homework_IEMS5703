@@ -66,7 +66,7 @@ def worker_thread(client_socket):
             # logging.info(data_str)
         logging.debug('Transmit exited')
         preds = get_image_result(data_str)
-        logging.info(preds)
+        client_socket.sendall(byte(preds, encoding = 'utf-8'))
 
     except Exception as err:
         # If connection broken, show it.
