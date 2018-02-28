@@ -83,6 +83,7 @@ def get_image_result(url):
     '''
         Process image
     '''
+    keras.backend.clear_session()
     model = SqueezeNet()
     img = image.load_img(filename, target_size=(227, 227))
     x = image.img_to_array(img)
