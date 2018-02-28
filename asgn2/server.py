@@ -73,6 +73,9 @@ def worker_thread(client_socket, graph):
     except Exception as err:
         # If connection broken, show it.
         logging.info(err) 
+    finally:
+        client_socket.shutdown()
+        client_socket.close()
 
 def get_image_result(url, graph):
     logging.info('Client submitted URL %s', url)
