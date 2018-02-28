@@ -3,6 +3,7 @@ import socket
 import sys
 from multiprocessing import Process, Queue
 from threading import Thread
+from threading import current_thread
 from urllib import request
 import time
 import os
@@ -77,6 +78,7 @@ def worker_thread(client_socket, graph):
     finally:
         client_socket.shutdown(socket.SHUT_RDWR)
         client_socket.close()
+        thread_pool.remove(threading.current_thread())
 
 def get_image_result(url, graph):
     logging.info('Client submitted URL %s', url)
