@@ -7,6 +7,12 @@ from urllib import request
 import time
 import os
 
+import numpy as np
+from keras_squeezenet import SqueezeNet
+from keras.applications.imagenet_utils import preprocess_input
+from keras.applications.imagenet_utils import decode_predictions
+from keras.preprocessing import image
+
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
 BUFFER_SIZE = 2048
@@ -78,7 +84,7 @@ def get_image_result(url):
         Process image
     '''
     model = SqueezeNet()
-    img = image.load_img(filename)
+    img = image.load_img(filename, target_size=(227, 227))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
