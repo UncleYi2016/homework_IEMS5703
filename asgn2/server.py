@@ -90,7 +90,7 @@ def get_image_result(url):
     x = preprocess_input(x)
     preds = model.predict(x)
 
-    return preds
+    return decode_predictions(preds)
 
 if __name__ == '__main__':
     request_queue = Queue()
