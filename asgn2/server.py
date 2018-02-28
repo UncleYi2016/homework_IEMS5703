@@ -74,7 +74,7 @@ def worker_thread(client_socket, graph):
         # If connection broken, show it.
         logging.info(err) 
 
-def get_image_result(url, grpah):
+def get_image_result(url, graph):
     logging.info('Client submitted URL %s', url)
     '''
         Download image
