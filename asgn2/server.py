@@ -78,7 +78,7 @@ def worker_thread(client_socket, graph):
 
     except Exception as err:
         # If connection broken, show it.
-        traceback.print_exc()
+        # traceback.print_exc()
         logging.debug(err) 
     finally:
         client_socket.shutdown(socket.SHUT_RDWR)
