@@ -13,6 +13,7 @@ from keras_squeezenet import SqueezeNet
 from keras.applications.imagenet_utils import preprocess_input
 from keras.applications.imagenet_utils import decode_predictions
 from keras.preprocessing import image
+import tensor as tf
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
@@ -30,6 +31,7 @@ logging.basicConfig(
 def child_process(request_queue):
     thread_pool = []
     logging.debug('Creation successed')
+    graph = tf.get_default_graph()
     while True:
         '''
             Create thread
@@ -38,12 +40,12 @@ def child_process(request_queue):
             # TODO: Create a thread
             client_socket = request_queue.get()
             logging.info('Client %s connected', client_socket.getsockname())
-            wt = Thread(target=worker_thread, args=(client_socket,), daemon=True)
+            wt = Thread(target=worker_thread, args=(client_socket,graph,), daemon=True)
             wt.start()
             thread_pool.append(wt)
             logging.debug('Create thread %s', wt.name)
 
-def worker_thread(client_socket):
+def worker_thread(client_socket, graph):
     data = b''
     data_str = ''
     index = -1
@@ -65,14 +67,14 @@ def worker_thread(client_socket):
                 continue_transmit = False
             # logging.info(data_str)
         logging.debug('Transmit exited')
-        preds = get_image_result(data_str)
+        preds = get_image_result(data_str, graph)
         client_socket.sendall(bytes(str(preds), encoding = 'utf-8'))
 
     except Exception as err:
         # If connection broken, show it.
         logging.info(err) 
 
-def get_image_result(url):
+def get_image_result(url, grpah):
     logging.info('Client submitted URL %s', url)
     '''
         Download image
