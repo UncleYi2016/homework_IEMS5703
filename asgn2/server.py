@@ -45,6 +45,10 @@ def child_process(request_queue):
             wt.start()
             thread_pool.append(wt)
             logging.debug('Create thread %s', wt.name)
+        else:
+            for t in thread_pool:
+                if !is_alive(t):
+                    thread_pool.remove(t)
 
 def worker_thread(client_socket, graph):
     data = b''
@@ -78,7 +82,6 @@ def worker_thread(client_socket, graph):
     finally:
         client_socket.shutdown(socket.SHUT_RDWR)
         client_socket.close()
-        thread_pool.remove(threading.current_thread())
 
 def get_image_result(url, graph):
     logging.info('Client submitted URL %s', url)
