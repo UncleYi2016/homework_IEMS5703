@@ -6,6 +6,7 @@ from threading import Thread
 from urllib import request
 import time
 import os
+import traceback
 
 import numpy as np
 from keras_squeezenet import SqueezeNet
@@ -69,8 +70,7 @@ def worker_thread(client_socket):
 
     except Exception as err:
         # If connection broken, show it.
-        logging.info('Connection broken')
-        logging.debug(err)
+        traceback.print_exc()  
 
 def get_image_result(url):
     logging.info('Client submitted URL %s', url)
