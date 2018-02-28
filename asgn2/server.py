@@ -18,6 +18,7 @@ SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
 BUFFER_SIZE = 2048
 END_STRING = '[END]'
+MODEL = SqueezeNet()
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
@@ -83,12 +84,12 @@ def get_image_result(url):
     '''
         Process image
     '''
-    model = SqueezeNet()
+    
     img = image.load_img(filename, target_size=(227, 227))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
-    preds = model.predict(x)
+    preds = MODEL.predict(x)
 
     return decode_predictions(preds)
 
