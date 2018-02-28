@@ -54,6 +54,7 @@ def worker_thread(client_socket, graph):
         while continue_transmit:
             logging.debug('Receive start')
             data = client_socket.recv(BUFFER_SIZE)
+            logging.info('Received Client %s', client_socket.getpeername())
             if len(data) <= 0:
                 break
             logging.debug('Receive end')
