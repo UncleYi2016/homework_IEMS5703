@@ -20,7 +20,7 @@ logging.basicConfig(
     define child process
 '''
 
-def child_process(request_queu):
+def child_process(request_queue):
     thread_pool = []
     logging.debug('Creation successed')
     while True:
@@ -36,7 +36,7 @@ def child_process(request_queu):
             thread_pool.append(wt)
             logging.debug('Create thread %s', wt.name)
 
-def worker_thread(client_socket, client_address):
+def worker_thread(client_socket):
     data = b''
     data_str = ''
     index = -1
@@ -58,7 +58,7 @@ def worker_thread(client_socket, client_address):
                 continue_transmit = False
             # logging.info(data_str)
         logging.debug('Transmit exited')
-        preds = get_image_result(data_str, client_address[1])
+        preds = get_image_result(data_str)
         logging.info(preds)
 
     except Exception as err:
@@ -71,7 +71,7 @@ def get_image_result(url, client_port):
     '''
         Download image
     '''
-    filename = '%s-%s-%s' % (time.time(), client_port, os.path.basename(url))
+    filename = '%s-%s-%s' % (time.time(), os.path.basename(url))
     request.urlretrieve(url, filename)
 
     '''
