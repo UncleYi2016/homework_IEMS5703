@@ -47,7 +47,7 @@ def child_process(request_queue):
             logging.debug('Create thread %s', wt.name)
         else:
             for t in thread_pool:
-                if not is_alive(t):
+                if not t.is_alive():
                     thread_pool.remove(t)
 
 def worker_thread(client_socket, graph):
