@@ -74,7 +74,7 @@ def worker_thread(client_socket, graph):
         # If connection broken, show it.
         logging.info(err) 
     finally:
-        client_socket.shutdown(SHUT_RDWR)
+        client_socket.shutdown(socket.SHUT_RDWR)
         client_socket.close()
 
 def get_image_result(url, graph):
