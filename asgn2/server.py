@@ -66,7 +66,7 @@ def worker_thread(client_socket):
         logging.info('Connection broken')
         logging.debug(err)
 
-def get_image_result(url, client_port):
+def get_image_result(url):
     logging.info('Client submitted URL %s', url)
     '''
         Download image
