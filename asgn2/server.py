@@ -77,7 +77,7 @@ def get_image_result(url):
     '''
         Download image
     '''
-    filename = '%s-%s-%s' % (time.time(), os.path.basename(url))
+    filename = '%s-%s' % (time.time(), os.path.basename(url))
     request.urlretrieve(url, filename)
 
     '''
