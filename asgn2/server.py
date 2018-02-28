@@ -98,7 +98,7 @@ def get_image_result(url, graph):
     
     logging.debug(type(preds))
 
-    return decode_predictions(preds[0,0])
+    return decode_predictions(preds[[0],[0]])
 
 if __name__ == '__main__':
     request_queue = Queue()
