@@ -20,7 +20,7 @@ logging.basicConfig(
     define child process
 '''
 
-def child_process(request_queue):
+def child_process(request_queu):
     thread_pool = []
     logging.debug('Creation successed')
     while True:
@@ -36,7 +36,7 @@ def child_process(request_queue):
             thread_pool.append(wt)
             logging.debug('Create thread %s', wt.name)
 
-def worker_thread(client_socket):
+def worker_thread(client_socket, client_address):
     data = b''
     data_str = ''
     index = -1
@@ -58,7 +58,8 @@ def worker_thread(client_socket):
                 continue_transmit = False
             # logging.info(data_str)
         logging.debug('Transmit exited')
-        get_image_result(data_str, client_socket.getsockname()[1])
+        preds = get_image_result(data_str, client_address[1])
+        logging.info(preds)
 
     except Exception as err:
         # If connection broken, show it.
@@ -67,8 +68,23 @@ def worker_thread(client_socket):
 
 def get_image_result(url, client_port):
     logging.info('Client submitted URL %s', url)
+    '''
+        Download image
+    '''
     filename = '%s-%s-%s' % (time.time(), client_port, os.path.basename(url))
     request.urlretrieve(url, filename)
+
+    '''
+        Process image
+    '''
+    model = SqueezeNet()
+    img = image.load_img(filename)
+    x = image.img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)
+    preds = model.predict(x)
+
+    return preds
 
 if __name__ == '__main__':
     request_queue = Queue()
@@ -89,5 +105,5 @@ if __name__ == '__main__':
     server_socket.listen(20)
     while True:
         (client_socket, client_address) = server_socket.accept()
-        logging.debug('Accept client %s', client_socket.getsockname())
+        logging.debug('Accept client %s', client_address)
         request_queue.put(client_socket)
