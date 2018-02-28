@@ -39,7 +39,7 @@ def child_process(request_queue):
         if len(thread_pool) < NUM_WORKER:
             # TODO: Create a thread
             client_socket = request_queue.get()
-            logging.info('Client %s connected', client_socket.getsockname())
+            logging.info('Client %s connected', client_socket.getpeername())
             wt = Thread(target=worker_thread, args=(client_socket,graph,), daemon=True)
             wt.start()
             thread_pool.append(wt)
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     except Exception as err:
         logging.info('Program should be started with <port> <number of process>')
         sys.exit()
-    logging.info('Start listening for connections on port %d', port_number)
+    logging.info('Start listening for connections on port %d', PORT)
     for i in range(num_process):
         cp = Process(target=child_process, args=(request_queue,))
         cp.start()
