@@ -110,6 +110,7 @@ if __name__ == '__main__':
     except Exception as err:
         logging.info('Program should be started with <port> <number of process>')
         sys.exit()
+    logging.info('Start listening for connections on port %d', port_number)
     for i in range(num_process):
         cp = Process(target=child_process, args=(request_queue,))
         cp.start()
