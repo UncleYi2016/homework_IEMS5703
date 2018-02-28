@@ -22,7 +22,7 @@ END_STRING = '[END]'
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.DEBUG)
+    level=logging.INFO)
 
 '''
     define child process
@@ -99,7 +99,7 @@ def get_image_result(url, graph):
     logging.debug(type(preds))
 
     preds = decode_predictions(preds)
-    return preds[0]
+    return preds[0][0]
 
 if __name__ == '__main__':
     request_queue = Queue()
