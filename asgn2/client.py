@@ -10,7 +10,7 @@ END_STRING = '[END]'
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.DEBUG)
+    level=logging.INFO)
 
 
 # Create and initialize client_socket
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         client_socket.connect((SERVER_ADDRESS, SERVER_PORT))
-        logging.info('Connected to server.')
+        logging.info('Connected to server at %s', client_socket.getsocksname())
     except Exception as err:
         logging.info('Cannot connect to server at %s:%d', SERVER_ADDRESS, SERVER_PORT)
         logging.debug(err)
@@ -39,6 +39,7 @@ if __name__ == '__main__':
         msg = url
         msg += END_STRING
         client_socket.sendall(bytes(msg, encoding = 'utf-8'))
+        logging.info('URL sent to the server')
         result = ''
         # Receive result (Before receive all data, the program will not process the result)
         while True:
@@ -46,23 +47,9 @@ if __name__ == '__main__':
                 data2 = client_socket.recv(BUFFER_SIZE)
                 if(data2 == b''):
                     break
-                logging.debug(data2.decode('utf-8'))
                 result += data2.decode('utf-8')
             except Exception as err:
                 logging.debug('Server disconnected')
-        logging.debug(result)
-
-        # # After decoded, process and devide the data by semicolon
-        # length = len(result_list)
-        # for r in range(length):
-        #     word_content += result_list[r][0]
-        #     word_type += result_list[r][1]
-        #     if(r != length-1):
-        #         word_content += ' ; '
-        #         word_type += ' ; '
-        # print(word_content)
-        # print(word_type)
-        # client_socket.close()
-        # logging.info('Server disconnected')
+        logging.info('Server response: %s', result)
     except Exception as err:
         logging.debug(err)
