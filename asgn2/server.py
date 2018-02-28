@@ -22,7 +22,7 @@ END_STRING = '[END]'
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 
 '''
     define child process
