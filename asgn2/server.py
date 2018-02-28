@@ -13,7 +13,7 @@ from keras_squeezenet import SqueezeNet
 from keras.applications.imagenet_utils import preprocess_input
 from keras.applications.imagenet_utils import decode_predictions
 from keras.preprocessing import image
-import tensor as tf
+import tensorflow as tf
 
 SERVER_ADDRESS = '0.0.0.0'
 NUM_WORKER = 4
