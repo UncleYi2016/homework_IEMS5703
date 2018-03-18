@@ -7,7 +7,9 @@ def load_database():
     file = open(DATABASE_PATH, 'r', encoding='utf-8')
     s = csv.reader(file)
     print(s)
-    print(json.dumps(s))
+    for row in s:
+        print(row)
+        break
     # dic_key = file.readline()
     # dic_key = dic_key.strip().split(',')  # The dictionary keys
     # keys = []                           # Store key list into array
