@@ -7,6 +7,7 @@ def load_database():
     file = open(DATABASE_PATH, 'r', encoding='utf-8')
     s = csv.reader(file)
     first_row = True
+    keys = []
     for row in s:
         if first_row:
             for key in row:
