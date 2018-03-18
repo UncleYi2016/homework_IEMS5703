@@ -1,5 +1,9 @@
 import json
+import sys
 
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 DATABASE_PATH = 'imdb_top1000.csv'
 MOVIES = []
 
