@@ -6,7 +6,7 @@ MOVIES = []
 def load_database():
     file = open(DATABASE_PATH, 'r', encoding='utf-8')
     dic_key = file.readline()
-    dic_key = dic_key.strip.split(',')  # The dictionary keys
+    dic_key = dic_key.strip().split(',')  # The dictionary keys
     keys = []                           # Store key list into array
     for key in dic_key:
         keys.append(key)
