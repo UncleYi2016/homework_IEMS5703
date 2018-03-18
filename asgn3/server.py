@@ -10,8 +10,8 @@ def load_database():
     keys = []                           # Store key list into array
     for key in dic_key:
         keys.append(key)
+    print(len(keys))
     for line in file:
-        line = line.strip()
         movie_element = line.split(',')
         movie = {}
         length = len(movie_element)
