@@ -16,6 +16,7 @@ def load_database():
         movie = {}
         length = len(movie_element)
         for i in range(length):
+            print(i)
             movie[keys[i]] = movie_element[i]
     movie['comment'] = []
 
