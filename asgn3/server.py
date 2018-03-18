@@ -16,7 +16,7 @@ def load_database():
         movie = {}
         length = len(movie_element)
         print(length)
-        print(json_dumps(movie_element))
+        print(json.dumps(movie_element))
         for i in range(length):
             print(i)
             movie[keys[i]] = movie_element[i]
