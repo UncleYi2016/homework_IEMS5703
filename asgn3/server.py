@@ -17,9 +17,16 @@ def load_database():
             movie = {}
             length = len(row)
             for i in range(length):
-                movie[keys[i]] = row[i]
                 if keys[i] == 'Rank':
                     movie['id'] = int(row[i]) - 1
+                    movie[keys[i]] = int(row[i])
+                else if keys[i] == 'Metascore' || keys[i] == 'Rating'
+                     || keys[i] == 'Revenue (Millions)'
+                    movie[keys[i]] = float(row[i])
+                else if keys[i] == 'Year' || keys[i] == 'Votes' ||
+                     keys[i] == 'Runtime (Minutes)'
+                     movie[keys[i]] = int(row[i])
+            movie['comments'] = []
             MOVIES.append(movie)
 
 if __name__ == '__main__':
