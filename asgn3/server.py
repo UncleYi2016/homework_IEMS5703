@@ -22,4 +22,4 @@ def load_database():
 if __name__ == '__main__':
     load_database()
     json_str = json.dumps(MOVIES[0])
-    print json_str
+    print(json_str)
