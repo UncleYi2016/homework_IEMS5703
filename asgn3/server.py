@@ -8,7 +8,7 @@ def load_database():
     s = csv.reader(file)
     print(s)
     for row in s:
-        print(row)
+        print(row[0])
     # dic_key = file.readline()
     # dic_key = dic_key.strip().split(',')  # The dictionary keys
     # keys = []                           # Store key list into array
