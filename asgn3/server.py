@@ -21,10 +21,10 @@ def load_database():
                     movie['id'] = int(row[i]) - 1
                     movie[keys[i]] = int(row[i])
                 elif keys[i] == 'Metascore' or keys[i] == 'Rating'
-                     or keys[i] == 'Revenue (Millions)'
+                     or keys[i] == 'Revenue (Millions)':
                     movie[keys[i]] = float(row[i])
                 elif keys[i] == 'Year' or keys[i] == 'Votes' or
-                     keys[i] == 'Runtime (Minutes)'
+                     keys[i] == 'Runtime (Minutes)':
                      movie[keys[i]] = int(row[i])
             movie['comments'] = []
             MOVIES.append(movie)
