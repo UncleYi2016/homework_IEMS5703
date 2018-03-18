@@ -6,9 +6,10 @@ MOVIES = []
 def load_database():
     file = open(DATABASE_PATH, 'r', encoding='utf-8')
     s = csv.reader(file)
-    print(s)
-    for row in s:
-        print(row[0])
+    print(s[0])
+    # for row in s:
+    #     for key in row:
+    #         keys.append()
     # dic_key = file.readline()
     # dic_key = dic_key.strip().split(',')  # The dictionary keys
     # keys = []                           # Store key list into array
