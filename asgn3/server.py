@@ -44,7 +44,7 @@ def load_database():
                     actors = row[i]
                     actors_keywords = nltk.word_tokenize(actors)
                     for keyword in actors_keywords:
-                        if not keyword in ACTORS_INDEX
+                        if not keyword in ACTORS_INDEX:
                             ACTORS_INDEX[keyword] = []
                         ACTORS_INDEX[keyword].append(int(row['Rank']) - 1)
                 else:
