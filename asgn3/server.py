@@ -25,8 +25,8 @@ def load_database():
             movie = {}
             length = len(row)
             for i in range(length):
+                id = int(row['Rank']) - 1
                 if keys[i] == 'Rank':
-                    id = int(row[i]) - 1
                     movie['id'] = id
                     movie[keys[i]] = int(row[i])
                 elif row[i] != '' and (keys[i] == 'Metascore' or keys[i] == 'Rating' or keys[i] == 'Revenue (Millions)'):
@@ -40,14 +40,14 @@ def load_database():
                         if not keyword in TITLE_INDEX:
                             TITLE_INDEX[keyword] = []
                         print(TITLE_INDEX)
-                        TITLE_INDEX[keyword].append(int(row['Rank']) - 1)
+                        TITLE_INDEX[keyword].append(id)
                 elif keys[i] == 'Actors':
                     actors = row[i]
                     actors_keywords = nltk.word_tokenize(actors)
                     for keyword in actors_keywords:
                         if not keyword in ACTORS_INDEX:
                             ACTORS_INDEX[keyword] = []
-                        ACTORS_INDEX[keyword].append(int(row['Rank']) - 1)
+                        ACTORS_INDEX[keyword].append(id)
                 else:
                     movie[keys[i]] = row[i]
             movie['comments'] = []
