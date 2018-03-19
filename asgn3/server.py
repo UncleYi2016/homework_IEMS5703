@@ -8,6 +8,7 @@ DATABASE_PATH = 'imdb_top1000.csv'
 MOVIES = []
 TITLE_INDEX = {}
 ACTORS_INDEX = {}
+QUERY_TYPE = ['both', '']
 app = Flask(__name__)
 
 
@@ -40,18 +41,18 @@ def load_database():
                     for keyword in title_keywords:
                         if keyword == ',' or keyword == '\'':
                             continue
-                        if not keyword in TITLE_INDEX:
-                            TITLE_INDEX[keyword] = []
-                        TITLE_INDEX[keyword].append(id)
+                        if not keyword.lower() in TITLE_INDEX:
+                            TITLE_INDEX[keyword.lower()] = []
+                        TITLE_INDEX[keyword.lower()].append(id)
                 elif keys[i] == 'Actors':
                     actors = row[i]
                     actors_keywords = nltk.word_tokenize(actors)
                     for keyword in actors_keywords:
                         if keyword == ',' or keyword == '\'':
                             continue
-                        if not keyword in ACTORS_INDEX:
-                            ACTORS_INDEX[keyword] = []
-                        ACTORS_INDEX[keyword].append(id)
+                        if not keyword.lower() in ACTORS_INDEX:
+                            ACTORS_INDEX[keyword.lower()] = []
+                        ACTORS_INDEX[keyword.lower()].append(id)
                 else:
                     movie[keys[i]] = row[i]
             movie['comments'] = []
@@ -66,7 +67,7 @@ def search():
     sortby = request.args.get('sortby', '')
     order = request.args.get('order', '')
 
-    return json.dumps(ACTORS_INDEX)
+    if query == 
     
 
 @app.route('/movie/<int:id>')
