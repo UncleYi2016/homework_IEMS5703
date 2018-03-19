@@ -123,7 +123,7 @@ def search():
         movie_element.pop('Votes')
         movie_element.pop('comments')
         movie_query.append(movie_element)
-    movie_query.sort(lambda x,y: cmp(x[sortby], y[sortby]), reversed = reverse)
+    movie_query.sort(lambda x,y: cmp(x[sortby], y[sortby]), reverse = reverse)
     movie_query_result = movie_query[0:9]
     return json.dumps(movie_query_result)
 
