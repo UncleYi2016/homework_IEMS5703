@@ -95,13 +95,15 @@ def search():
         reverse = True
     
     if search_actor:
-        for id in ACTORS_INDEX:
-            if id not in id_query:
-                id_query.append(id)
+        if query in ACTORS_INDEX:
+            for id in ACTORS_INDEX[query]:
+                if id not in id_query:
+                    id_query.append(id)
     if search_title:
-        for id in TITLE_INDEX:
-            if id not in id_query:
-                id_query.append(id)
+        if query in TITLE_INDEX:
+            for id in TITLE_INDEX[query]:
+                if id not in id_query:
+                    id_query.append(id)
 
     print(id_query)
     for id in id_query:
