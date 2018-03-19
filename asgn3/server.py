@@ -42,7 +42,7 @@ def search():
     order = request.args.get('order', '')
     return 'query: %s<br>attribute: %s<br>sortby: %s<br>order: %s' % (query, attribute, sortby, order)
 
-@app.route('movie/<int:id>')
+@app.route('/movie/<int:id>')
 def movie(id=0):
     json_str = json.dumps(MOVIES[id])
     return json_str
