@@ -4,6 +4,8 @@ from flask import Flask
 
 DATABASE_PATH = 'imdb_top1000.csv'
 MOVIES = []
+app = Flask(__name__)
+
 
 def load_database():
     file = open(DATABASE_PATH, 'r', encoding='utf-8')
