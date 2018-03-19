@@ -41,6 +41,11 @@ def search():
     sortby = request.args.get('sortby', '')
     order = request.args.get('order', '')
     return 'query: %s<br>attribute: %s<br>sortby: %s<br>order: %s' % (query, attribute, sortby, order)
+
+@app.route('movie/<int:id>')
+def movie(id=0):
+    json_str = json.dumps(MOVIES[id])
+    return json_str
 if __name__ == '__main__':
     load_database()
     json_str = json.dumps(MOVIES[7])
