@@ -17,6 +17,7 @@ def load_database():
     first_row = True
     keys = []
     for row in s:
+        id = 0
         if first_row:
             for key in row:
                 keys.append(key)
@@ -25,7 +26,7 @@ def load_database():
             movie = {}
             length = len(row)
             for i in range(length):
-                id = int(row['Rank']) - 1
+                id = int(row[i]) - 1
                 if keys[i] == 'Rank':
                     movie['id'] = id
                     movie[keys[i]] = int(row[i])
