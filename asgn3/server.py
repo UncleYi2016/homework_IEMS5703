@@ -29,6 +29,9 @@ def load_database():
             movie['comments'] = []
             MOVIES.append(movie)
 
+@app.route('/search')
+def search():
+    pass;
 if __name__ == '__main__':
     load_database()
     json_str = json.dumps(MOVIES[7])
