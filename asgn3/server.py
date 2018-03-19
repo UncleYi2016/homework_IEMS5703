@@ -95,10 +95,13 @@ def search():
         reverse = True
     
     if search_actor:
-        id_query.append(ACTORS_INDEX[query])
+        for id in ACTORS_INDEX:
+            if id not in id_query:
+                id_query.append(id)
     if search_title:
-        id_query.append(TITLE_INDEX[query])
-    set(id_query)
+        for id in TITLE_INDEX:
+            if id not in id_query:
+                id_query.append(id)
 
     for id in id_query:
         movie_element = copy.copy(MOVIES[id])
