@@ -1,10 +1,13 @@
 import csv
+import nltk
 from flask import Flask
 from flask import request
 from flask import json
 
 DATABASE_PATH = 'imdb_top1000.csv'
 MOVIES = []
+TITLE_INDEX = {}
+ACTORS_INDEX = {}
 app = Flask(__name__)
 
 
@@ -23,12 +26,27 @@ def load_database():
             length = len(row)
             for i in range(length):
                 if keys[i] == 'Rank':
-                    movie['id'] = int(row[i]) - 1
+                    id = int(row[i]) - 1
+                    movie['id'] = id
                     movie[keys[i]] = int(row[i])
                 elif row[i] != '' and (keys[i] == 'Metascore' or keys[i] == 'Rating' or keys[i] == 'Revenue (Millions)'):
                     movie[keys[i]] = float(row[i])
                 elif row[i] != '' and (keys[i] == 'Year' or keys[i] == 'Votes' or keys[i] == 'Runtime (Minutes)'):
                     movie[keys[i]] = int(row[i])
+                elif keys[i] == 'Title':
+                    title = row[i]
+                    title_keywords = nltk.word_tokenize(title)
+                    for keyword in title_keywords:
+                        if not TITLE_INDEX.has_key(keyword):
+                            TITLE_INDEX[keyword] = []
+                        TITLE_INDEX[keyword].append(int(row['Rank']) - 1)
+                elif keys[i] == 'Actors':
+                    actors = row[i]
+                    actors_keywords = nltk.word_tokenize(actors)
+                    for keyword in actors_keywords:
+                        if not ACTORS_INDEX.has_key(keyword):
+                            ACTORS_INDEX[keyword] = []
+                        ACTORS_INDEX[keyword].append(int(row['Rank']) - 1)
                 else:
                     movie[keys[i]] = row[i]
             movie['comments'] = []
@@ -42,7 +60,9 @@ def search():
     attribute = request.args.get('attribute', '')
     sortby = request.args.get('sortby', '')
     order = request.args.get('order', '')
-    return 'query: %s<br>attribute: %s<br>sortby: %s<br>order: %s' % (query, attribute, sortby, order)
+
+    return json.dumps(ACTORS_INDEX)
+    
 
 @app.route('/movie/<int:id>')
 def movie(id=0):
