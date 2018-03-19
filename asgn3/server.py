@@ -37,14 +37,14 @@ def load_database():
                     title = row[i]
                     title_keywords = nltk.word_tokenize(title)
                     for keyword in title_keywords:
-                        if not TITLE_INDEX.has_key(keyword):
+                        if not keyword in TITLE_INDEX:
                             TITLE_INDEX[keyword] = []
                         TITLE_INDEX[keyword].append(int(row['Rank']) - 1)
                 elif keys[i] == 'Actors':
                     actors = row[i]
                     actors_keywords = nltk.word_tokenize(actors)
                     for keyword in actors_keywords:
-                        if not ACTORS_INDEX.has_key(keyword):
+                        if not keyword in ACTORS_INDEX
                             ACTORS_INDEX[keyword] = []
                         ACTORS_INDEX[keyword].append(int(row['Rank']) - 1)
                 else:
