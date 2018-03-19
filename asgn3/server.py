@@ -1,5 +1,7 @@
 import json
 import csv
+from flask import Flask
+
 DATABASE_PATH = 'imdb_top1000.csv'
 MOVIES = []
 
