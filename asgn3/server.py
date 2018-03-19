@@ -26,8 +26,8 @@ def load_database():
             movie = {}
             length = len(row)
             for i in range(length):
-                id = int(row[i]) - 1
                 if keys[i] == 'Rank':
+                    id = int(row[i]) - 1
                     movie['id'] = id
                     movie[keys[i]] = int(row[i])
                 elif row[i] != '' and (keys[i] == 'Metascore' or keys[i] == 'Rating' or keys[i] == 'Revenue (Millions)'):
