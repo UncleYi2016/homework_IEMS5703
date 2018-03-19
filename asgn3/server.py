@@ -38,6 +38,8 @@ def load_database():
                     title = row[i]
                     title_keywords = nltk.word_tokenize(title)
                     for keyword in title_keywords:
+                        if keyword == ',' or keyword == '\''
+                            continue
                         if not keyword in TITLE_INDEX:
                             TITLE_INDEX[keyword] = []
                         TITLE_INDEX[keyword].append(id)
@@ -45,6 +47,8 @@ def load_database():
                     actors = row[i]
                     actors_keywords = nltk.word_tokenize(actors)
                     for keyword in actors_keywords:
+                        if keyword == ',' or keyword == '\''
+                            continue
                         if not keyword in ACTORS_INDEX:
                             ACTORS_INDEX[keyword] = []
                         ACTORS_INDEX[keyword].append(id)
