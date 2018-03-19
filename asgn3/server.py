@@ -103,6 +103,7 @@ def search():
             if id not in id_query:
                 id_query.append(id)
 
+    print(id_query)
     for id in id_query:
         movie_element = copy.copy(MOVIES[id])
         '''
