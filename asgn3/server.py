@@ -104,8 +104,8 @@ def search():
             for id in TITLE_INDEX[query]:
                 if id not in id_query:
                     id_query.append(id)
-
-    print(id_query)
+    if len(id_query) == 0:
+        return 'There is no result'
     for id in id_query:
         movie_element = copy.copy(MOVIES[id])
         '''
@@ -123,9 +123,6 @@ def search():
         movie_element.pop('Votes')
         movie_element.pop('comments')
         movie_query.append(movie_element)
-    print(movie_query[0])
-    print(sortby)
-    print(sortby == 'Year')
     movie_query.sort(key=lambda a:a[sortby], reverse = sort_reversed)
     movie_query_result = movie_query[0:9]
     return json.dumps(movie_query_result)
