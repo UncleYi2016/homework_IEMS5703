@@ -38,7 +38,7 @@ def load_database():
                     title = row[i]
                     title_keywords = nltk.word_tokenize(title)
                     for keyword in title_keywords:
-                        if keyword == ',' or keyword == '\''
+                        if keyword == ','
                             continue
                         if not keyword in TITLE_INDEX:
                             TITLE_INDEX[keyword] = []
