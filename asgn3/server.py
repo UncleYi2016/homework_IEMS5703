@@ -40,7 +40,6 @@ def load_database():
                     for keyword in title_keywords:
                         if not keyword in TITLE_INDEX:
                             TITLE_INDEX[keyword] = []
-                        print(TITLE_INDEX)
                         TITLE_INDEX[keyword].append(id)
                 elif keys[i] == 'Actors':
                     actors = row[i]
