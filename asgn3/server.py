@@ -36,6 +36,8 @@ def load_database():
 
 @app.route('/search')
 def search():
+    if MOVIES == []:
+        load_database()
     query = request.args.get('query', '')
     attribute = request.args.get('attribute', '')
     sortby = request.args.get('sortby', '')
@@ -44,9 +46,7 @@ def search():
 
 @app.route('/movie/<int:id>')
 def movie(id=0):
+    if MOVIES == []:
+        load_database()
     json_str = json.dumps(MOVIES[id])
     return json_str
-if __name__ == '__main__':
-    load_database()
-    json_str = json.dumps(MOVIES[7])
-    print(json_str)
