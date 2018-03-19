@@ -1,4 +1,3 @@
-import json
 import csv
 from flask import Flask
 from flask import request
@@ -49,5 +48,5 @@ def search():
 def movie(id=0):
     if MOVIES == []:
         load_database()
-    json_str = flask.json.dumps(MOVIES[id])
+    json_str = json.dumps(MOVIES[id])
     return json_str
