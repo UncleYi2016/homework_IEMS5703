@@ -39,6 +39,7 @@ def load_database():
                     movie[keys[i]] = int(row[i])
                 elif keys[i] == 'Title':
                     title = row[i]
+                    movie[keys[i]] = row[i]
                     title_keywords = nltk.word_tokenize(title)
                     for keyword in title_keywords:
                         if keyword == ',' or keyword == '\'':
@@ -48,6 +49,7 @@ def load_database():
                         TITLE_INDEX[keyword.lower()].append(id)
                 elif keys[i] == 'Actors':
                     actors = row[i]
+                    movie[keys[i]] = row[i]
                     actors_keywords = nltk.word_tokenize(actors)
                     for keyword in actors_keywords:
                         if keyword == ',' or keyword == '\'':
