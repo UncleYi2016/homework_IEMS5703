@@ -91,7 +91,7 @@ def search():
     elif sortby.lower() == SORT_TYPE[2]:
         sortby = 'Rating'
 
-    if order == 'desending':
+    if order == 'descending':
         sort_reversed = True
     
     if search_actor:
