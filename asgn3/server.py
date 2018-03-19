@@ -108,14 +108,7 @@ def search():
         return 'There is no result'
     for id in id_query:
         movie_element = copy.copy(MOVIES[id])
-        '''
-        Description
-        Metascore
-        Rank
-        Runtime (Minutes)
-        Votes
-        comments
-        '''
+        print(movie_element)
         movie_element.pop('Description')
         movie_element.pop('Metascore')
         movie_element.pop('Rank')
