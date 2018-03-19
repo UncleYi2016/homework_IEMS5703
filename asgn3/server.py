@@ -35,7 +35,11 @@ def load_database():
 
 @app.route('/search')
 def search():
-    pass;
+    query = request.args.get('query', '')
+    attribute = request.args.get('attribute', '')
+    sortby = request.args.get('sortby', '')
+    order = request.args.get('order', '')
+    return 'query: %s<br>attribute: %s<br>sortby: %s<br>order: %s' % (query, attribte, sortby, order)
 if __name__ == '__main__':
     load_database()
     json_str = json.dumps(MOVIES[7])
