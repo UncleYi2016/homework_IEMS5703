@@ -124,7 +124,7 @@ def search():
         movie_element.pop('comments')
         movie_query.append(movie_element)
     movie_query.sort(key=lambda a:a[sortby], reverse = sort_reversed)
-    movie_query_result = movie_query[0:9]
+    movie_query_result = movie_query[0:10]
     return json.dumps(movie_query_result)
 
 @app.route('/movie/<int:id>')
