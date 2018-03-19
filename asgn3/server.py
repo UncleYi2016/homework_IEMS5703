@@ -126,7 +126,7 @@ def search():
     print(movie_query[0])
     print(sortby)
     print(sortby == 'Year')
-    movie_query.sort(key=sortby, reverse = sort_reversed)
+    movie_query.sort(key=lambda a:a[sortby], reverse = sort_reversed)
     movie_query_result = movie_query[0:9]
     return json.dumps(movie_query_result)
 
