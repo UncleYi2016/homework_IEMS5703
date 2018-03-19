@@ -92,7 +92,7 @@ def search():
         sortby = 'Rating'
 
     if order == 'desending':
-        reverse = True
+        sort_reversed = True
     
     if search_actor:
         if query in ACTORS_INDEX:
