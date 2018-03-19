@@ -67,7 +67,7 @@ def search():
     sortby = request.args.get('sortby', '')
     order = request.args.get('order', '')
 
-    if query == 
+    return json.dumps(ACTORS_INDEX)
     
 
 @app.route('/movie/<int:id>')
