@@ -1,5 +1,6 @@
 import csv
 import nltk
+import copy
 from flask import Flask
 from flask import request
 from flask import json
@@ -8,7 +9,8 @@ DATABASE_PATH = 'imdb_top1000.csv'
 MOVIES = []
 TITLE_INDEX = {}
 ACTORS_INDEX = {}
-QUERY_TYPE = ['both', '']
+ATTRIBUTE_TYPE = ['both', 'title', 'actor']
+SORT_TYPE = ['year', 'revenue', 'rating']
 app = Flask(__name__)
 
 
@@ -62,13 +64,62 @@ def load_database():
 def search():
     if MOVIES == []:
         load_database()
+    search_actor = False
+    search_title = False
+    sortby = 'Year'
+    reverse = False
+    movie_query = []
+    id_query = []
+
     query = request.args.get('query', '')
     attribute = request.args.get('attribute', '')
     sortby = request.args.get('sortby', '')
     order = request.args.get('order', '')
 
-    return json.dumps(ACTORS_INDEX)
+    if attribute == ATTRIBUTE_TYPE[0]:      # type: both
+        search_actor = True
+        search_title = True
+    elif attribute == ATTRIBUTE_TYPE[1]:    # type: title
+        search_title = True
+    elif attribute == ATTRIBUTE_TYPE[2]:    # type: actor
+        search_actor = True
     
+    if sortby.lower() == SORT_TYPE[0]:
+        sortby = 'Year'
+    elif sortby.lower() == SORT_TYPE[1]:
+        sortby = 'Revenue (Millions)'
+    elif sortby.lower() == SORT_TYPE[2]:
+        sortby = 'Rating'
+
+    if order == 'desending':
+        reverse = True
+    
+    if search_actor:
+        id_query.append(ACTORS_INDEX[query])
+    if search_title:
+        id_query.append(TITLE_INDEX[query])
+    set(id_query)
+
+    for id in id_query:
+        movie_element = copy.copy(MOVIES[id])
+        '''
+        Description
+        Metascore
+        Rank
+        Runtime (Minutes)
+        Votes
+        comments
+        '''
+        movie_element.pop('Description')
+        movie_element.pop('Metascore')
+        movie_element.pop('Rank')
+        movie_element.pop('Runtime (Minutes)')
+        movie_element.pop('Votes')
+        movie_element.pop('comments')
+        movie_query.append(movie_element)
+    movie_query.sort(lambda x,y: cmp(x[sortby], y[sortby]), reversed = reverse)
+    movie_query_result = movie_query[0:9]
+    return json.dumps(movie_query_result)
 
 @app.route('/movie/<int:id>')
 def movie(id=0):
