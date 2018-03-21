@@ -149,6 +149,6 @@ def comment():
     comment_dict['timestamp'] = timestamp
     comment_dict['user_name'] = user_name
 
-    MOVIES[movie_id]['comment'].append(comment_dict)
+    MOVIES[movie_id]['comments'].append(comment_dict)
 
     return movie(movie_id)
