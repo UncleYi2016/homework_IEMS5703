@@ -33,12 +33,11 @@ def load_database():
                     id = int(row[i]) - 1
                     movie['id'] = id
                     movie[keys[i]] = int(row[i])
-                elif row[i] != '' and (keys[i] == 'Metascore' or keys[i] == 'Rating' or keys[i] == 'Revenue (Millions)'):
-                    if keys[i] == 'Revenue (Millions)' and row[i] == '':
-                        movie[keys[i]] = 0.0
-                    else:
+                elif row[i] == '':
+                    movie[keys[i]] = 0
+                elif keys[i] == 'Metascore' or keys[i] == 'Rating' or keys[i] == 'Revenue (Millions)':
                         movie[keys[i]] = float(row[i])
-                elif row[i] != '' and (keys[i] == 'Year' or keys[i] == 'Votes' or keys[i] == 'Runtime (Minutes)'):
+                elif keys[i] == 'Year' or keys[i] == 'Votes' or keys[i] == 'Runtime (Minutes)':
                     movie[keys[i]] = int(row[i])
                 elif keys[i] == 'Title':
                     title = row[i]
