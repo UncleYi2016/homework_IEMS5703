@@ -149,6 +149,7 @@ def comment():
     comment_dict['timestamp'] = timestamp
     comment_dict['user_name'] = user_name
 
+    print(json.dumps(MOVIES[movie_id]))
     MOVIES[movie_id]['comments'].append(comment_dict)
 
     return movie(movie_id)
