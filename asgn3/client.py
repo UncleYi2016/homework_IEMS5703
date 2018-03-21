@@ -1,6 +1,8 @@
 import json
 import sys
 import urllib
+import urllib.request
+import urllib.parse
 
 
 if __name__ == '__main__':
