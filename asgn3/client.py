@@ -17,7 +17,13 @@ if __name__ == '__main__':
         order = sys.argv[7]
         params = urllib.parse.urlencode({'query': query, 'attribute': attribute, 'sortby': sortby, 'order': order})
         url = 'http://' + addr + ':' + str(port) + '/search?%s' % params
-        print(url)
+        with urllib.request.urlopen(url) as f:
+            json_str = f.read().decode('utf-8')
+        fomatted_json = json.dumps(json_str, indent=4)
+        print(fomatted_json)
+    elif function == 'movie':
+        movie_id = sys.argv[4]
+        url = 'http://' + addr + ':' + str(port) + '/movie/' + movie_id
         with urllib.request.urlopen(url) as f:
             json_str = f.read().decode('utf-8')
         fomatted_json = json.dumps(json_str, indent=4)
