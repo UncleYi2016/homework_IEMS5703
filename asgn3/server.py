@@ -139,7 +139,7 @@ def comment():
     if MOVIES == []:
         load_database()
     
-    movie_id = request.form['movie_id']
+    movie_id = int(request.form['movie_id'])
     user_name = request.form['user_name']
     comment = request.form['comment']
     timestamp = time.strftime('%Y-%M-%d %H:%M:%S')
@@ -149,7 +149,6 @@ def comment():
     comment_dict['timestamp'] = timestamp
     comment_dict['user_name'] = user_name
 
-    print(json.dumps(MOVIES[movie_id]))
     MOVIES[movie_id]['comments'].append(comment_dict)
 
     return movie(movie_id)
