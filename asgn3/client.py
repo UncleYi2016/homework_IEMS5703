@@ -28,3 +28,14 @@ if __name__ == '__main__':
             json_str = f.read().decode('utf-8')
         fomatted_json = json.dumps(json_str, indent=4)
         print(fomatted_json)
+    elif cuntion == 'comment':
+        user_name = sys.argv[4]
+        movie_id = sys.argv[5]
+        print('What is your comment? <User inputs his/her comment here and press enter>')
+        comment = raw_input()
+        params = urllib.parse.urlencode({'user_name': user_name, 'movie_id': movie_id, 'comment': comment})
+        url = 'http://' + addr + ':' + str(port) + '/comment'
+        with urllib.request.urlopen(url, params) as f:
+            json_str = f.read().decode('utf-8')
+        fomatted_json = json.dumps(json_str, indent=4)
+        print(fomatted_json)
