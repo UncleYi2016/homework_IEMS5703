@@ -1,6 +1,7 @@
 import csv
 import nltk
 import copy
+import time
 from flask import Flask
 from flask import request
 from flask import json
@@ -132,3 +133,22 @@ def movie(id=0):
         load_database()
     json_str = json.dumps(MOVIES[id])
     return json_str
+
+@app.route('/comment', method='POST')
+def comment():
+    if MOVIES == []:
+        load_database()
+    
+    movie_id = request.form['movie_id']
+    user_name = request.form['user_name']
+    comment = request.form['comment']
+    timestamp = time.strftime('%Y-%M-%d %H:%M:%S')
+
+    comment_dict = {}
+    comment_dict['comment'] = comment
+    comment_dict['timestamp'] = timestamp
+    comment_dict['user_name'] = user_name
+
+    MOVIES[movie_id]['comment'].append(comment_dict)
+    
+    return movie(movie_id)
