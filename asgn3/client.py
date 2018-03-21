@@ -28,7 +28,7 @@ if __name__ == '__main__':
             json_str = f.read().decode('utf-8')
         fomatted_json = json.dumps(json_str, indent=4)
         print(fomatted_json)
-    elif cuntion == 'comment':
+    elif funtion == 'comment':
         user_name = sys.argv[4]
         movie_id = sys.argv[5]
         print('What is your comment? <User inputs his/her comment here and press enter>')
