@@ -16,7 +16,7 @@ if __name__ == '__main__':
         sortby = sys.argv[6]
         order = sys.argv[7]
         params = urllib.parse.urlencode({'query': query, 'attribute': attribute, 'sortby': sortby, 'order': order})
-        url = 'http://' + addr + ':' + port + '/search?%s' % params
+        url = 'http://' + addr + ':' + str(port) + '/search?%s' % params
         print(url)
         with urllib.request.urlopen(url) as f:
             print(f.read.decode('utf-8'))
