@@ -134,7 +134,7 @@ def movie(id=0):
     json_str = json.dumps(MOVIES[id])
     return json_str
 
-@app.route('/comment', method='POST')
+@app.route('/comment', methods=['POST'])
 def comment():
     if MOVIES == []:
         load_database()
@@ -150,5 +150,5 @@ def comment():
     comment_dict['user_name'] = user_name
 
     MOVIES[movie_id]['comment'].append(comment_dict)
-    
+
     return movie(movie_id)
