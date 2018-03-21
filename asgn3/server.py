@@ -35,7 +35,7 @@ def load_database():
                     movie[keys[i]] = int(row[i])
                 elif row[i] != '' and (keys[i] == 'Metascore' or keys[i] == 'Rating' or keys[i] == 'Revenue (Millions)'):
                     if row[i] == '':
-                        movie[keys[i]] = 0f
+                        movie[keys[i]] = 0.0
                     else:
                         movie[keys[i]] = float(row[i])
                 elif row[i] != '' and (keys[i] == 'Year' or keys[i] == 'Votes' or keys[i] == 'Runtime (Minutes)'):
