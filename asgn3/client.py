@@ -19,4 +19,6 @@ if __name__ == '__main__':
         url = 'http://' + addr + ':' + str(port) + '/search?%s' % params
         print(url)
         with urllib.request.urlopen(url) as f:
-            print(f.read.decode('utf-8'))
+            json_str = f.read().decode('utf-8')
+        fomatted_json = json.dumps(json_str, indent=4)
+        print(fomatted_json)
