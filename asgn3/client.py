@@ -32,7 +32,7 @@ if __name__ == '__main__':
         user_name = sys.argv[4]
         movie_id = sys.argv[5]
         print('What is your comment? <User inputs his/her comment here and press enter>')
-        comment = raw_input()
+        comment = input()
         params = urllib.parse.urlencode({'user_name': user_name, 'movie_id': movie_id, 'comment': comment})
         url = 'http://' + addr + ':' + str(port) + '/comment'
         with urllib.request.urlopen(url, params) as f:
