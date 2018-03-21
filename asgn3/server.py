@@ -34,7 +34,10 @@ def load_database():
                     movie['id'] = id
                     movie[keys[i]] = int(row[i])
                 elif row[i] != '' and (keys[i] == 'Metascore' or keys[i] == 'Rating' or keys[i] == 'Revenue (Millions)'):
-                    movie[keys[i]] = float(row[i])
+                    if row[i] == '':
+                        movie[keys[i]] = 0f
+                    else:
+                        movie[keys[i]] = float(row[i])
                 elif row[i] != '' and (keys[i] == 'Year' or keys[i] == 'Votes' or keys[i] == 'Runtime (Minutes)'):
                     movie[keys[i]] = int(row[i])
                 elif keys[i] == 'Title':
@@ -92,6 +95,8 @@ def search():
         sortby = 'Revenue (Millions)'
     elif sortby.lower() == SORT_TYPE[2]:
         sortby = 'Rating'
+    else:
+        sortby = 'Year'
 
     if order == 'descending':
         sort_reversed = True
