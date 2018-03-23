@@ -82,6 +82,11 @@ def search():
     sortby = request.args.get('sortby', '')
     order = request.args.get('order', '')
 
+    query = query.lower()
+    attribute = attribute.lower()
+    sortby = sortby.lower()
+    order = order.lower()
+
     if attribute == ATTRIBUTE_TYPE[0]:      # type: both
         search_actor = True
         search_title = True
@@ -90,11 +95,11 @@ def search():
     elif attribute == ATTRIBUTE_TYPE[2]:    # type: actor
         search_actor = True
     
-    if sortby.lower() == SORT_TYPE[0]:
+    if sortby == SORT_TYPE[0]:
         sortby = 'Year'
-    elif sortby.lower() == SORT_TYPE[1]:
+    elif sortby == SORT_TYPE[1]:
         sortby = 'Revenue (Millions)'
-    elif sortby.lower() == SORT_TYPE[2]:
+    elif sortby == SORT_TYPE[2]:
         sortby = 'Rating'
     else:
         sortby = 'Year'
