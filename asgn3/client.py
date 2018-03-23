@@ -22,9 +22,9 @@ if __name__ == '__main__':
         json_str = f.read().decode('utf-8')
         if json_str == NO_RESULT_STR:
             print(json_str)
-            return
-        fomatted_json = json.dumps(json.loads(json_str), indent=4)
-        print(fomatted_json)
+        else:
+            fomatted_json = json.dumps(json.loads(json_str), indent=4)
+            print(fomatted_json)
     elif function == 'movie':
         movie_id = sys.argv[4]
         url = 'http://' + addr + ':' + str(port) + '/movie/' + movie_id
@@ -32,9 +32,9 @@ if __name__ == '__main__':
         json_str = f.read().decode('utf-8')
         if json_str == NO_RESULT_STR:
             print(json_str)
-            return
-        fomatted_json = json.dumps(json.loads(json_str), indent=4)
-        print(fomatted_json)
+        else:
+            fomatted_json = json.dumps(json.loads(json_str), indent=4)
+            print(fomatted_json)
     elif function == 'comment':
         user_name = sys.argv[4]
         movie_id = sys.argv[5]
@@ -47,6 +47,6 @@ if __name__ == '__main__':
         json_str = f.read().decode('utf-8')
         if json_str == NO_RESULT_STR:
             print(json_str)
-            return
-        fomatted_json = json.dumps(json.loads(json_str), indent=4)
-        print(fomatted_json)
+        else:
+            fomatted_json = json.dumps(json.loads(json_str), indent=4)
+            print(fomatted_json)
