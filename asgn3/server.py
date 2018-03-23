@@ -153,7 +153,7 @@ def comment():
     comment = request.form['comment']
     timestamp = time.strftime('%Y-%M-%d %H:%M:%S')
 
-    if id >= len(MOVIES):
+    if movie_id >= len(MOVIES):
         return NO_RESULT_STR
     
     comment_dict = {}
