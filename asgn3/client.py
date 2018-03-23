@@ -20,7 +20,7 @@ if __name__ == '__main__':
         url = 'http://' + addr + ':' + str(port) + '/search?%s' % params
         f = urllib.request.urlopen(url)
         json_str = f.read().decode('utf-8')
-        if json_str = NO_RESULT_STR:
+        if json_str == NO_RESULT_STR:
             print(json_str)
             return
         fomatted_json = json.dumps(json.loads(json_str), indent=4)
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         url = 'http://' + addr + ':' + str(port) + '/movie/' + movie_id
         f = urllib.request.urlopen(url)
         json_str = f.read().decode('utf-8')
-        if json_str = NO_RESULT_STR:
+        if json_str == NO_RESULT_STR:
             print(json_str)
             return
         fomatted_json = json.dumps(json.loads(json_str), indent=4)
@@ -45,7 +45,7 @@ if __name__ == '__main__':
         url = 'http://' + addr + ':' + str(port) + '/comment'
         f = urllib.request.urlopen(url, params)
         json_str = f.read().decode('utf-8')
-        if json_str = NO_RESULT_STR:
+        if json_str == NO_RESULT_STR:
             print(json_str)
             return
         fomatted_json = json.dumps(json.loads(json_str), indent=4)
