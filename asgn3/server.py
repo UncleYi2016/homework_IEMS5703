@@ -8,6 +8,7 @@ from flask import request
 from flask import json
 
 DATABASE_PATH = 'imdb_top1000.csv'
+NO_RESULT_STR = 'There is no result'
 MOVIES = []
 TITLE_INDEX = {}
 ACTORS_INDEX = {}
@@ -118,7 +119,7 @@ def search():
                 if id not in id_query:
                     id_query.append(id)
     if len(id_query) == 0:
-        return 'There is no result'
+        return NO_RESULT_STR
     for id in id_query:
         movie_element = copy.copy(MOVIES[id])
         movie_element.pop('Description')
@@ -136,6 +137,8 @@ def search():
 def movie(id=0):
     if MOVIES == []:
         load_database()
+    if id >= len(MOVIES):
+        return NO_RESULT_STR
     json_str = json.dumps(MOVIES[id])
     return json_str
 
@@ -143,12 +146,16 @@ def movie(id=0):
 def comment():
     if MOVIES == []:
         load_database()
+ 
     
     movie_id = int(request.form['movie_id'])
     user_name = request.form['user_name']
     comment = request.form['comment']
     timestamp = time.strftime('%Y-%M-%d %H:%M:%S')
 
+    if id >= len(MOVIES):
+        return NO_RESULT_STR
+    
     comment_dict = {}
     comment_dict['comment'] = comment
     comment_dict['timestamp'] = timestamp
