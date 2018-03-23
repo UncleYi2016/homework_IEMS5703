@@ -20,14 +20,14 @@ if __name__ == '__main__':
         f = urllib.request.urlopen(url)
         json_str = f.read().decode('utf-8')
         fomatted_json = json.dumps(json_str, indent=4)
-        print(fomatted_json)
+        print(json_str)
     elif function == 'movie':
         movie_id = sys.argv[4]
         url = 'http://' + addr + ':' + str(port) + '/movie/' + movie_id
         f = urllib.request.urlopen(url)
         json_str = f.read().decode('utf-8')
         fomatted_json = json.dumps(json_str, indent=4)
-        print(fomatted_json)
+        print(json_str)
     elif function == 'comment':
         user_name = sys.argv[4]
         movie_id = sys.argv[5]
@@ -39,4 +39,4 @@ if __name__ == '__main__':
         f = urllib.request.urlopen(url, params)
         json_str = f.read().decode('utf-8')
         fomatted_json = json.dumps(json_str, indent=4)
-        print(fomatted_json)
+        print(json_str)
