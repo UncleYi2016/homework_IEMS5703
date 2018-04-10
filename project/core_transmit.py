@@ -15,7 +15,7 @@ def transmit_thread(self, s_sock, d_sock):
     except Exception as err:
         logging.debug(err)
 
-@staticmethod
+#@staticmethod
 def transmit_data(self, c_sock, p_sock, s_sock):
     p_to_s = Thread(target=transmit_thread, args=(p_sock,s_sock,), daemon=True)
     s_to_p = Thread(target=transmit_thread, args=(s_sock,p_sock,), daemon=True)
