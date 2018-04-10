@@ -8,7 +8,7 @@ logging.basicConfig(
 MSG_LEN = 1024
 class core_transmit(object):
 
-    def transmit_thread(s_sock, d_sock):
+    def transmit_thread(self, s_sock, d_sock):
         try:
             while True:
                 data = s_sock.recv(MSG_LEN)
