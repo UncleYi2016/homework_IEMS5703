@@ -7,7 +7,7 @@ logging.basicConfig(
 
 MSG_LEN = 1024
 
-def transmit_thread(self, s_sock, d_sock):
+def transmit_thread(s_sock, d_sock):
     try:
         while True:
             data = s_sock.recv(MSG_LEN)
@@ -16,7 +16,7 @@ def transmit_thread(self, s_sock, d_sock):
         logging.debug(err)
 
 #@staticmethod
-def transmit_data(self, c_sock, p_sock, s_sock):
+def transmit_data(c_sock, p_sock, s_sock):
     p_to_s = Thread(target=transmit_thread, args=(p_sock,s_sock,), daemon=True)
     s_to_p = Thread(target=transmit_thread, args=(s_sock,p_sock,), daemon=True)
     c_to_p = Thread(target=transmit_thread, args=(c_sock,p_sock,), daemon=True)
