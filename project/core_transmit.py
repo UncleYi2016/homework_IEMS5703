@@ -1,6 +1,7 @@
 import socket
 import logging
 from threading import Thread
+import traceback
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
@@ -14,6 +15,7 @@ def transmit_thread(s_sock, d_sock):
             data = s_sock.recv(MSG_LEN)
             d_sock.sendall(data)
     except Exception as err:
+        traceback.print_exc()
         logging.debug(err)
 
 #@staticmethod
