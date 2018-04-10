@@ -12,6 +12,7 @@ MSG_LEN = 1024
 def transmit_thread(s_sock, d_sock):
     try:
         while True:
+            logging.debug(s_sock.gethostname())
             data = s_sock.recv(MSG_LEN)
             d_sock.sendall(data)
     except Exception as err:
