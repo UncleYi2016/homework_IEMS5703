@@ -21,5 +21,5 @@ if __name__ == '__main__':
         logging.debug('Accept client %s', client_address)
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.connect((SERVER_ADDRESS, SERVER_PORT))
-        logging.info('Connected to server at %s', server_socket.getsocksname())
+        logging.info('Connected to server at %s', server_socket.getsockname())
         core_transmit.transmit_data(client_socket, proxy_socket, server_socket)
