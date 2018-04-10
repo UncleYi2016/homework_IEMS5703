@@ -1,5 +1,6 @@
 import core_transmit
 import socket
+import logging
 
 SERVER_PORT = 50001
 SERVER_ADDRESS = 'localhost'
@@ -7,6 +8,10 @@ PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 60001
 BUFFER_SIZE = 2048
 
+logging.basicConfig(
+    format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
+    level=logging.INFO)
+    
 if __name__ == '__main__':
     proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     proxy_socket.bind((PROXY_ADDRESS, PROXY_PORT))
