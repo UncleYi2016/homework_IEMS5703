@@ -27,9 +27,10 @@ def transmit_data(c_sock, p_sock, s_sock):
     p_to_c = Thread(target=transmit_thread, args=(p_sock,c_sock,), daemon=True)
     p_to_s = Thread(target=transmit_thread, args=(p_sock,s_sock,), daemon=True)
     s_to_p = Thread(target=transmit_thread, args=(s_sock,p_sock,), daemon=True)
-    p_to_s.start()
-    s_to_p.start()
     c_to_p.start()
     p_to_c.start()
+    p_to_s.start()
+    s_to_p.start()
+    
 
         
