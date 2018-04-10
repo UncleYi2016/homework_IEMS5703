@@ -17,7 +17,7 @@ class core_transmit(object):
             logging.debug(err)
 
     @staticmethod
-    def transmit_data(c_sock, p_sock, s_sock):
+    def transmit_data(self, c_sock, p_sock, s_sock):
         p_to_s = Thread(target=transmit_thread, args=(p_sock,s_sock,), daemon=True)
         s_to_p = Thread(target=transmit_thread, args=(s_sock,p_sock,), daemon=True)
         c_to_p = Thread(target=transmit_thread, args=(c_sock,p_sock,), daemon=True)
