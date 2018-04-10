@@ -3,7 +3,7 @@ import logging
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 
 MSG_LEN = 1024
 class core_transmit(object):
