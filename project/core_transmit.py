@@ -21,9 +21,9 @@ def transmit_thread(s_sock, d_sock):
 
 #@staticmethod
 def transmit_data(c_sock, p_sock, s_sock):
-    logging.info('client socket: ' + c_sock.getpeername())
-    logging.info('proxy socket: ' + p_sock.getpeername())
-    logging.info('server socket: ' + s_sock.getpeername())
+    logging.info('client socket: ' + str(c_sock.getpeername()))
+    logging.info('proxy socket: ' + str(p_sock.getpeername()))
+    logging.info('server socket: ' + str(s_sock.getpeername()))
     c_to_p = Thread(target=transmit_thread, args=(c_sock,p_sock,), daemon=True)
     p_to_c = Thread(target=transmit_thread, args=(p_sock,c_sock,), daemon=True)
     p_to_s = Thread(target=transmit_thread, args=(p_sock,s_sock,), daemon=True)
