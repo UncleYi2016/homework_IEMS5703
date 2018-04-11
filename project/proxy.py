@@ -25,6 +25,6 @@ if __name__ == '__main__':
 
 
         logging.info('client socket: ' + str(client_socket.getpeername()))
-    logging.info('proxy socket: ' + str(proxy_socket.getpeername()))
-    logging.info('server socket: ' + str(server_socket.getpeername()))
+        logging.info('proxy socket: ' + str(proxy_socket.getpeername()))
+        logging.info('server socket: ' + str(server_socket.getpeername()))
         core_transmit.transmit_data(client_socket, proxy_socket, server_socket)
