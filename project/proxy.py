@@ -22,4 +22,9 @@ if __name__ == '__main__':
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.connect((SERVER_ADDRESS, SERVER_PORT))
         logging.info('Connected to server at %s', server_socket.getpeername())
+
+
+        logging.info('client socket: ' + str(client_socket.getpeername()))
+    logging.info('proxy socket: ' + str(proxy_socket.getpeername()))
+    logging.info('server socket: ' + str(server_socket.getpeername()))
         core_transmit.transmit_data(client_socket, proxy_socket, server_socket)
