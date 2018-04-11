@@ -13,7 +13,8 @@ def transmit_thread(s_sock, d_sock):
     try:
         while True:
             data = s_sock.recv(MSG_LEN)
-            logging.info(str(data))
+            if(data == b''):
+                break
             d_sock.sendall(data)
     except Exception as err:
         traceback.print_exc()
