@@ -5,7 +5,7 @@ import logging
 PRIVATE_APP_PORT = 50001
 PRIVATE_APP_ADDRESS = '192.168.56.101'
 PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com'   #NEED TO BE SET
-PUBLIC_SERVER_PORT = 0
+PUBLIC_SERVER_PORT = 60001
 BUFFER_SIZE = 2048
 
 logging.basicConfig(
