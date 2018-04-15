@@ -30,7 +30,7 @@ def transmit_data(c_sock, s_sock):
 
 def send_operation(d_sock, msg):
     data = bytes(msg, encoding = 'utf-8')
-    s_sock.sendall(msg)
+    d_sock.sendall(msg)
 
 def get_operation(s_sock):
     msg = s_sock.recv(128)
