@@ -3,6 +3,7 @@ import socket
 import logging
 import sys
 import packet
+import op_enum
 from flask import Flask
 from flask import request
 from flask import json
@@ -26,7 +27,7 @@ def connect():
         msg = core_transmit.get_operation(public_server_socket)
         logging.debug(msg)
         packet = json.loads(msg)
-        if packet.op_code == OP_BUILD_CONNECTION:
+        if packet.op_code == op_enum.OP_BUILD_CONNECTION:
             tmp_public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             tmp_public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
             tmp_private_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
