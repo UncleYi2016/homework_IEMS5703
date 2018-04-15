@@ -3,7 +3,7 @@ import socket
 import logging
 
 PROXY_ADDRESS = '0.0.0.0'
-PROXY_PORT = 60002
+PROXY_PORT = 60003
 BUFFER_SIZE = 2048
 
 logging.basicConfig(
