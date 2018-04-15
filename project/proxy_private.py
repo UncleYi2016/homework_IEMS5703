@@ -1,7 +1,6 @@
 import core_transmit
 import socket
 import logging
-import packet
 
 PRIVATE_APP_PORT = 50001
 PRIVATE_APP_ADDRESS = '192.168.56.101'
