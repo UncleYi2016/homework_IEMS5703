@@ -25,7 +25,7 @@ if __name__ == '__main__':
     while True:
         (client_socket, client_address) = client_handle_socket.accept()
         logging.debug('Accept client %s', client_address)
-        msg = packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '')
+        msg = packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '')
         logging.debug(json.dumps(msg))
         core_transmit.send_operation(private_socket, json.dumps(msg))
         (tmp_proxy_socket, tmp_proxy_address) = client_handle_socket.accept()
