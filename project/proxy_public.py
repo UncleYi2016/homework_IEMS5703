@@ -22,7 +22,7 @@ if __name__ == '__main__':
     client_handle_socket.listen(20)
     while True:
         (client_socket, client_address) = client_handle_socket.accept()
-        logging.debug('Accept client %s', client_address)
+        logging.debug('Accept client %s', client_addresgits)
         logging.debug('client : ' + str(client_address))
         logging.debug('private : ' + str(private_socket))
         core_transmit.transmit_data(client_socket, private_socket)
