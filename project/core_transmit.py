@@ -34,7 +34,7 @@ def send_operation(d_sock, msg):
 
 def get_operation(s_sock):
     msg = s_sock.recv(128)
-    return str(msg)
+    return msg.decode('utf-8')
     
 
         
