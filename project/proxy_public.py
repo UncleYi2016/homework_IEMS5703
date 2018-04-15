@@ -28,7 +28,7 @@ if __name__ == '__main__':
         msg = packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '')
         logging.debug(json.dumps(msg))
         core_transmit.send_operation(private_socket, json.dumps(msg))
-        (tmp_proxy_socket, tmp_proxy_address) = client_handle_socket.accept()
+        (tmp_proxy_socket, tmp_proxy_address) = proxy_socket.accept()
         logging.debug('client : ' + str(client_address))
         logging.debug('private : ' + str(tmp_proxy_address))
         core_transmit.transmit_data(client_socket, tmp_proxy_socket)
