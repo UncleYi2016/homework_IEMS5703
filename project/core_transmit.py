@@ -24,8 +24,8 @@ def transmit_thread(s_sock, d_sock):
 def transmit_data(c_sock, s_sock):
     logging.info('client socket: ' + str(c_sock.getpeername()))
     logging.info('server socket: ' + str(s_sock.getpeername()))
-    c_to_s = Thread(target=transmit_thread, args=(c_sock,s_sock,), daemon=True)
-    s_to_c = Thread(target=transmit_thread, args=(s_sock,c_sock,), daemon=True)
+    c_to_s = Thread(target=transmit_thread, args=(c_sock,s_sock,), daemon=False)
+    s_to_c = Thread(target=transmit_thread, args=(s_sock,c_sock,), daemon=False)
     c_to_s.start()
     s_to_c.start()
 

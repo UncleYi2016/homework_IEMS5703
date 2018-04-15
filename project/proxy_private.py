@@ -18,8 +18,6 @@ if __name__ == '__main__':
     public_server_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
     private_app_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
     core_transmit.transmit_data(public_server_socket, private_app_socket)
-    while True:
-        pass
 
 
     
