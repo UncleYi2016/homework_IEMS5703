@@ -20,7 +20,6 @@ def transmit_thread(s_sock, d_sock):
         traceback.print_exc()
         logging.debug(err)
 
-#@staticmethod
 def transmit_data(c_sock, s_sock):
     logging.info('client socket: ' + str(c_sock.getpeername()))
     logging.info('server socket: ' + str(s_sock.getpeername()))
@@ -29,6 +28,9 @@ def transmit_data(c_sock, s_sock):
     c_to_s.start()
     s_to_c.start()
 
+def send_operation(c_sock, s_sock, msg):
+    data = bytes(msg, encoding = 'utf-8')
+    s_sock.sendall(msg)
     
 
         
