@@ -16,6 +16,7 @@ logging.basicConfig(
     level=logging.DEBUG)
 
 @app.route('/connect')
+def connect():
     private_app_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_server_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
