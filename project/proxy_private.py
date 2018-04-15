@@ -2,6 +2,7 @@ import core_transmit
 import socket
 import logging
 import sys
+import packet
 from flask import Flask
 from flask import request
 from flask import json
@@ -19,11 +20,26 @@ app = Flask(__name__)
 
 @app.route('/connect')
 def connect():
+    public_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    public_server_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
+    while True:
+        msg = core_transmit.get_operation(public_server_socket)
+        logging.debug(msg)
+        packet = json.loads(msg)
+        if packet.op_code == OP_BUILD_CONNECTION:
+            tmp_public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            tmp_public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
+            tmp_private_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            tmp_private_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
+            core_transmit.transmit_data(tmp_public_socket, tmp_private_socket)
+
+    '''
     private_app_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_server_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
     private_app_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
     core_transmit.transmit_data(public_server_socket, private_app_socket)
+    '''
     return 'connect open'
 
 if __name__ == '__main__':

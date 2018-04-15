@@ -1,5 +1,6 @@
+import json
 OP_SUCCESS = 10000
-OP_BUILD_CONNECTION = 10001
+OP_BUILD_CONNECTION = 10001         #Build a new connection for new coming client
 OP_FAILED = 10010
 OP_CONNECTION_BROKEN = 10011
 OP_NO_PORT = 10020
@@ -24,7 +25,10 @@ class packet(object):
     op_describe = ''
     msg = ''
 
-    packet(self, op_code, op_describe, msg):
+    def packet(self, op_code, op_describe, msg):
         self.op_code = op_code
         self.op_describe = op_describe
         self.msg = msg
+    
+    def to_json():
+        return json.dumps(self)

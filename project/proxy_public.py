@@ -1,7 +1,8 @@
 import core_transmit
 import socket
 import logging
-
+import packet
+import json
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 8000
 CLIENT_HANDLE_PORT = 60003
@@ -23,7 +24,10 @@ if __name__ == '__main__':
     while True:
         (client_socket, client_address) = client_handle_socket.accept()
         logging.debug('Accept client %s', client_address)
+        packet = packet(OP_BUILD_CONNECTION, DES_BUILD_CONNECTION, '')
+        core_transmit.send_operation(private_socket, json.dumps(packet))
+        (tmp_proxy_socket, tmp_proxy_address) = client_handle_socket.accept()
         logging.debug('client : ' + str(client_address))
-        logging.debug('private : ' + str(private_socket))
-        core_transmit.transmit_data(client_socket, private_socket)
+        logging.debug('private : ' + str(tmp_proxy_address))
+        core_transmit.transmit_data(client_socket, tmp_proxy_socket)
         
