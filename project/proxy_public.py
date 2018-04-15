@@ -3,7 +3,7 @@ import socket
 import logging
 
 SERVER_PORT = 50001
-SERVER_ADDRESS = 'localhost'
+SERVER_ADDRESS = '192.168.56.101'
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 60001
 BUFFER_SIZE = 2048
