@@ -33,7 +33,15 @@ def send_operation(d_sock, msg):
     d_sock.sendall(data)
 
 def get_operation(s_sock):
-    data = s_sock.recv(128)
+    data = s_sock.recv(MSG_LEN + 128)
+    return data.decode('utf-8')
+
+def send_data(d_sock, msg):
+    data = bytes(msg, encoding = 'utf-8')
+    d_sock.sendall(data)
+
+def get_data(s_sock):
+    data = s_sock.recv(MSG_LEN)
     return data.decode('utf-8')
     
 
