@@ -56,6 +56,7 @@ def get_op_from_private(pri_sock):
                     logging.debug('getpeername()[1]: ' + str(c.getpeername()[1]))
                     if c.getpeername()[1] == client_port:
                         CLIENT_SOCKETS_PRIVATE_PORT[private_port] = c
+                        CLIENT_PRIVATE_PORT[client_port] = private_port
     except Exception as err:
         pri_sock.shutdown(socket.SHUT_RDWR)
         pri_sock.close()
