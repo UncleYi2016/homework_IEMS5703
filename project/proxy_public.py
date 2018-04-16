@@ -37,6 +37,9 @@ def get_op_from_private(pri_sock):
     try:
         while True:
             data = pri_sock.recv(1024+128)
+            data = data.decode('utf-8')
+            if data == '':
+                break
             data_packet = json.loads(data)
             logging.debug('get: ' + str(data))
             if data_packet['op_code'] == op_enum.OP_SUCCESS:
