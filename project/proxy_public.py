@@ -44,6 +44,7 @@ def get_op_from_private(pri_sock):
                 msg_to_client = data_packet['msg']
                 port_to_client = data_packet['port']
                 socket_to_client = CLIENT_SOCKETS_PRIVATE_PORT[port_to_client]
+                logging.debug('socket_to_client: ' + str(socket_to_client))
                 core_transmit.send_data(socket_to_client, msg_to_client)
             elif data_packet['op_code'] == op_enum.OP_BUILD_OK:
                 client_port = data_packet['port']
