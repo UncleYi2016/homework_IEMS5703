@@ -27,7 +27,8 @@ def private_to_public(s_sock, s_port, pub_sock):
             # After receive data
             data_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, msg, s_port)
             data_packet_json = json.dumps(data_packet)
-            core_transmit.send_data(pub_sock, data_packet_json)
+            logging.debug(data_packet_json)
+            core_transmit.send_operation(pub_sock, data_packet_json)
     except Exception as err:
         logging.debug(err)
         s_sock.shutdown(socket.SHUT_RDWR)
