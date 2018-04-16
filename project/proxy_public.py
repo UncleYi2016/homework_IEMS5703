@@ -36,7 +36,7 @@ def client_to_private(c_sock, c_port, pri_sock):
 def get_op_from_private(pri_sock):
     try:
         while True:
-            data = core_transmit.get_operation(pri_sock)
+            data = pri_sock.recv(1024+128)
             data_packet = json.loads(data)
             logging.debug('get: ' + str(data))
             if data_packet['op_code'] == op_enum.OP_SUCCESS:
