@@ -36,7 +36,9 @@ def client_to_private(c_sock, c_port, pri_sock):
 def get_op_from_private(pri_sock):
     try:
         while True:
-            data = pri_sock.recv(1024+128)
+            logging.debug('start get_op')
+            data = core_transmit.get_operation(pri_sock)
+            logging.debug('end get_op')
             data = data.decode('utf-8')
             if data == '':
                 break
@@ -46,7 +48,6 @@ def get_op_from_private(pri_sock):
                 msg_to_client = data_packet['msg']
                 port_to_client = data_packet['port']
                 socket_to_client = CLIENT_SOCKETS_PRIVATE_PORT[port_to_client]
-                logging.debug('socket_to_client: ' + str(socket_to_client))
                 core_transmit.send_data(socket_to_client, msg_to_client)
             elif data_packet['op_code'] == op_enum.OP_BUILD_OK:
                 client_port = data_packet['port']
