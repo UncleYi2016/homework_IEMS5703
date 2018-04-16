@@ -41,7 +41,9 @@ def send_data(d_sock, msg):
     d_sock.sendall(data)
 
 def get_data(s_sock):
+    logging.debug('start get data')
     data = s_sock.recv(MSG_LEN)
+    logging.debug('data got')
     return data.decode('utf-8')
     
 
