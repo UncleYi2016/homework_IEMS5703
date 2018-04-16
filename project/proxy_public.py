@@ -26,8 +26,8 @@ def client_to_private(c_sock, c_port, p_sock):
             core_transmit.send_data(p_sock, data_packet_json)
     except Exception as err:
         logging.debug(err)
-        s_sock.shutdown(socket.SHUT_RDWR)
-        s_sock.close()
+        c_sock.shutdown(socket.SHUT_RDWR)
+        c_sock.close()
 
 def get_op_from_private(pri_sock):
     try:
@@ -46,6 +46,9 @@ def get_op_from_private(pri_sock):
                     logging.debug('.getsockname()[1]: ' + str(c.getsockname()[1]))
                     if c.getsockname()[1] == client_port:
                         CLIENT_SOCKETS_PRIVATE_PORT[client_port] = c
+    except Exception as err:
+        pri_sock.shutdown(socket.SHUT_RDWR)
+        pri_sock.close()
 
 if __name__ == '__main__':
     proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
