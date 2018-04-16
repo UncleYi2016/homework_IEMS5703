@@ -39,6 +39,7 @@ def get_op_from_private(pri_sock):
             data = core_transmit.get_operation(pri_sock)
             data_packet = json.loads(data)
             logging.debug(data_packet)
+            logging.debug(CLIENT_SOCKETS_PRIVATE_PORT)
             if data_packet['op_code'] == op_enum.OP_SUCCESS:
                 logging.debug('SUCCESS')
                 msg_to_client = data_packet['msg']
