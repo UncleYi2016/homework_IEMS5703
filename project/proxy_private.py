@@ -49,7 +49,7 @@ def listen():
             client_port = data_packet['port']
             tmp_private_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             tmp_private_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
-            tmp_private_port = tmp_private_socket.getsockename()[1]
+            tmp_private_port = tmp_private_socket.getsockname()[1]
             TMP_PRIVATE_SOCKETS[tmp_private_port] = tmp_private_socket
             get_data_thread = Thread(target=private_to_public, args=(tmp_private_socket, tmp_private_port, public_server_socket, ), daemon=False)
             get_data_thread.start()

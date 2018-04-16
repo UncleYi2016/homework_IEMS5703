@@ -70,6 +70,5 @@ if __name__ == '__main__':
         logging.debug(json.dumps(msg))
         core_transmit.send_operation(private_socket, json.dumps(msg))
         logging.debug('client : ' + str(client_address))
-        logging.debug('private : ' + str(tmp_proxy_address))
         CLIENT_SOCKETS.append(client_socket)
         
