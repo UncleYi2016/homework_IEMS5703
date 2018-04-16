@@ -37,7 +37,9 @@ def get_operation(s_sock):
     return data.decode('utf-8')
 
 def send_data(d_sock, msg):
+    logging.debug('start send data')
     data = bytes(msg, encoding = 'utf-8')
+    logging.debug('data sent')
     d_sock.sendall(data)
 
 def get_data(s_sock):
