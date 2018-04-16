@@ -56,6 +56,7 @@ def get_op_from_private(pri_sock):
         pri_sock.close()
 
 if __name__ == '__main__':
+    tmp_client_private_port = CLIENT_PRIVATE_PORT[:]
     proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     proxy_socket.bind((PROXY_ADDRESS, PROXY_PORT))
     proxy_socket.listen(20)
@@ -75,6 +76,8 @@ if __name__ == '__main__':
         logging.debug(json.dumps(msg))
         core_transmit.send_operation(private_socket, json.dumps(msg))
         logging.debug('client : ' + str(client_address))
+        while tmp_client_private_port == CLIENT_PRIVATE_PORT:
+            pass
         logging.debug('CLIENT_PRIVATE_PORT[client_port]: ' + CLIENT_PRIVATE_PORT[client_port])
         client_to_private_thread = Thread(target=client_to_private, args=(client_socket, CLIENT_PRIVATE_PORT[client_port], private_socket, ), daemon=False)
         client_to_private_thread.start()
