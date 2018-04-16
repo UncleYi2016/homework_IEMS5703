@@ -56,7 +56,7 @@ def get_op_from_private(pri_sock):
         pri_sock.close()
 
 if __name__ == '__main__':
-    tmp_client_private_port = CLIENT_PRIVATE_PORT[:]
+    tmp_client_private_port = CLIENT_PRIVATE_PORT.copy()
     proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     proxy_socket.bind((PROXY_ADDRESS, PROXY_PORT))
     proxy_socket.listen(20)
