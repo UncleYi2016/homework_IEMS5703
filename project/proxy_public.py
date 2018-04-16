@@ -76,4 +76,4 @@ if __name__ == '__main__':
         core_transmit.send_operation(private_socket, json.dumps(msg))
         logging.debug('client : ' + str(client_address))
         client_to_private_thread = Thread(target=client_to_private, args=(client_socket, CLIENT_PRIVATE_PORT[client_port], private_socket, ), daemon=False)
-        
+        client_to_private_thread.start()
