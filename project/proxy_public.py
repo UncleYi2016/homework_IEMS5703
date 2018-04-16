@@ -48,8 +48,8 @@ def get_op_from_private(pri_sock):
                 client_port = data_packet['port']
                 private_port = data_packet['msg']
                 for c in CLIENT_SOCKETS:
-                    logging.debug('getsockname()[1]: ' + str(c.getsockname()[1]))
-                    if c.getsockname()[1] == client_port:
+                    logging.debug('getpeername()[1]: ' + str(c.getpeername()[1]))
+                    if c.getpeername()[1] == client_port:
                         CLIENT_SOCKETS_PRIVATE_PORT[client_port] = c
                         CLIENT_PRIVATE_PORT[client_port] = private_port
     except Exception as err:
