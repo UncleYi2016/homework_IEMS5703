@@ -4,6 +4,7 @@ import logging
 import packet
 import op_enum
 import json
+import time
 from threading import Thread
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 8000
@@ -78,6 +79,9 @@ if __name__ == '__main__':
         logging.debug('client : ' + str(client_address))
         while tmp_client_private_port == CLIENT_PRIVATE_PORT:
             logging.debug('same')
+            logging.debug(tmp_client_private_port)
+            logging.debug(CLIENT_PRIVATE_PORT)
+            time.sleep(1)
             pass
         logging.debug('not same')
         tmp_client_private_port = CLIENT_PRIVATE_PORT.copy()
