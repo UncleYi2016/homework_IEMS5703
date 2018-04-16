@@ -24,10 +24,12 @@ def private_to_public(s_sock, s_port, pub_sock):
     try:
         while True:
             msg = core_transmit.get_data(s_sock)
+            if msg == '':
+                break
             # After receive data
             data_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, msg, s_port)
             data_packet_json = json.dumps(data_packet)
-            logging.debug(data_packet_json)
+            logging.debug('generate: ' + str(data_packet_json))
             core_transmit.send_operation(pub_sock, data_packet_json)
     except Exception as err:
         logging.debug(err)
@@ -42,7 +44,7 @@ def listen():
     public_server_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
     while True:
         msg = core_transmit.get_operation(public_server_socket)
-        logging.debug(msg)
+        logging.debug('get: ' + str(msg))
         data_packet = json.loads(msg)
         if data_packet['op_code'] == op_enum.OP_BUILD_CONNECTION:
             # tmp_public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,7 +58,7 @@ def listen():
             get_data_thread.start()
             # Tell public server that private connection is build
             response_packet = packet.packet(op_enum.OP_BUILD_OK, op_enum.DES_BUILD_OK, tmp_private_port, client_port)
-            logging.debug(response_packet)
+            logging.debug('generate: ' + str(response_packet))
             core_transmit.send_operation(public_server_socket, json.dumps(response_packet))
             logging.debug('reposnse OK')
         elif data_packet['op_code'] == op_enum.OP_SUCCESS:

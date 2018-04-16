@@ -26,7 +26,7 @@ def client_to_private(c_sock, c_port, pri_sock):
             # After receive data
             data_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, msg, c_port)
             data_packet_json = json.dumps(data_packet)
-            logging.debug(data_packet_json)
+            logging.debug('generate: ' + str(data_packet_json))
             core_transmit.send_operation(pri_sock, data_packet_json)
     except Exception as err:
         logging.debug(err)
@@ -38,7 +38,7 @@ def get_op_from_private(pri_sock):
         while True:
             data = core_transmit.get_operation(pri_sock)
             data_packet = json.loads(data)
-            logging.debug(data)
+            logging.debug('get: ' + str(data))
             if data_packet['op_code'] == op_enum.OP_SUCCESS:
                 msg_to_client = data_packet['msg']
                 port_to_client = data_packet['port']
