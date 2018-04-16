@@ -55,7 +55,9 @@ def listen():
             get_data_thread.start()
             # Tell public server that private connection is build
             response_packet = packet.packet(op_enum.OP_BUILD_OK, op_enum.DES_BUILD_OK, tmp_private_port, client_port)
+            logging.debug(response_packet)
             core_transmit.send_operation(public_server_socket, json.dumps(response_packet))
+            logging.debug('reposnse OK')
         elif data_packet['op_code'] == op_enum.OP_SUCCESS:
             msg_to_private = data_packet['msg']
             port_to_private = data_packet['port']

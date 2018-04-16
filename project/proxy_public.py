@@ -37,6 +37,7 @@ def get_op_from_private(pri_sock):
         while True:
             data = core_transmit.get_operation(pri_sock)
             data_packet = json.loads(data)
+            logging.debug(data_packet)
             if data_packet['op_code'] == op_enum.OP_SUCCESS:
                 msg_to_client = data_packet['msg']
                 port_to_client = data_packet['port']
@@ -67,12 +68,12 @@ if __name__ == '__main__':
     client_handle_socket.listen(20)
     while True:
         (client_socket, client_address) = client_handle_socket.accept()
+        CLIENT_SOCKETS.append(client_socket)
         logging.debug('Accept client %s', client_address)
         client_port = client_address[1]
         msg = packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '', client_port)
         logging.debug(json.dumps(msg))
         core_transmit.send_operation(private_socket, json.dumps(msg))
         logging.debug('client : ' + str(client_address))
-        CLIENT_SOCKETS.append(client_socket)
         client_to_private_thread = Thread(target=client_to_private, args=(client_socket, CLIENT_PRIVATE_PORT[client_port], private_socket, ), daemon=False)
         
