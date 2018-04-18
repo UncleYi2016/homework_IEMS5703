@@ -34,7 +34,7 @@ def get_operation(pri_sock):
             op = core_transmit.get_operation(pri_sock)
             logging.debug('Got op!')
             logging.debug(op)
-            if data == '':
+            if op == '':
                 continue
             OP_QUEUE.put(op)
     except Exception as err:
