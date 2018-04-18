@@ -89,8 +89,8 @@ def get_operation(public_socket):
                     core_transmit.send_data(private_socket, msg)
                     return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'Data transmited', app_name, client_address))
 
-@app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>')
-def register_app(app_name=None, app_address=None, app_port=None, public_server_port=None):
+@app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>/<int:op_port>')
+def register_app(app_name=None, app_address=None, app_port=None, public_server_port=None, op_port=None):
     if app_name == None or app_address == None or app_port == None or public_server_port == None:
         return 'url must be \"/register_app/<app_name>/<app_address>/<app_port>/<public_server_port>\"'
     for app in REGISTERED_APPS:
@@ -99,7 +99,7 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
         if app_port == app['app_port']:
             return 'This port has been registered.'
     register_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    register_socket.connect((PUBLIC_SERVER_ADDRESS, 8005))
+    register_socket.connect((PUBLIC_SERVER_ADDRESS, op_port))
     register_operation = packet.packet(op_enum.OP_REGISTER_APP, op_enum.DES_REGISTER_APP, str(public_server_port), app_name, None)
     core_transmit.send_operation(register_socket, json.dumps(register_operation)) 
     public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
