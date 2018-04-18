@@ -91,7 +91,7 @@ def handle_operation():
             private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
             private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, ), daemon=False, name='private_to_public:'+str(client_address))
-            get_data_thread.start()
+            private_to_public_thread.start()
             # Tell public server that private connection is build
             response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
             response_json = json.dumps(response_packet)
