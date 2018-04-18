@@ -54,7 +54,7 @@ def listen():
             tmp_private_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
             tmp_private_port = tmp_private_socket.getsockname()[1]
             TMP_PRIVATE_SOCKETS[tmp_private_port] = tmp_private_socket
-            get_data_thread = Thread(target=private_to_public, args=(tmp_private_socket, tmp_private_port, public_server_socket, ), daemon=False)
+            get_data_thread = Thread(target=private_to_public, args=(tmp_private_socket, tmp_private_port, public_server_socket, ), daemon=False, name='private_to_public')
             get_data_thread.start()
             # Tell public server that private connection is build
             response_packet = packet.packet(op_enum.OP_BUILD_OK, op_enum.DES_BUILD_OK, tmp_private_port, client_port)
