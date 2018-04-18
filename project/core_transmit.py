@@ -32,29 +32,29 @@ def transmit_data(c_sock, s_sock):
 def send_operation(d_sock, msg):
     msg = msg + '[END]'
     logging.debug('send op: ' + msg)
-    data = bytes(msg, encoding = 'utf-8')
+    data = bytes(msg, encoding = 'unicode')
     d_sock.sendall(data)
 
 def get_operation(s_sock):
     msg = ''
     while True:
         data = s_sock.recv(MSG_LEN + 1024)
-        data_str = data.decode('utf-8')
+        data_str = data.decode('unicode')
         msg = msg + data_str
         if msg.endswith('[END]'):
             msg = msg.strip('[END]')
             break
-    #logging.debug('get: ' + data.decode('utf-8'))
+    #logging.debug('get: ' + data.decode('unicode'))
     return msg
 
 def send_data(d_sock, msg):
     logging.debug('send: ' + msg)
-    data = bytes(msg, encoding = 'utf-8')
+    data = bytes(msg, encoding = 'unicode')
     d_sock.sendall(data)
 
 def get_data(s_sock):
     data = s_sock.recv(MSG_LEN)
-    return data.decode('utf-8')
+    return data.decode('unicode')
     
 
         
