@@ -30,7 +30,7 @@ def transmit_data(c_sock, s_sock):
     s_to_c.start()
 
 def send_operation(d_sock, msg):
-    msg = msg + '[END]'
+    # msg = msg + '[END]'
     logging.debug('send op: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
     d_sock.sendall(data)
