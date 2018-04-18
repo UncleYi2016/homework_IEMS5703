@@ -40,7 +40,7 @@ def private_to_public(private_app_socket, client_address):
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, client_address)
             data_packet_json = json.dumps(data_packet)
             logging.debug('generate: ' + str(data_packet_json))
-            core_transmit.send_operation(pri_sock, data_packet_json)
+            core_transmit.send_operation(private_app_socket, data_packet_json)
     except Exception as err:
         logging.debug(err)
         s_sock.shutdown(socket.SHUT_RDWR)
