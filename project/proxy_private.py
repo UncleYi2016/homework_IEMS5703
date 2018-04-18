@@ -79,8 +79,8 @@ def get_operation(public_socket):
                 OP_QUEUE.put(op)
     except Exception as err:
         logging.debug(err)
-        public_socket.shutdown(socket.SHUT_RDWR)
-        public_socket.close()
+        # public_socket.shutdown(socket.SHUT_RDWR)
+        # public_socket.close()
 
 
 def handle_operation():
