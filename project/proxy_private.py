@@ -58,7 +58,7 @@ def private_to_public(private_app_socket, client_address, app_name):
     Get operation from private proxy and store into queue
 '''
 def get_operation(public_socket):
-    try:
+    try:g
         while True:
             op = core_transmit.get_operation(public_socket)
             # op = op.strip('[END]')
