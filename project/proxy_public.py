@@ -123,7 +123,7 @@ if __name__ == '__main__':
         logging.debug(err)
     logging.debug(proxy_port)
     PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    PROXY_SOCKET.bind(('0.0.0.0', proxy_port))
+    PROXY_SOCKET.bind(('0.0.0.0', 9014))
     PROXY_SOCKET.listen(20)
     app.run(host='0.0.0.0', port=flask_port, debug=True)
     
