@@ -28,17 +28,17 @@ logging.basicConfig(
 '''
     Get operation from private proxy and store into queue
 '''
-def get_operation(pri_sock):
+def get_operation(private_sock):
     try:
         while True:
-            op = core_transmit.get_operation(pri_sock)
+            op = core_transmit.get_operation(private_sock)
             if op == '':
                 continue
             OP_QUEUE.put(op)
     except Exception as err:
         logging.debug(err)
-        pri_sock.shutdown(socket.SHUT_RDWR)
-        pri_sock.close()
+        private_sock.shutdown(socket.SHUT_RDWR)
+        private_sock.close()
 
 '''
     Handle operation which get from queue

@@ -30,7 +30,7 @@ app = Flask(__name__)
 '''
     Get data from private app and send it to public server as operation
 '''
-def private_to_public(private_app_socket, client_address, app_name):
+def private_to_public(private_app_socket, client_address, app_name, public_socket):
     try:
         while True:
             msg = core_transmit.get_data(private_app_socket)
@@ -40,11 +40,13 @@ def private_to_public(private_app_socket, client_address, app_name):
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, client_address)
             data_packet_json = json.dumps(data_packet)
             logging.debug('generate: ' + str(data_packet_json))
-            core_transmit.send_operation(private_app_socket, data_packet_json)
+            core_transmit.send_operation(public_socket, data_packet_json)
     except Exception as err:
         logging.debug(err)
         private_app_socket.shutdown(socket.SHUT_RDWR)
         private_app_socket.close()
+        public_socket.shutdown(socket.SHUT_RDWR)
+        public_socket.close()
         
 
 '''
@@ -90,7 +92,7 @@ def handle_operation():
             tmp_private_socket.connect((app_address, app_port))
             private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
-            private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, app_name ), daemon=False, name='private_to_public:'+str(client_address))
+            private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, app_name, public_socket ), daemon=False, name='private_to_public:'+str(client_address))
             private_to_public_thread.start()
             # Tell public server that private connection is build
             # response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
