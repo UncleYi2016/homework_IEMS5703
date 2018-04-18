@@ -59,7 +59,7 @@ def handle_operation():
             bind_port = int(msg)
             register_app(app_name, bind_port)
         elif op_code == op_enum.OP_TRANSMIT_DATA:
-            logging.debug(CLIENT_ADDRESS_TABLE)
+            logging.debug('CLIENT_ADDRESS_TABLE!!!!!!!!' + str(CLIENT_ADDRESS_TABLE))
             for element in CLIENT_ADDRESS_TABLE:
                 if client_address == element['client_address']:
                     client_socket = element['client_socket']
