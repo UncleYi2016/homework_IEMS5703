@@ -30,7 +30,7 @@ app = Flask(__name__)
 '''
     Get data from private app and send it to public server as operation
 '''
-def private_to_public(private_app_socket, client_address):
+def private_to_public(private_app_socket, client_address, app_name):
     try:
         while True:
             msg = core_transmit.get_data(private_app_socket)
@@ -90,7 +90,7 @@ def handle_operation():
             tmp_private_socket.connect((app_address, app_port))
             private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
-            private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, ), daemon=False, name='private_to_public:'+str(client_address))
+            private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, app_name ), daemon=False, name='private_to_public:'+str(client_address))
             private_to_public_thread.start()
             # Tell public server that private connection is build
             # response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
