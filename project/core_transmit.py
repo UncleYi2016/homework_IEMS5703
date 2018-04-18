@@ -33,7 +33,7 @@ def send_operation(d_sock, msg):
     logging.debug('send op: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
     d_sock.sendall(data)
-    time.sleep(0.05)
+    time.sleep(0.1)
 
 def get_operation(s_sock):
     data = s_sock.recv(MSG_LEN + 128)
@@ -44,7 +44,7 @@ def send_data(d_sock, msg):
     logging.debug('send: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
     d_sock.sendall(data)
-    time.sleep(0.05)
+    time.sleep(0.1)
 
 def get_data(s_sock):
     data = s_sock.recv(MSG_LEN)
