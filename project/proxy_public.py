@@ -33,7 +33,7 @@ def get_operation(pri_sock):
         while True:
             op = core_transmit.get_operation(pri_sock)
             logging.debug('Got op!')
-            op = op.decode('utf-8')
+            logging.debug(op)
             if data == '':
                 continue
             OP_QUEUE.put(op)
