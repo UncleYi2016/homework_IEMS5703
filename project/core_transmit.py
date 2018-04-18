@@ -39,7 +39,7 @@ def get_operation(s_sock):
     msg = ''
     while True:
         data = s_sock.recv(MSG_LEN + 1024)
-        if data == b''
+        if data == b'':
             break
         else:
             msg = msg + data.decode('utf-8')
