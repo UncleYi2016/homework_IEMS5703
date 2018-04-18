@@ -113,7 +113,7 @@ def register_app(app_name=None, bind_port=None):
 
 
 if __name__ == '__main__':
-    handle_operation_thread = Thread(target=handle_operation, args=(,), name='handle_operation_thread')
+    handle_operation_thread = Thread(target=handle_operation, name='handle_operation_thread')
     handle_operation_thread.start()
     PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     PROXY_SOCKET.bind(('0.0.0.0', 8000))
