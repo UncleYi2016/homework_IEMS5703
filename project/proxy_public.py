@@ -112,13 +112,15 @@ def register_app(app_name=None, bind_port=None):
 
 
 if __name__ == '__main__':
+    get_op_port = int(sys.argv[1])
+    proxy_port = int(sys.argv[2])
     handle_operation_thread = Thread(target=handle_operation, name='handle_operation_thread')
     handle_operation_thread.start()
     get_op_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    get_op_socket.bind(('0.0.0.0', 8005))
+    get_op_socket.bind(('0.0.0.0', get_op_port))
     get_op_socket.listen(20)
     PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    PROXY_SOCKET.bind(('0.0.0.0', 8000))
+    PROXY_SOCKET.bind(('0.0.0.0', proxy_port))
     PROXY_SOCKET.listen(20)
     while True:
         (register_socket, register_address) = get_op_socket.accept()
