@@ -90,8 +90,8 @@ def get_operation(public_socket):
                     return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'Data transmited', app_name, client_address))
 
 @app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>')
-def register_app(app_name=None, app_address=None, app_port=None):
-    if app_name == None or app_address == None or app_port == None:
+def register_app(app_name=None, app_address=None, app_port=None, public_server_port=None):
+    if app_name == None or app_address == None or app_port == None or public_server_port=None:
         return 'url must be \"/register_app/<app_name>/<app_address>/<app_port>/<public_server_port>\"'
     for app in REGISTERED_APPS:
         if app_name == app['app_name']:
