@@ -116,7 +116,6 @@ def register_app(app_name=None, bind_port=None):
 
 
 if __name__ == '__main__':
-    logging.debug(proxy_port)
     PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     PROXY_SOCKET.bind(('0.0.0.0', proxy_port))
     PROXY_SOCKET.listen(20)
