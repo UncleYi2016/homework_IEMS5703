@@ -101,7 +101,10 @@ def register_app(app_name=None, bind_port=None):
         return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'APP \"' + app_name + '\" has already exist', app_name, None))
     BIND_APP[app_name] = bind_port
     try:
-        (private_socket, private_address) = PROXY_SOCKET.accept()
+        proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        proxy_socket.bind(('0.0.0.0', 8000))
+        proxy_socket.listen(20)
+        (private_socket, private_address) = proxy_socket.accept()
         PRIVATE_SOCKET_TABLE[app_name] = private_socket
         get_op_thread = Thread(target=get_operation, args=(private_socket,), daemon=False, name='get_operation: ' + app_name)
         get_op_thread.start()
@@ -117,9 +120,7 @@ def register_app(app_name=None, bind_port=None):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8001, debug=True)
-    PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    PROXY_SOCKET.bind(('0.0.0.0', 8000))
-    PROXY_SOCKET.listen(20)
+    
     
 
 
