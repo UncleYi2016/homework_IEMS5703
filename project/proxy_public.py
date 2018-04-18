@@ -116,7 +116,7 @@ if __name__ == '__main__':
     handle_operation_thread = Thread(target=handle_operation, name='handle_operation_thread')
     handle_operation_thread.start()
     get_op_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    get_op_socket.bind(('0.0.0.0', 8001))
+    get_op_socket.bind(('0.0.0.0', 8005))
     get_op_socket.listen(20)
     PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     PROXY_SOCKET.bind(('0.0.0.0', 8000))
