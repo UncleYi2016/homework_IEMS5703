@@ -115,12 +115,12 @@ def register_app(app_name=None, bind_port=None):
 
 
 if __name__ == '__main__':
-    flask_port = 8001
     try:
         flask_port = int(sys.argv[1])
         proxy_port = int(sys.argv[2])
     except Exception as err:
         logging.debug(err)
+    logging.debug(proxy_port)
     proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     proxy_socket.bind((PROXY_ADDRESS, proxy_port))
     proxy_socket.listen(20)
