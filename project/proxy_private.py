@@ -70,8 +70,8 @@ def get_operation(public_socket):
             if app_name == None or app_port == None:
                 response = json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'No such app', app_name, client_address))
                 logging.debug(response)
-                return response
-            tmp_private_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
+                core_transmit.send_operation(response)
+            tmp_private_socket.connect((app_address, app_port))
             client_element = {'private_socket': tmp_private_port, 'client_address': client_address}
             CLIENT_LIST.append(client_element)
             private_to_public_thread = Thread(target=private_to_public, args=(client_element['private_socket'], client_element['client_address'], ), daemon=False, name='private_to_public:'+str(client_address))
