@@ -34,22 +34,33 @@ def send_operation(d_sock, msg):
     logging.debug('send op: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
     d_sock.sendall(data)
-    time.sleep(0.1)
 
 def get_operation(s_sock):
-    data = s_sock.recv(MSG_LEN + 1024)
+    msg = ''
+    while True:
+        data = s_sock.recv(MSG_LEN + 1024)
+        if data == b''
+            break
+        else:
+            msg = msg + data.decode('utf-8')
     #logging.debug('get: ' + data.decode('utf-8'))
-    return data.decode('utf-8')
+    return msg
 
 def send_data(d_sock, msg):
     logging.debug('send: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
     d_sock.sendall(data)
-    time.sleep(0.1)
 
 def get_data(s_sock):
-    data = s_sock.recv(MSG_LEN)
-    return data.decode('utf-8')
+    msg = ''
+    while True:
+        data = s_sock.recv(MSG_LEN)
+        if data == b''
+            break
+        else:
+            msg = msg + data.decode('utf-8')
+    #logging.debug('get: ' + data.decode('utf-8'))
+    return msg
     
 
         
