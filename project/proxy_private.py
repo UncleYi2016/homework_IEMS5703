@@ -100,7 +100,7 @@ def handle_operation():
             logging.debug(packet.packet(op_code, op_describe, msg, app_name, client_address))
         elif op_code == op_enum.OP_TRANSMIT_DATA:
             for element in PRIVATE_SOCKET_TABLE:
-                if client_address = element['client_address']:
+                if client_address == element['client_address']:
                     private_socket = element['private_socket']
             if private_socket != None:
                 core_transmit.send_data(private_socket, msg)
