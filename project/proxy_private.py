@@ -72,7 +72,7 @@ def get_operation(public_socket):
                 logging.debug(response)
                 core_transmit.send_operation(response)
             tmp_private_socket.connect((app_address, app_port))
-            client_element = {'private_socket': tmp_private_port, 'client_address': client_address}
+            client_element = {'private_socket': tmp_private_socket, 'client_address': client_address}
             CLIENT_LIST.append(client_element)
             private_to_public_thread = Thread(target=private_to_public, args=(client_element['private_socket'], client_element['client_address'], ), daemon=False, name='private_to_public:'+str(client_address))
             get_data_thread.start()

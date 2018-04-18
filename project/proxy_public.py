@@ -86,7 +86,7 @@ def client_accept(client_handle_socket, app_name):
         private_socket = PRIVATE_SOCKET_TABLE[app_name]
         build_connect_packet = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '', app_name, client_address))
         core_transmit.send_operation(private_socket, build_connect_packet)
-        client_to_private_thread(target=client_to_private, args=(client_socket, client_address, private_socket, app_name), daemon=False, name=app_name + str(client_address))
+        client_to_private_thread = Thread(target=client_to_private, args=(client_socket, client_address, private_socket, app_name), daemon=False, name=app_name + str(client_address))
         client_to_private_thread.start()
 
 '''
