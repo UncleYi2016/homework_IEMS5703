@@ -41,7 +41,7 @@ def get_operation(s_sock):
         data = s_sock.recv(MSG_LEN + 1024)
         data_str = data.decode('utf-8')
         msg = msg + data_str
-        if '[END]' in msg:
+        if msg.endwith('[END]'):
             msg = msg.strip('[END]')
             break
     #logging.debug('get: ' + data.decode('utf-8'))
