@@ -93,9 +93,9 @@ def handle_operation():
             private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, ), daemon=False, name='private_to_public:'+str(client_address))
             private_to_public_thread.start()
             # Tell public server that private connection is build
-            response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
-            response_json = json.dumps(response_packet)
-            core_transmit.send_operation(public_socket, response_json)
+            # response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
+            # response_json = json.dumps(response_packet)
+            # core_transmit.send_operation(public_socket, response_json)
         elif op_code == op_enum.OP_SUCCESS:
             logging.debug(packet.packet(op_code, op_describe, msg, app_name, client_address))
         elif op_code == op_enum.OP_TRANSMIT_DATA:
