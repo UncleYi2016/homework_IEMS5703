@@ -65,7 +65,7 @@ def get_operation(public_socket):
             if op == '':
                 continue
             elif '   ' in op:
-                ops = op.split('   ')
+                ops = op.split('   enddd')
                 # for i in range(len(ops)):
                 #     if i == 0:
                 #         ops[i] = ops[i] + '\"}'
