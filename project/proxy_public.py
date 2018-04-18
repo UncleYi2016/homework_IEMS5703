@@ -11,9 +11,6 @@ import urllib.parse
 import queue
 import sys
 from threading import Thread
-from flask import Flask
-from flask import request
-from flask import json
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 8000
 PROXY_SOCKET = None
@@ -27,7 +24,6 @@ OP_QUEUE = queue.Queue()
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
     level=logging.DEBUG)
-app = Flask(__name__)
 
 '''
     Get operation from private proxy and store into queue
@@ -50,17 +46,19 @@ def get_operation(pri_sock):
     Handle operation which get from queue
 '''
 def handle_operation():
-    operation = OP_QUEUE.get()
-    operation_packet = json.loads(data)
-    op_code = operation['op_code']
-    op_describe = operation['op_describe']
-    msg = operation['msg']
-    app_name = operation['app_name']
-    client_address = operation['client_address']
-    logging.debug('get: ' + str(operation))
-    if op_code == op_enum.OP_TRANSMIT_DATA:
-        client_socket = CLIENT_ADDRESS_TABLE[client_address]
-        core_transmit.send_data(client_socket, msg)
+    while True:
+        operation = OP_QUEUE.get()
+        logging.debug('operation get: ' + str(operation))
+        operation_packet = json.loads(data)
+        op_code = operation['op_code']
+        op_describe = operation['op_describe']
+        msg = operation['msg']
+        app_name = operation['app_name']
+        client_address = operation['client_address']
+        logging.debug('get: ' + str(operation))
+        if op_code == op_enum.REGISTER_APP:
+            bind_port = int(msg)
+            register_app(app_name, bind_port)
 
 '''
     Receive client data and transmit to private proxy
@@ -95,16 +93,12 @@ def client_accept(client_handle_socket, app_name):
 '''
     Register APP
 '''
-@app.route('/register_app/<app_name>/<int:bind_port>')
 def register_app(app_name=None, bind_port=None):
     if app_name in BIND_APP:
         return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'APP \"' + app_name + '\" has already exist', app_name, None))
     BIND_APP[app_name] = bind_port
     try:
-        proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        proxy_socket.bind(('0.0.0.0', 8000))
-        proxy_socket.listen(20)
-        (private_socket, private_address) = proxy_socket.accept()
+        (private_socket, private_address) = PROXY_SOCKET.accept()
         PRIVATE_SOCKET_TABLE[app_name] = private_socket
         get_op_thread = Thread(target=get_operation, args=(private_socket,), daemon=False, name='get_operation: ' + app_name)
         get_op_thread.start()
@@ -119,7 +113,18 @@ def register_app(app_name=None, bind_port=None):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8001, debug=True)
+    handle_operation_thread = Thread(target=handle_operation, args=(,), name='handle_operation_thread')
+    handle_operation_thread.start()
+    PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    PROXY_SOCKET.bind(('0.0.0.0', 8000))
+    PROXY_SOCKET.listen(20)
+    get_op_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    get_op_socket.bind(('0.0.0.0', 8001))
+    get_op_socket.listen(20)
+    while True:
+        (register_socket, register_address) = get_op_socket.accept()
+        get_register_thread = Thread(target=get_operation, args=(register_socket,), daemon=False, name='get_register_thread')
+        get_register_thread.start()
     
     
 

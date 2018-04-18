@@ -98,16 +98,8 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
             return 'This app name has been registered.'
         if app_port == app['app_port']:
             return 'This port has been registered.'
-
-    url = 'http://' + PUBLIC_SERVER_ADDRESS + ':8001/register_app/' + app_name + '/' + str(public_server_port)
-    f = urllib.request.urlopen(url)
-    response_json = f.read().decode('utf-8')
-    try:
-        response_packet = json.loads(response_json)
-        if response_packet['op_code'] == op_enum.FAILED:
-            return response_packet['msg']
-    except Exception as err:
-        return response_json
+    register_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    register_socket.connect((PUBLIC_SERVER_ADDRESS, 8001))
     public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
     app_get_op_thread = Thread(target=get_operation, args=(public_socket, ), daemon=False, name='get_operation:'+str(app_name))
