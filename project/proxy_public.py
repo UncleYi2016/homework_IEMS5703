@@ -47,14 +47,14 @@ def handle_operation():
     while True:
         operation = OP_QUEUE.get()
         logging.debug('operation get: ' + operation)
-        operation_packet = json.loads(data)
-        op_code = operation['op_code']
-        op_describe = operation['op_describe']
-        msg = operation['msg']
-        app_name = operation['app_name']
-        client_address = operation['client_address']
-        logging.debug('get: ' + str(operation))
+        operation_packet = json.loads(operation)
+        op_code = operation_packet['op_code']
+        op_describe = operation_packet['op_describe']
+        msg = operation_packet['msg']
+        app_name = operation_packet['app_name']
+        client_address = operation_packet['client_address']
         if op_code == op_enum.REGISTER_APP:
+            logging.debug('REGISTER')
             bind_port = int(msg)
             register_app(app_name, bind_port)
 
