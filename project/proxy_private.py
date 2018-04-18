@@ -75,7 +75,7 @@ def unregister_app(app_name=None):
     
     return 'There is no app named \"' + app_name + '\"'
 
-@app.route('/list_app'):
+@app.route('/list_app')
 def list_app():
     return str(REGISTERED_APPS)
 
