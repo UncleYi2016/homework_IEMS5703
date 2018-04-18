@@ -5,19 +5,27 @@ import packet
 import op_enum
 import json
 import time
+import urllib
+import urllib.request
+import urllib.parse
 from threading import Thread
+from flask import Flask
+from flask import request
+from flask import json
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 8000
 CLIENT_HANDLE_PORT = 60003
 CLIENT_SOCKETS = []
 CLIENT_SOCKETS_PRIVATE_PORT = {}
 CLIENT_PRIVATE_PORT = {}
+BIND_APP = {}
 
 
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
     level=logging.DEBUG)
+app = Flask(__name__)
 
 def client_to_private(c_sock, c_port, pri_sock):
     try:
@@ -33,6 +41,37 @@ def client_to_private(c_sock, c_port, pri_sock):
         c_sock.shutdown(socket.SHUT_RDWR)
         c_sock.close()
 
+def client_accept(client_handle_socket):
+    while True:
+        (client_socket, client_address) = client_handle_socket.accept()
+
+@app.route('/get_operation', method=['POST'])
+def get_operation():
+    if request.method == 'POST':
+        op_code = request.form['op_code']
+        op_describe = request.form['op_describe']
+        msg = request.form['msg']
+        app_name = request.form['app_name']
+        client_port = request.form['client_port']
+        '''
+        procedure operation
+        '''
+
+    else:
+        return ''
+
+@app.route('/register_app/<app_name>/<int:bind_port>')
+def register_app(app_name=None, bind_port=None):
+    if BIND_APP.has_key(app_name):
+        return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'APP \"' + app_name + '\" has already exist', app_name, None))
+    try:
+        client_handle_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_handle_socket.bind((PROXY_ADDRESS, CLIENT_HANDLE_PORT))
+        client_handle_socket.listen(20)
+        client_accept_thread = Thread(target=client_accept, args=(client_handle_socket,), daemon=False, name='client_accept_thread: ' + app_name)
+        return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'APP \"' + app_name + '\" created', app_name, None))
+    except Exception as err:
+        return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, str(err), app_name, None))
 def get_op_from_private(pri_sock):
     try:
         while True:
@@ -70,11 +109,8 @@ if __name__ == '__main__':
     logging.debug('Accept private app %s', private_address)
     get_op_from_private_thread = Thread(target=get_op_from_private, args=(private_socket,), daemon=False, name='get_op_from_private')
     get_op_from_private_thread.start()
-    client_handle_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_handle_socket.bind((PROXY_ADDRESS, CLIENT_HANDLE_PORT))
-    client_handle_socket.listen(20)
-    while True:
-        (client_socket, client_address) = client_handle_socket.accept()
+    
+    
         CLIENT_SOCKETS.append(client_socket)
         logging.debug('Accept client %s', client_address)
         client_port = client_address[1]

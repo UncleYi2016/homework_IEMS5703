@@ -4,6 +4,9 @@ import logging
 import sys
 import packet
 import op_enum
+import urllib
+import urllib.request
+import urllib.parse
 from threading import Thread
 from flask import Flask
 from flask import request
@@ -13,54 +16,107 @@ PRIVATE_APP_PORT = 50001
 PRIVATE_APP_ADDRESS = '192.168.56.101'
 PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com'   #NEED TO BE SET
 PUBLIC_SERVER_PORT = 8000
-TMP_PRIVATE_SOCKETS = {}
 REGISTERED_APPS = []
+CLIENT_LIST = []
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
     level=logging.DEBUG)
 app = Flask(__name__)
 
-def private_to_public(s_sock, s_port, pub_sock):
+'''
+    Get data from private app and send it to public server as operation
+'''
+def private_to_public(source_sock, client_address):
     try:
         while True:
-            msg = core_transmit.get_data(s_sock)
+            msg = core_transmit.get_data(source_sock)
             if msg == '':
                 break
             # After receive data
-            data_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, msg, s_port)
-            data_packet_json = json.dumps(data_packet)
-            logging.debug('generate: ' + str(data_packet_json))
-            core_transmit.send_operation(pub_sock, data_packet_json)
+            data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, client_address)
+            data_param = urllib.parse.urlencode(data_packet)
+            data_param = response_param.encode('utf-8')
+            url = 'http://' + PUBLIC_SERVER_ADDRESS + '/get_response'
+            f = urllib.request.urlopen(url, params)
+            logging.debug('Data Transmited')
+            response_str = f.read().decode('utf-8')
+            logging.debug(response_str)
     except Exception as err:
         logging.debug(err)
         s_sock.shutdown(socket.SHUT_RDWR)
         s_sock.close()
         
-@app.route('/get_operation', methods=['POST'])
-def get_operation():
-    if request.method == 'POST':
-        op_code = request.form['op_code']
-        op_describe = request.form['op_describe']
-        msg = request.form['msg']
-        app_name = request.form['app_name']
-        port = request.form['port']
-    else:
-        return ''
+def get_operation(public_socket):
+    while True:
+        op_packet = core_transmit.get_operation(public_socket)
+        op_packet = json.loads(op_packet)
+        op_code = op_packet['op_code']
+        op_describe = op_packet['op_describe']
+        msg = op_packet['msg']
+        app_name = op_packet['app_name']
+        client_address = op_packet['client_address']
+        app_address = None
+        app_port = None
+        '''
+        proceduce operation
+        '''
+        if op_code == op_enum.OP_BUILD_CONNECTION:
+            tmp_private_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            for app in REGISTERED_APPS:
+                if app_name == app['app_name']:
+                    app_address = app['app_address']
+                    app_port = app['app_port']
+            if app_name == None or app_port == None:
+                response = json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'No such app', app_name, client_address))
+                logging.debug(response)
+                return response
+            tmp_private_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
+            client_element = {'private_socket': tmp_private_port, 'client_address': client_address}
+            CLIENT_LIST.append(client_element)
+            private_to_public_thread = Thread(target=private_to_public, args=(client_element['private_socket'], client_element['client_address'], ), daemon=False, name='private_to_public:'+str(client_address))
+            get_data_thread.start()
+            # Tell public server that private connection is build
+            response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
+            response_json = json.dumps(response_packet)
+            core_transmit.send_operation(public_socket, response_json)
+        elif op_code == op_enum.OP_SUCCESS:
+            logging.debug(packet.packet(op_code, op_describe, msg, app_name, client_address))
+        elif op_code == op_enum.OP_TRANSMIT_DATA:
+            for client in CLIENT_LIST:
+                if client_address == client:
+                    private_socket = CLIENT_LIST['private_socket']
+                    core_transmit.send_data(private_socket, msg)
+                    return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'Data transmited', app_name, client_address))
 
-@app.route('/register_app/<app_name>/<app_address>/<int:app_port>')
+@app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>')
 def register_app(app_name=None, app_address=None, app_port=None):
     if app_name == None or app_address == None or app_port == None:
-        return 'url must be \"/register_app/<app_name>/<app_address>/<port>\"'
+        return 'url must be \"/register_app/<app_name>/<app_address>/<app_port>/<public_server_port>\"'
     for app in REGISTERED_APPS:
         if app_name == app['app_name']:
             return 'This app name has been registered.'
         if app_port == app['app_port']:
             return 'This port has been registered.'
+
+    url = 'http://' + PUBLIC_SERVER_ADDRESS + '/register_app/' + app_name + '/' + str(public_server_port)
+    f = urllib.request.urlopen(url, params)
+    response_json = f.read().decode('utf-8')
+    try:
+        response_packet = json.loads(response_json)
+        if response_packet['op_code'] == op_enum.FAILED:
+            return response_packet['msg']
+    except Exception as err:
+        return response_json
+    public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
+    app_get_op_thread = Thread(target=get_operation, args=(public_socket, ), daemon=False, name='get_operation:'+str(app_name))
+    app_get_op_thread.start()
     registered_app = {}
     registered_app['app_name'] = app_name
     registered_app['app_address'] = app_address
     registered_app['app_port'] = app_port
+    registered_app['public_socket'] = public_socket
     REGISTERED_APPS.append(registered_app)
     return 'Register success'
 
@@ -78,36 +134,6 @@ def unregister_app(app_name=None):
 @app.route('/list_app')
 def list_app():
     return str(REGISTERED_APPS)
-
-@app.route('/listen')
-def listen():
-    public_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    public_server_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
-    while True:
-        msg = core_transmit.get_operation(public_server_socket)
-        logging.debug('get: ' + str(msg))
-        data_packet = json.loads(msg)
-        if data_packet['op_code'] == op_enum.OP_BUILD_CONNECTION:
-            # tmp_public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            # tmp_public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
-            client_port = data_packet['port']
-            tmp_private_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            tmp_private_socket.connect((PRIVATE_APP_ADDRESS, PRIVATE_APP_PORT))
-            tmp_private_port = tmp_private_socket.getsockname()[1]
-            TMP_PRIVATE_SOCKETS[tmp_private_port] = tmp_private_socket
-            get_data_thread = Thread(target=private_to_public, args=(tmp_private_socket, tmp_private_port, public_server_socket, ), daemon=False, name='private_to_public')
-            get_data_thread.start()
-            # Tell public server that private connection is build
-            response_packet = packet.packet(op_enum.OP_BUILD_OK, op_enum.DES_BUILD_OK, tmp_private_port, client_port)
-            logging.debug('generate: ' + str(response_packet))
-            core_transmit.send_operation(public_server_socket, json.dumps(response_packet))
-            logging.debug('reposnse OK')
-        elif data_packet['op_code'] == op_enum.OP_SUCCESS:
-            msg_to_private = data_packet['msg']
-            port_to_private = data_packet['port']
-            socket_to_private = TMP_PRIVATE_SOCKETS[port_to_private]
-            core_transmit.send_data(socket_to_private, msg_to_private)
-    return 'connect open'
 
 if __name__ == '__main__':
     try:
