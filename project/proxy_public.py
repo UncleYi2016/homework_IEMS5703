@@ -32,11 +32,11 @@ def get_operation(private_sock):
     try:
         while True:
             op = core_transmit.get_operation(private_sock)
-            # op = op.strip('   enddd')
-            # if op == '':
-            #     continue
-            # elif '   ' in op:
-            #     ops = op.split('   enddd')
+            op = op.strip('}/{')
+            if op == '':
+                continue
+            elif '}/{' in op:
+                ops = op.split('}/{')
                 # for i in range(len(ops)):
                 #     if i == 0:
                 #         ops[i] = ops[i] + '\"}'
@@ -44,10 +44,10 @@ def get_operation(private_sock):
                 #         ops[i] = '{\"' + ops[i] + '\"}'
                 #     else:
                 #         ops[i] = ops[i] = '{\"' + ops[i]
-                # for each_op in ops:
-                #      OP_QUEUE.put(each_op)
-            # else:
-            OP_QUEUE.put(op)
+                for each_op in ops:
+                     OP_QUEUE.put(each_op)
+            else:
+                OP_QUEUE.put(op)
     except Exception as err:
         logging.debug(err)
         private_sock.shutdown(socket.SHUT_RDWR)
