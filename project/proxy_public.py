@@ -53,7 +53,7 @@ def handle_operation():
         msg = operation_packet['msg']
         app_name = operation_packet['app_name']
         client_address = operation_packet['client_address']
-        if op_code == op_enum.REGISTER_APP:
+        if op_code == op_enum.OP_REGISTER_APP:
             logging.debug('REGISTER')
             bind_port = int(msg)
             register_app(app_name, bind_port)
