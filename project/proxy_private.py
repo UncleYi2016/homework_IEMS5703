@@ -99,7 +99,7 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
         if app_port == app['app_port']:
             return 'This port has been registered.'
     register_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    register_socket.connect((PUBLIC_SERVER_ADDRESS, 8001))
+    register_socket.connect((PUBLIC_SERVER_ADDRESS, 8005))
     public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
     app_get_op_thread = Thread(target=get_operation, args=(public_socket, ), daemon=False, name='get_operation:'+str(app_name))
