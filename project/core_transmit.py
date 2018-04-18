@@ -36,7 +36,7 @@ def send_operation(d_sock, msg):
     time.sleep(0.1)
 
 def get_operation(s_sock):
-    data = s_sock.recv(MSG_LEN + 128)
+    data = s_sock.recv(MSG_LEN + 1024)
     #logging.debug('get: ' + data.decode('utf-8'))
     return data.decode('utf-8')
 
