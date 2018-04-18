@@ -48,7 +48,7 @@ def get_operation(pri_sock):
 def handle_operation():
     while True:
         operation = OP_QUEUE.get()
-        logging.debug('operation get: ' + str(operation))
+        logging.debug('operation get: ' + operation)
         operation_packet = json.loads(data)
         op_code = operation['op_code']
         op_describe = operation['op_describe']
