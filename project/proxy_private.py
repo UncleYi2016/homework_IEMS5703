@@ -61,11 +61,11 @@ def get_operation(public_socket):
     try:
         while True:
             op = core_transmit.get_operation(public_socket)
-            op = op.strip('   enddd')
+            # op = op.strip('   enddd')
             if op == '':
                 continue
-            elif '   ' in op:
-                ops = op.split('   enddd')
+            # elif '   ' in op:
+            #     ops = op.split('   enddd')
                 # for i in range(len(ops)):
                 #     if i == 0:
                 #         ops[i] = ops[i] + '\"}'
@@ -73,8 +73,8 @@ def get_operation(public_socket):
                 #         ops[i] = '{\"' + ops[i] + '\"}'
                 #     else:
                 #         ops[i] = ops[i] = '{\"' + ops[i]
-                for each_op in ops:
-                     OP_QUEUE.put(each_op)
+            # for each_op in ops:
+            #         OP_QUEUE.put(each_op)
             else:
                 OP_QUEUE.put(op)
     except Exception as err:
