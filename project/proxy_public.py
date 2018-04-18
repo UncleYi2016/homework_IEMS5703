@@ -96,7 +96,7 @@ def client_accept(client_handle_socket, app_name):
         # PRIVATE_SOCKET_TABLE.append(private_socket_element)
         for element in PRIVATE_SOCKET_TABLE:
             logging.debug(element)
-            if client_address == element['client_address']:
+            if app_name == element['app_name']:
                 private_socket = element['private_socket']
         build_connect_packet = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '', app_name, client_address))
         if private_socket != None:
