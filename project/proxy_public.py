@@ -46,8 +46,8 @@ def get_operation(private_sock):
                 #         ops[i] = ops[i] = '{\"' + ops[i]
                 # for each_op in ops:
                 #      OP_QUEUE.put(each_op)
-            else:
-                OP_QUEUE.put(op)
+            # else:
+            OP_QUEUE.put(op)
     except Exception as err:
         logging.debug(err)
         private_sock.shutdown(socket.SHUT_RDWR)

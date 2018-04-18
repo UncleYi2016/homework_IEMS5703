@@ -75,8 +75,8 @@ def get_operation(public_socket):
                 #         ops[i] = ops[i] = '{\"' + ops[i]
             # for each_op in ops:
             #         OP_QUEUE.put(each_op)
-            else:
-                OP_QUEUE.put(op)
+            # else:
+            OP_QUEUE.put(op)
     except Exception as err:
         logging.debug(err)
         public_socket.shutdown(socket.SHUT_RDWR)
