@@ -60,7 +60,7 @@ def private_to_public(private_app_socket, client_address, app_name):
 def get_operation(public_socket):
     try:
         while True:
-            op = core_transmit.get_operation(private_sock)
+            op = core_transmit.get_operation(public_socket)
             # op = op.strip('[END]')
             if op == '':
                 continue
