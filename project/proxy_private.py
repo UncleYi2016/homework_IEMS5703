@@ -100,7 +100,7 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
             return 'This port has been registered.'
 
     url = 'http://' + PUBLIC_SERVER_ADDRESS + '/register_app/' + app_name + '/' + str(public_server_port)
-    f = urllib.request.urlopen(url, params)
+    f = urllib.request.urlopen(url)
     response_json = f.read().decode('utf-8')
     try:
         response_packet = json.loads(response_json)
