@@ -61,7 +61,7 @@ def get_operation(public_socket):
     try:
         while True:
             op = core_transmit.get_operation(public_socket)
-            op = op.strip()
+            op = op.strip('   enddd')
             if op == '':
                 continue
             elif '   ' in op:
