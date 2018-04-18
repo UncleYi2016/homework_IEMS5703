@@ -100,6 +100,8 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
             return 'This port has been registered.'
     register_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     register_socket.connect((PUBLIC_SERVER_ADDRESS, 8005))
+    register_operation = packet.packet(op_enum.OP_REGISTER_APP, op_enum.DES_REGISTER_APP, str(public_server_port), app_name, None)
+    core_transmit.send_operation(register_socket, json.dumps(register_operation)) 
     public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
     app_get_op_thread = Thread(target=get_operation, args=(public_socket, ), daemon=False, name='get_operation:'+str(app_name))
