@@ -99,6 +99,7 @@ def register_app(app_name=None, bind_port=None):
     BIND_APP[app_name] = bind_port
     try:
         (private_socket, private_address) = PROXY_SOCKET.accept()
+        logging.debug('accept address: ' + str(private_address))
         PRIVATE_SOCKET_TABLE[app_name] = private_socket
         get_op_thread = Thread(target=get_operation, args=(private_socket,), daemon=False, name='get_operation: ' + app_name)
         get_op_thread.start()
