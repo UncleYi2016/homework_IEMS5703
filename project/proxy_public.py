@@ -118,12 +118,12 @@ if __name__ == '__main__':
     flask_port = 8001
     try:
         flask_port = int(sys.argv[1])
+        proxy_port = int(sys.argv[2])
         proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        proxy_socket.bind((PROXY_ADDRESS, PROXY_PORT))
+        proxy_socket.bind((PROXY_ADDRESS, proxy_port))
         proxy_socket.listen(20)
         app.run(host='0.0.0.0', port=flask_port, debug=True)
     except Exception as err:
-        logging.info('Please input the proxy app console port number')
         logging.debug(err)
     finally:
         proxy_socket.shutdown(socket.SHUT_RDWR)
