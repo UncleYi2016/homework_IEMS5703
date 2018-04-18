@@ -55,7 +55,7 @@ def get_data(s_sock):
     msg = ''
     while True:
         data = s_sock.recv(MSG_LEN)
-        if data == b''
+        if data == b'':
             break
         else:
             msg = msg + data.decode('utf-8')
