@@ -43,8 +43,8 @@ def private_to_public(private_app_socket, client_address, app_name):
             core_transmit.send_operation(private_app_socket, data_packet_json)
     except Exception as err:
         logging.debug(err)
-        s_sock.shutdown(socket.SHUT_RDWR)
-        s_sock.close()
+        private_app_socket.shutdown(socket.SHUT_RDWR)
+        private_app_socket.close()
         
 
 '''
