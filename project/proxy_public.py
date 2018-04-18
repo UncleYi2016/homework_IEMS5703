@@ -105,6 +105,9 @@ def register_app(app_name=None, bind_port=None):
         client_handle_socket.bind((PROXY_ADDRESS, bind_port))
         client_handle_socket.listen(20)
         client_accept_thread = Thread(target=client_accept, args=(client_handle_socket, app_name, ), daemon=False, name='client_accept_thread: ' + app_name)
+        logging.debug(BIND_APP)
+        logging.debug(PRIVATE_SOCKET_TABLE)
+        logging.debug(CLIENT_ADDRESS_TABLE)
         return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'APP \"' + app_name + '\" created', app_name, None))
     except Exception as err:
         return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, str(err), app_name, None))
