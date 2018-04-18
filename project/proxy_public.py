@@ -1,3 +1,4 @@
+# TODO: 换成对接socket的形式，不使用数据包转发的形式
 import core_transmit
 import socket
 import logging
