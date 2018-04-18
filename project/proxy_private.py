@@ -17,7 +17,7 @@ PRIVATE_APP_PORT = 50001
 PRIVATE_APP_ADDRESS = '192.168.56.101'
 PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com'   #NEED TO BE SET
 REGISTERED_APPS = []
-PRIVATE_SOCKET_TABLE = {}
+PRIVATE_SOCKET_TABLE = []
 OP_QUEUE = queue.Queue()
 OP_PORT = 8001
 PROXY_PORT = 8000
@@ -73,6 +73,7 @@ def handle_operation():
         msg = operation_packet['msg']
         app_name = operation_packet['app_name']
         client_address = operation_packet['client_address']
+        private_socket = None
         '''
         proceduce operation
         '''
@@ -87,8 +88,9 @@ def handle_operation():
                 logging.debug(response)
                 core_transmit.send_operation(response)
             tmp_private_socket.connect((app_address, app_port))
-            PRIVATE_SOCKET_TABLE[client_address] = tmp_private_socket
-            private_to_public_thread = Thread(target=private_to_public, args=(client_element['private_socket'], client_element['client_address'], ), daemon=False, name='private_to_public:'+str(client_address))
+            private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
+            PRIVATE_SOCKET_TABLE.append(private_socket_element)
+            private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, ), daemon=False, name='private_to_public:'+str(client_address))
             get_data_thread.start()
             # Tell public server that private connection is build
             response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
@@ -97,8 +99,11 @@ def handle_operation():
         elif op_code == op_enum.OP_SUCCESS:
             logging.debug(packet.packet(op_code, op_describe, msg, app_name, client_address))
         elif op_code == op_enum.OP_TRANSMIT_DATA:
-            private_socket = PRIVATE_SOCKET_TABLE[client_address]
-            core_transmit.send_data(private_socket, msg)
+            for element in PRIVATE_SOCKET_TABLE:
+                if client_address = element['client_address']:
+                    private_socket = element['private_socket']
+            if private_socket != None:
+                core_transmit.send_data(private_socket, msg)
 
 @app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>')
 def register_app(app_name=None, app_address=None, app_port=None, public_server_port=None):

@@ -14,8 +14,8 @@ from threading import Thread
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 8000
 PROXY_SOCKET = None
-CLIENT_ADDRESS_TABLE = {}
-PRIVATE_SOCKET_TABLE = {}
+CLIENT_ADDRESS_TABLE = []
+PRIVATE_SOCKET_TABLE = []
 BIND_APP = {}
 OP_QUEUE = queue.Queue()
 
@@ -53,13 +53,17 @@ def handle_operation():
         msg = operation_packet['msg']
         app_name = operation_packet['app_name']
         client_address = operation_packet['client_address']
+        client_socket = None
         if op_code == op_enum.OP_REGISTER_APP:
             logging.debug('REGISTER')
             bind_port = int(msg)
             register_app(app_name, bind_port)
         elif op_code == op_enum.OP_TRANSMIT_DATA:
-            client_socket = CLIENT_ADDRESS_TABLE[client_address]
-            core_transmit.send_data(client_socket, msg)
+            for element in CLIENT_ADDRESS_TABLE:
+                if client_address == element['client_address']:
+                    client_socket = element['client_socket']
+            if client_socket != None:
+                core_transmit.send_data(client_socket, msg)
 
 '''
     Receive client data and transmit to private proxy
@@ -85,8 +89,10 @@ def client_accept(client_handle_socket, app_name):
     while True:
         (client_socket, client_address) = client_handle_socket.accept()
         logging.debug('accept client: ' + str(client_address))
-        CLIENT_ADDRESS_TABLE[client_address] = client_socket
-        private_socket = PRIVATE_SOCKET_TABLE[app_name]
+        client_address_element = {'client_address': client_address, 'client_socket': client_socket}
+        CLIENT_ADDRESS_TABLE.append(client_address_element)
+        private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
+        PRIVATE_SOCKET_TABLE.append(private_socket_element)
         build_connect_packet = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '', app_name, client_address))
         core_transmit.send_operation(private_socket, build_connect_packet)
         client_to_private_thread = Thread(target=client_to_private, args=(client_socket, client_address, private_socket, app_name), daemon=False, name=app_name + str(client_address))
@@ -102,7 +108,8 @@ def register_app(app_name=None, bind_port=None):
     try:
         (private_socket, private_address) = PROXY_SOCKET.accept()
         logging.debug('accept address: ' + str(private_address))
-        PRIVATE_SOCKET_TABLE[app_name] = private_socket
+        private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
+        PRIVATE_SOCKET_TABLE.append(private_socket_element)
         get_op_thread = Thread(target=get_operation, args=(private_socket,), daemon=False, name='get_operation: ' + app_name)
         get_op_thread.start()
         client_handle_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
