@@ -87,16 +87,21 @@ def client_to_private(c_sock, c_address, pri_sock, app_name):
 '''
 def client_accept(client_handle_socket, app_name):
     while True:
+        private_socket = None
         (client_socket, client_address) = client_handle_socket.accept()
         logging.debug('accept client: ' + str(client_address))
         client_address_element = {'client_address': client_address, 'client_socket': client_socket}
         CLIENT_ADDRESS_TABLE.append(client_address_element)
-        private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
-        PRIVATE_SOCKET_TABLE.append(private_socket_element)
+        # private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
+        # PRIVATE_SOCKET_TABLE.append(private_socket_element)
+        for element in PRIVATE_SOCKET_TABLE:
+            if client_address == element['client_address']:
+                private_socket = element['private_socket']
         build_connect_packet = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '', app_name, client_address))
-        core_transmit.send_operation(private_socket, build_connect_packet)
-        client_to_private_thread = Thread(target=client_to_private, args=(client_socket, client_address, private_socket, app_name), daemon=False, name=app_name + str(client_address))
-        client_to_private_thread.start()
+        if private_socket != None:
+            core_transmit.send_operation(private_socket, build_connect_packet)
+            client_to_private_thread = Thread(target=client_to_private, args=(client_socket, client_address, private_socket, app_name), daemon=False, name=app_name + str(client_address))
+            client_to_private_thread.start()
 
 '''
     Register APP
