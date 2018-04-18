@@ -63,6 +63,7 @@ def handle_operation():
                 if client_address == element['client_address']:
                     client_socket = element['client_socket']
             if client_socket != None:
+                logging.debug('sent to client')
                 core_transmit.send_data(client_socket, msg)
 
 '''
