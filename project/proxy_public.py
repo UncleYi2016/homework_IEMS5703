@@ -32,11 +32,11 @@ def get_operation(private_sock):
     try:
         while True:
             op = core_transmit.get_operation(private_sock)
-            op = op.strip('}-{')
+            op = op.strip('[END]')
             if op == '':
                 continue
-            elif '}-{' in op:
-                ops = op.split('}-{')
+            elif '[END]' in op:
+                ops = op.split('[END]')
                 # for i in range(len(ops)):
                 #     if i == 0:
                 #         ops[i] = ops[i] + '\"}'
