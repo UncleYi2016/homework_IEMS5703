@@ -35,15 +35,15 @@ def get_operation(private_sock):
             
             if op == '':
                 continue
-            elif '\"}{\"' in op:
-                ops = op.split('\"}{\"')
-                for i in range(len(ops)):
-                    if i == 0:
-                        ops[i] = ops[i] + '\"}'
-                    elif i != 0 and i < len(ops)-1:
-                        ops[i] = '{\"' + ops[i] + '\"}'
-                    else:
-                        ops[i] = ops[i] = '{\"' + ops[i]
+            elif '   ' in op:
+                ops = op.split('   ')
+                # for i in range(len(ops)):
+                #     if i == 0:
+                #         ops[i] = ops[i] + '\"}'
+                #     elif i != 0 and i < len(ops)-1:
+                #         ops[i] = '{\"' + ops[i] + '\"}'
+                #     else:
+                #         ops[i] = ops[i] = '{\"' + ops[i]
                 for each_op in ops:
                      OP_QUEUE.put(each_op)
             else:
