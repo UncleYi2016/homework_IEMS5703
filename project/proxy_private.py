@@ -16,10 +16,11 @@ from flask import json
 PRIVATE_APP_PORT = 50001
 PRIVATE_APP_ADDRESS = '192.168.56.101'
 PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com'   #NEED TO BE SET
-PUBLIC_SERVER_PORT = 8000
 REGISTERED_APPS = []
 PRIVATE_SOCKET_TABLE = {}
 OP_QUEUE = queue.Queue()
+OP_PORT = 8001
+PROXY_PORT = 8000
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
@@ -113,7 +114,7 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
     register_operation = packet.packet(op_enum.OP_REGISTER_APP, op_enum.DES_REGISTER_APP, str(public_server_port), app_name, None)
     core_transmit.send_operation(register_socket, json.dumps(register_operation)) 
     public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    public_socket.connect((PUBLIC_SERVER_ADDRESS, PUBLIC_SERVER_PORT))
+    public_socket.connect((PUBLIC_SERVER_ADDRESS, PROXY_PORT))
     app_get_op_thread = Thread(target=get_operation, args=(public_socket, ), daemon=False, name='get_operation:'+str(app_name))
     app_get_op_thread.start()
     registered_app = {}
@@ -144,6 +145,8 @@ if __name__ == '__main__':
     handle_operation_thread.start()
     try:
         port = int(sys.argv[1])
+        OP_PORT = int(sys.argv[2])
+        PROXY_PORT = int(sys.argv[3])
     except Exception as err:
         logging.info('Please input the proxy app console port number')
         logging.debug(err)
