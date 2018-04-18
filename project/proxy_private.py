@@ -17,7 +17,8 @@ PRIVATE_APP_PORT = 50001
 PRIVATE_APP_ADDRESS = '192.168.56.101'
 PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com'   #NEED TO BE SET
 REGISTERED_APPS = []
-PRIVATE_SOCKET_TABLE = []
+PRIVATE_SOCKET_TABLE = []       # client_address -> private_socket
+PUBLIC_SOCKET_TABLE = []        # app_name -> public_socket
 OP_QUEUE = queue.Queue()
 OP_PORT = 8001
 PROXY_PORT = 8000
@@ -30,8 +31,12 @@ app = Flask(__name__)
 '''
     Get data from private app and send it to public server as operation
 '''
-def private_to_public(private_app_socket, client_address, app_name, public_socket):
+def private_to_public(private_app_socket, client_address, app_name):
     try:
+        public_socket = None
+        for element in PUBLIC_SOCKET_TABLE:
+            if app_name == element['app_name']:
+                public_socket = element['public_socket']
         while True:
             msg = core_transmit.get_data(private_app_socket)
             if msg == '':
@@ -92,7 +97,7 @@ def handle_operation():
             tmp_private_socket.connect((app_address, app_port))
             private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
-            private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, app_name, public_socket ), daemon=False, name='private_to_public:'+str(client_address))
+            private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, app_name ), daemon=False, name='private_to_public:'+str(client_address))
             private_to_public_thread.start()
             # Tell public server that private connection is build
             # response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
@@ -122,6 +127,8 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
     core_transmit.send_operation(register_socket, json.dumps(register_operation)) 
     public_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     public_socket.connect((PUBLIC_SERVER_ADDRESS, PROXY_PORT))
+    public_socket_element = {'public_socket': public_socket, 'app_name': app_name}
+    PUBLIC_SOCKET_TABLE.append(public_socket_element)
     app_get_op_thread = Thread(target=get_operation, args=(public_socket, ), daemon=False, name='get_operation:'+str(app_name))
     app_get_op_thread.start()
     registered_app = {}
