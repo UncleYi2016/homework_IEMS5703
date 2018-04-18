@@ -4,6 +4,7 @@ import logging
 import sys
 import packet
 import op_enum
+import queue
 import urllib
 import urllib.request
 import urllib.parse
@@ -18,6 +19,7 @@ PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com' 
 PUBLIC_SERVER_PORT = 8000
 REGISTERED_APPS = []
 CLIENT_LIST = []
+OP_QUEUE = queue.Queue()
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',

@@ -2,6 +2,7 @@ import socket
 import logging
 from threading import Thread
 import traceback
+import time
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
@@ -31,8 +32,8 @@ def transmit_data(c_sock, s_sock):
 def send_operation(d_sock, msg):
     logging.debug('send op: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
-    logging.debug('send OK')
     d_sock.sendall(data)
+    time.sleep(0.05)
 
 def get_operation(s_sock):
     data = s_sock.recv(MSG_LEN + 128)
@@ -40,16 +41,13 @@ def get_operation(s_sock):
     return data.decode('utf-8')
 
 def send_data(d_sock, msg):
-    logging.debug('start send data')
     logging.debug('send: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
-    logging.debug('data sent')
     d_sock.sendall(data)
+    time.sleep(0.05)
 
 def get_data(s_sock):
-    logging.debug('start get data')
     data = s_sock.recv(MSG_LEN)
-    logging.debug('data got')
     return data.decode('utf-8')
     
 
