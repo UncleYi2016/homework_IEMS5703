@@ -50,6 +50,9 @@ def private_to_public(source_sock, client_address):
 def get_operation(public_socket):
     while True:
         op_packet = core_transmit.get_operation(public_socket)
+        if op_packet == '':
+            continue
+        logging.debug(op_packet)
         op_packet = json.loads(op_packet)
         op_code = op_packet['op_code']
         op_describe = op_packet['op_describe']
@@ -61,6 +64,7 @@ def get_operation(public_socket):
         '''
         proceduce operation
         '''
+
         if op_code == op_enum.OP_BUILD_CONNECTION:
             tmp_private_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             for app in REGISTERED_APPS:
