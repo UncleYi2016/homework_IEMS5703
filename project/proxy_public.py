@@ -16,6 +16,7 @@ from flask import request
 from flask import json
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 8000
+PROXY_SOCKET = None
 CLIENT_ADDRESS_TABLE = {}
 PRIVATE_SOCKET_TABLE = {}
 BIND_APP = {}
@@ -100,7 +101,7 @@ def register_app(app_name=None, bind_port=None):
         return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'APP \"' + app_name + '\" has already exist', app_name, None))
     BIND_APP[app_name] = bind_port
     try:
-        (private_socket, private_address) = proxy_socket.accept()
+        (private_socket, private_address) = PROXY_SOCKET.accept()
         PRIVATE_SOCKET_TABLE[app_name] = private_socket
         get_op_thread = Thread(target=get_operation, args=(private_socket,), daemon=False, name='get_operation: ' + app_name)
         get_op_thread.start()
@@ -121,9 +122,9 @@ if __name__ == '__main__':
     except Exception as err:
         logging.debug(err)
     logging.debug(proxy_port)
-    proxy_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    proxy_socket.bind((PROXY_ADDRESS, proxy_port))
-    proxy_socket.listen(20)
+    PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    PROXY_SOCKET.bind((PROXY_ADDRESS, proxy_port))
+    PROXY_SOCKET.listen(20)
     app.run(host='0.0.0.0', port=flask_port, debug=True)
     
 
