@@ -50,7 +50,7 @@ def get_operation():
 
 @app.route('/register_app/<app_name>/<app_address>/<int:app_port>')
 def register_app(app_name=None, app_address=None, app_port=None):
-    if app_name == None || app_address == None || app_port == None:
+    if app_name == None or app_address == None or app_port == None:
         return 'url must be \"/register_app/<app_name>/<app_address>/<port>\"'
     for app in REGISTERED_APPS:
         if app_name == app['app_name']:
