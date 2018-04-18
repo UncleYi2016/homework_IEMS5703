@@ -114,6 +114,7 @@ def register_app(app_name=None, bind_port=None):
 
 
 if __name__ == '__main__':
+    flask_port = 8001
     try:
         flask_port = int(sys.argv[1])
     except Exception as err:
