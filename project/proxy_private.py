@@ -64,19 +64,19 @@ def get_operation(public_socket):
             # op = op.strip('[END]')
             if op == '':
                 continue
-            # elif '[END]' in op:
-            #     ops = op.split('[END]')
-            #     # for i in range(len(ops)):
-            #     #     if i == 0:
-            #     #         ops[i] = ops[i] + '\"}'
-            #     #     elif i != 0 and i < len(ops)-1:
-            #     #         ops[i] = '{\"' + ops[i] + '\"}'
-            #     #     else:
-            #     #         ops[i] = ops[i] = '{\"' + ops[i]
-            #     for each_op in ops:
-            #          OP_QUEUE.put(each_op)
-            # else:
-            OP_QUEUE.put(op)
+            elif '[END]' in op:
+                ops = op.split('[END]')
+                # for i in range(len(ops)):
+                #     if i == 0:
+                #         ops[i] = ops[i] + '\"}'
+                #     elif i != 0 and i < len(ops)-1:
+                #         ops[i] = '{\"' + ops[i] + '\"}'
+                #     else:
+                #         ops[i] = ops[i] = '{\"' + ops[i]
+                for each_op in ops:
+                     OP_QUEUE.put(each_op)
+            else:
+                OP_QUEUE.put(op)
     except Exception as err:
         logging.debug(err)
         public_socket.shutdown(socket.SHUT_RDWR)
