@@ -71,7 +71,7 @@ def get_operation(public_socket):
                     elif i != 0 and i < len(ops)-1:
                         ops[i] = '{\"' + ops[i] + '\"}'
                     else:
-                        ops[i] = ops[i] + '\"}'
+                        ops[i] = '{\"' + ops[i]
                 for each_op in ops:
                      OP_QUEUE.put(each_op)
             else:
