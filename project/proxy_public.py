@@ -59,11 +59,13 @@ def handle_operation():
             bind_port = int(msg)
             register_app(app_name, bind_port)
         elif op_code == op_enum.OP_TRANSMIT_DATA:
+            logging.debug(CLIENT_ADDRESS_TABLE)
             for element in CLIENT_ADDRESS_TABLE:
                 if client_address == element['client_address']:
                     client_socket = element['client_socket']
-            logging.debug('sent to client')
-            core_transmit.send_data(client_socket, msg)
+            if client_socket != None:
+                logging.debug('sent to client')
+                core_transmit.send_data(client_socket, msg)
 
 '''
     Receive client data and transmit to private proxy
