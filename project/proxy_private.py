@@ -14,6 +14,7 @@ PRIVATE_APP_ADDRESS = '192.168.56.101'
 PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com'   #NEED TO BE SET
 PUBLIC_SERVER_PORT = 8000
 TMP_PRIVATE_SOCKETS = {}
+REGISTERED_APPS = []
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
@@ -36,7 +37,47 @@ def private_to_public(s_sock, s_port, pub_sock):
         s_sock.shutdown(socket.SHUT_RDWR)
         s_sock.close()
         
+@app.route('/get_operation', methods=['POST'])
+def get_operation():
+    if request.method == 'POST':
+        op_code = request.form['op_code']
+        op_describe = request.form['op_describe']
+        msg = request.form['msg']
+        app_name = request.form['app_name']
+        port = request.form['port']
+    else:
+        return ''
 
+@app.route('/register_app/<app_name>/<app_address>/<int:app_port>')
+def register_app(app_name=None, app_address=None, app_port=None):
+    if app_name == None || app_address == None || app_port == None:
+        return 'url must be \"/register_app/<app_name>/<app_address>/<port>\"'
+    for app in REGISTERED_APPS:
+        if app_name == app['app_name']:
+            return 'This app name has been registered.'
+        if app_port == app['app_port']:
+            return 'This port has been registered.'
+    registered_app = {}
+    registered_app['app_name'] = app_name
+    registered_app['app_address'] = app_address
+    registered_app['app_port'] = app_port
+    REGISTERED_APPS.append(registered_app)
+    return 'Register success'
+
+@app.route('/unregister_app/<app_name>')
+def unregister_app(app_name=None):
+    if app_name == None:
+        return 'url must be \"unregister_app/<app_name>\"'
+    for app in REGISTERED_APPS:
+        if app_name == app['app_name']:
+            REGISTERED_APPS.remove(app)
+            return 'Unregister success'
+    
+    return 'There is no app named \"' + app_name + '\"'
+
+@app.route('/list_app'):
+def list_app():
+    return str(REGISTERED_APPS)
 
 @app.route('/listen')
 def listen():
