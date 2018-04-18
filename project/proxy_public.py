@@ -92,7 +92,8 @@ def client_accept(client_handle_socket, app_name):
         private_socket = None
         (client_socket, client_address) = client_handle_socket.accept()
         logging.debug('accept client: ' + str(client_address))
-        client_address_element = {'client_address': client_address, 'client_socket': client_socket}
+        c_address = json.loads(json.dumps(client_address))
+        client_address_element = {'client_address': c_address, 'client_socket': client_socket}
         CLIENT_ADDRESS_TABLE.append(client_address_element)
         # private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
         # PRIVATE_SOCKET_TABLE.append(private_socket_element)
