@@ -29,11 +29,14 @@ def transmit_data(c_sock, s_sock):
     s_to_c.start()
 
 def send_operation(d_sock, msg):
+    logging.debug('send op: ' + msg)
     data = bytes(msg, encoding = 'utf-8')
+    logging.debug('send OK')
     d_sock.sendall(data)
 
 def get_operation(s_sock):
     data = s_sock.recv(MSG_LEN + 128)
+    logging.debug('get: ' + data.decode('utf-8'))
     return data.decode('utf-8')
 
 def send_data(d_sock, msg):
