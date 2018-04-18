@@ -53,14 +53,14 @@ def private_to_public(private_app_socket, client_address):
 def get_operation(public_socket):
     try:
         while True:
-            op = core_transmit.get_operation(pri_sock)
+            op = core_transmit.get_operation(public_socket)
             if op == '':
                 continue
             OP_QUEUE.put(op)
     except Exception as err:
         logging.debug(err)
-        pri_sock.shutdown(socket.SHUT_RDWR)
-        pri_sock.close()
+        public_socket.shutdown(socket.SHUT_RDWR)
+        public_socket.close()
 
 
 def handle_operation():
