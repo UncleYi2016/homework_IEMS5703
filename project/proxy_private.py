@@ -18,7 +18,7 @@ PRIVATE_APP_ADDRESS = '192.168.56.101'
 PUBLIC_SERVER_ADDRESS = 'ec2-13-231-5-245.ap-northeast-1.compute.amazonaws.com'   #NEED TO BE SET
 PUBLIC_SERVER_PORT = 8000
 REGISTERED_APPS = []
-CLIENT_LIST = []
+PRIVATE_SOCKET_TABLE = {}
 OP_QUEUE = queue.Queue()
 
 logging.basicConfig(
@@ -29,44 +29,52 @@ app = Flask(__name__)
 '''
     Get data from private app and send it to public server as operation
 '''
-def private_to_public(source_sock, client_address):
+def private_to_public(private_app_socket, client_address):
     try:
         while True:
-            msg = core_transmit.get_data(source_sock)
+            msg = core_transmit.get_data(private_app_socket)
             if msg == '':
-                break
+                continue
             # After receive data
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, client_address)
-            data_param = urllib.parse.urlencode(data_packet)
-            data_param = response_param.encode('utf-8')
-            url = 'http://' + PUBLIC_SERVER_ADDRESS + '/get_response'
-            f = urllib.request.urlopen(url, params)
-            logging.debug('Data Transmited')
-            response_str = f.read().decode('utf-8')
-            logging.debug(response_str)
+            data_packet_json = json.dumps(data_packet)
+            logging.debug('generate: ' + str(data_packet_json))
+            core_transmit.send_operation(pri_sock, data_packet_json)
     except Exception as err:
         logging.debug(err)
         s_sock.shutdown(socket.SHUT_RDWR)
         s_sock.close()
         
+
+'''
+    Get operation from private proxy and store into queue
+'''
 def get_operation(public_socket):
+    try:
+        while True:
+            op = core_transmit.get_operation(pri_sock)
+            if op == '':
+                continue
+            OP_QUEUE.put(op)
+    except Exception as err:
+        logging.debug(err)
+        pri_sock.shutdown(socket.SHUT_RDWR)
+        pri_sock.close()
+
+
+def handle_operation():
     while True:
-        op_packet = core_transmit.get_operation(public_socket)
-        if op_packet == '':
-            continue
-        logging.debug(op_packet)
-        op_packet = json.loads(op_packet)
-        op_code = op_packet['op_code']
-        op_describe = op_packet['op_describe']
-        msg = op_packet['msg']
-        app_name = op_packet['app_name']
-        client_address = op_packet['client_address']
-        app_address = None
-        app_port = None
+        operation = OP_QUEUE.get()
+        logging.debug('operation get: ' + operation)
+        operation_packet = json.loads(operation)
+        op_code = operation_packet['op_code']
+        op_describe = operation_packet['op_describe']
+        msg = operation_packet['msg']
+        app_name = operation_packet['app_name']
+        client_address = operation_packet['client_address']
         '''
         proceduce operation
         '''
-
         if op_code == op_enum.OP_BUILD_CONNECTION:
             tmp_private_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             for app in REGISTERED_APPS:
@@ -78,8 +86,7 @@ def get_operation(public_socket):
                 logging.debug(response)
                 core_transmit.send_operation(response)
             tmp_private_socket.connect((app_address, app_port))
-            client_element = {'private_socket': tmp_private_socket, 'client_address': client_address}
-            CLIENT_LIST.append(client_element)
+            PRIVATE_SOCKET_TABLE[client_address] = tmp_private_socket
             private_to_public_thread = Thread(target=private_to_public, args=(client_element['private_socket'], client_element['client_address'], ), daemon=False, name='private_to_public:'+str(client_address))
             get_data_thread.start()
             # Tell public server that private connection is build
@@ -89,11 +96,8 @@ def get_operation(public_socket):
         elif op_code == op_enum.OP_SUCCESS:
             logging.debug(packet.packet(op_code, op_describe, msg, app_name, client_address))
         elif op_code == op_enum.OP_TRANSMIT_DATA:
-            for client in CLIENT_LIST:
-                if client_address == client:
-                    private_socket = CLIENT_LIST['private_socket']
-                    core_transmit.send_data(private_socket, msg)
-                    return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'Data transmited', app_name, client_address))
+            private_socket = PRIVATE_SOCKET_TABLE[client_address]
+            core_transmit.send_data(private_socket, msg)
 
 @app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>/<int:op_port>')
 def register_app(app_name=None, app_address=None, app_port=None, public_server_port=None, op_port=None):
@@ -136,6 +140,8 @@ def list_app():
     return str(REGISTERED_APPS)
 
 if __name__ == '__main__':
+    handle_operation_thread = Thread(target=handle_operation, name='handle_operation_thread')
+    handle_operation_thread.start()
     try:
         port = int(sys.argv[1])
     except Exception as err:

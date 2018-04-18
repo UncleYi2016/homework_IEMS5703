@@ -57,6 +57,9 @@ def handle_operation():
             logging.debug('REGISTER')
             bind_port = int(msg)
             register_app(app_name, bind_port)
+        elif op_code == op_enum.OP_TRANSMIT_DATA:
+            client_socket = CLIENT_ADDRESS_TABLE[client_address]
+            core_transmit.send_data(client_socket, msg)
 
 '''
     Receive client data and transmit to private proxy
@@ -109,6 +112,7 @@ def register_app(app_name=None, bind_port=None):
         logging.debug(PRIVATE_SOCKET_TABLE)
         client_accept_thread = Thread(target=client_accept, args=(client_handle_socket, app_name, ), daemon=False, name='client_accept_thread: ' + app_name)
         client_accept_thread.start()
+        return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'APP \"' + app_name + '\" created', app_name, None))
     except Exception as err:
         return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, str(err), app_name, None))
 
