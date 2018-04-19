@@ -178,6 +178,8 @@ def list_app():
 if __name__ == '__main__':
     handle_operation_thread = Thread(target=handle_operation, name='handle_operation_thread')
     handle_operation_thread.start()
+    check_hold_connection_thread = Thread(target=check_hold_connection, name='check_hold_connection_thread')
+    check_hold_connection_thread.start()
     try:
         port = int(sys.argv[1])
         OP_PORT = int(sys.argv[2])
