@@ -35,7 +35,7 @@ def get_operation(private_sock):
             op = core_transmit.get_operation(private_sock)
             # op = op.strip('[END]')
             if op == '':
-                continue
+                break
             elif '[END]' in op:
                 ops = op.split('[END]')
                 # for i in range(len(ops)):

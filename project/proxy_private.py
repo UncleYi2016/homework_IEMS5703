@@ -47,7 +47,7 @@ def private_to_public(private_app_socket, client_address, app_name):
         while True:
             msg = core_transmit.get_data(private_app_socket)
             if msg == '':
-                continue
+                break
             # After receive data
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, client_address)
             data_packet_json = json.dumps(data_packet)
@@ -58,8 +58,6 @@ def private_to_public(private_app_socket, client_address, app_name):
         logging.debug(err)
         private_app_socket.shutdown(socket.SHUT_RDWR)
         private_app_socket.close()
-        public_socket.shutdown(socket.SHUT_RDWR)
-        public_socket.close()
         
 
 '''
