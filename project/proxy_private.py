@@ -47,6 +47,7 @@ def private_to_public(private_app_socket, client_address, app_name):
             logging.debug('generate: ' + str(data_packet_json))
             core_transmit.send_operation(public_socket, data_packet_json)
     except Exception as err:
+        logging.info('Client disconnected')
         logging.debug(err)
         private_app_socket.shutdown(socket.SHUT_RDWR)
         private_app_socket.close()
