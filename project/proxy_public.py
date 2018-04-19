@@ -61,7 +61,11 @@ def handle_operation():
     while True:
         operation = OP_QUEUE.get()
         logging.debug('operation get: ' + operation)
-        operation_packet = json.loads(operation)
+        try:
+            operation_packet = json.loads(operation)
+        except Exception as err:
+            logging.info(operation)
+            logging.info(err)
         op_code = operation_packet['op_code']
         op_describe = operation_packet['op_describe']
         msg = operation_packet['msg']
