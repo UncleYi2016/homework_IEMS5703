@@ -89,15 +89,16 @@ def client_to_private(c_sock, c_address, pri_sock, app_name):
         while True:
             msg = core_transmit.get_data(c_sock)
             if msg == '':
-                continue
+                break
             # After receive data
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, c_address)
             data_packet_json = json.dumps(data_packet)
             logging.debug('generate: ' + str(data_packet_json))
             core_transmit.send_operation(pri_sock, data_packet_json)
     except Exception as err:
-        logging.info('Client disconnected')
         logging.debug(err)
+    finally:
+        logging.info('Client disconnected')
         c_sock.shutdown(socket.SHUT_RDWR)
         c_sock.close()
 
