@@ -77,6 +77,14 @@ def get_operation(public_socket):
             op = core_transmit.get_operation(public_socket)
             # op = op.strip('[END]')
             if op == '':
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 break
             elif '[END]' in op:
                 ops = op.split('[END]')
