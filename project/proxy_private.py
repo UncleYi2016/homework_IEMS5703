@@ -33,7 +33,7 @@ app = Flask(__name__)
 def check_hold_connection():
     while True:
         logging.info(PRIVATE_SOCKET_TABLE)
-        time.sleep(5)
+        time.sleep(10)
 
 '''
     Get data from private app and send it to public server as operation
@@ -99,6 +99,7 @@ def get_operation(public_socket):
                      OP_QUEUE.put(each_op)
             else:
                 OP_QUEUE.put(op)
+            logging.info('get op(s)')
     except Exception as err:
         logging.debug(err)
         # public_socket.shutdown(socket.SHUT_RDWR)
@@ -108,6 +109,7 @@ def get_operation(public_socket):
 def handle_operation():
     while True:
         operation = OP_QUEUE.get()
+        logging.info('handle op')
         logging.debug('operation get: ' + operation)
         operation_packet = json.loads(operation)
         op_code = operation_packet['op_code']
