@@ -109,6 +109,7 @@ def client_accept(client_handle_socket, app_name):
     while True:
         private_socket = None
         (client_socket, client_address) = client_handle_socket.accept()
+        logging.info(str(client_address) + ' Connected')
         client_socket.settimeout(5)
         logging.debug('accept client: ' + str(client_address))
         c_address = json.loads(json.dumps(client_address))
