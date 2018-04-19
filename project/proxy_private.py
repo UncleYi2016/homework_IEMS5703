@@ -8,6 +8,7 @@ import queue
 import urllib
 import urllib.request
 import urllib.parse
+import time
 from threading import Thread
 from flask import Flask
 from flask import request
@@ -27,6 +28,12 @@ logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
     level=logging.INFO)
 app = Flask(__name__)
+
+
+def check_hold_connection():
+    while True:
+        logging.info(PRIVATE_SOCKET_TABLE)
+        time.sleep(5)
 
 '''
     Get data from private app and send it to public server as operation
