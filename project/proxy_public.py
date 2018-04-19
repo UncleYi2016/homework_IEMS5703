@@ -134,6 +134,7 @@ def register_app(app_name=None, bind_port=None):
     BIND_APP[app_name] = bind_port
     try:
         (private_socket, private_address) = PROXY_SOCKET.accept()
+        private_socket.settimeout(5)
         logging.debug('accept address: ' + str(private_address))
         private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
         PRIVATE_SOCKET_TABLE.append(private_socket_element)
@@ -165,6 +166,7 @@ if __name__ == '__main__':
     PROXY_SOCKET.listen(20)
     while True:
         (register_socket, register_address) = get_op_socket.accept()
+        register_socket.settimeout(5)
         get_register_thread = Thread(target=get_operation, args=(register_socket,), daemon=False, name='get_register_thread')
         get_register_thread.start()
     
