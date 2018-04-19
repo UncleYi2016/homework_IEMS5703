@@ -8,7 +8,7 @@ logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
     level=logging.INFO)
 
-MSG_LEN = 4096
+MSG_LEN = 65536
 
 def transmit_thread(s_sock, d_sock):
     try:
