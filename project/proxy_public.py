@@ -96,6 +96,7 @@ def client_to_private(c_sock, c_address, pri_sock, app_name):
             logging.debug('generate: ' + str(data_packet_json))
             core_transmit.send_operation(pri_sock, data_packet_json)
     except Exception as err:
+        logging.info('Client disconnected')
         logging.debug(err)
         c_sock.shutdown(socket.SHUT_RDWR)
         c_sock.close()
