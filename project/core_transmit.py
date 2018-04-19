@@ -33,6 +33,7 @@ def send_operation(d_sock, msg):
     msg = msg + '[END]'
     logging.debug('send op: ' + msg)
     data = bytes(msg, encoding = 'ISO-8859-1')
+    time.sleep(0.1)
     d_sock.sendall(data)
 
 def get_operation(s_sock):
