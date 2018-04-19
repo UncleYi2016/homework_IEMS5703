@@ -110,7 +110,6 @@ def client_accept(client_handle_socket, app_name):
         private_socket = None
         (client_socket, client_address) = client_handle_socket.accept()
         logging.info(str(client_address) + ' Connected')
-        client_socket.settimeout(5)
         logging.debug('accept client: ' + str(client_address))
         c_address = json.loads(json.dumps(client_address))
         client_address_element = {'client_address': c_address, 'client_socket': client_socket}
@@ -167,7 +166,6 @@ if __name__ == '__main__':
     PROXY_SOCKET.listen(20)
     while True:
         (register_socket, register_address) = get_op_socket.accept()
-        register_socket.settimeout(5)
         get_register_thread = Thread(target=get_operation, args=(register_socket,), daemon=False, name='get_register_thread')
         get_register_thread.start()
     
