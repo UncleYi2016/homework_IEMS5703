@@ -47,6 +47,14 @@ def private_to_public(private_app_socket, client_address, app_name):
         while True:
             msg = core_transmit.get_data(private_app_socket)
             if msg == '':
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 break
             # After receive data
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, client_address)
@@ -69,7 +77,7 @@ def get_operation(public_socket):
             op = core_transmit.get_operation(public_socket)
             # op = op.strip('[END]')
             if op == '':
-                continue
+                break
             elif '[END]' in op:
                 ops = op.split('[END]')
                 # for i in range(len(ops)):
