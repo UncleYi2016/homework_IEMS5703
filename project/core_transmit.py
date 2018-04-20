@@ -59,7 +59,7 @@ def get_data(s_sock):
     time.sleep(0.1)
     logging.debug('waiting for ++++++++++++ ' + str(s_sock.getpeername()))
     data = s_sock.recv(MSG_LEN)
-    logging.debug('get data from ------------ ' + str(s_sock.getpeername()))
+    logging.debug('get + ' + str(len(data.decode('ISO-8859-1'))) + ' data from ------------ ' + str(s_sock.getpeername()))
     return data.decode('ISO-8859-1')
     
 
