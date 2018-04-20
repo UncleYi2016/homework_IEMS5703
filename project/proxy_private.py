@@ -70,9 +70,9 @@ def private_to_public(private_app_socket, client_address, app_name):
         disconn_json = json.dumps(disconn_packet)
         logging.debug('generate: ' + str(disconn_json))
         core_transmit.send_operation(public_socket, disconn_json)
-        for element in CLIENT_ADDRESS_TABLE:
+        for element in PRIVATE_SOCKET_TABLE:
             if client_address == element['client_address']:
-                CLIENT_ADDRESS_TABLE.remove(element)
+                PRIVATE_SOCKET_TABLE.remove(element)
 
 '''
     Get operation from private proxy and store into queue
@@ -159,9 +159,9 @@ def handle_operation():
                     private_socket = element['private_socket']
                     private_socket.shutdown(socket.SHUT_RDWR)
                     private_socket.close()
-                    for element in CLIENT_ADDRESS_TABLE:
+                    for element in PRIVATE_SOCKET_TABLE:
                         if client_address == element['client_address']:
-                            CLIENT_ADDRESS_TABLE.remove(element)
+                            PRIVATE_SOCKET_TABLE.remove(element)
 
 @app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>')
 def register_app(app_name=None, app_address=None, app_port=None, public_server_port=None):
