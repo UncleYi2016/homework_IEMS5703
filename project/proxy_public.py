@@ -1,4 +1,3 @@
-# TODO: 换成对接socket的形式，不使用数据包转发的形式
 import core_transmit
 import socket
 import logging
@@ -24,7 +23,7 @@ OP_QUEUE = queue.Queue()
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 
 '''
     Get operation from private proxy and store into queue
@@ -60,7 +59,9 @@ def get_operation(private_sock):
 def handle_operation():
     while True:
         operation = OP_QUEUE.get()
-        logging.debug('operation get: ' + operation)
+        logging.info('handle op')
+        omatted_json = json.dumps(json.loads(operation), indent=4)
+        logging.debug(omatted_json)
         try:
             operation_packet = json.loads(operation)
         except Exception as err:
