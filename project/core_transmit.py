@@ -6,7 +6,7 @@ import time
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.NOTSET)
 
 MSG_LEN = 65536
 

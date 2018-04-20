@@ -23,7 +23,7 @@ OP_QUEUE = queue.Queue()
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.NOTSET)
 
 '''
     Get operation from private proxy and store into queue
