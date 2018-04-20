@@ -37,6 +37,7 @@ def send_operation(d_sock, msg):
     d_sock.sendall(data)
 
 def get_operation(s_sock):
+    time.sleep(0.1)
     msg = ''
     while True:
         data = s_sock.recv(MSG_LEN + 1024)
@@ -51,11 +52,14 @@ def get_operation(s_sock):
 def send_data(d_sock, msg):
     logging.debug(str(d_sock.getsockname()) + 'send: ' + msg)
     data = bytes(msg, encoding = 'ISO-8859-1')
+    time.sleep(0.1)
     d_sock.sendall(data)
 
 def get_data(s_sock):
+    time.sleep(0.1)
     logging.debug('waiting for ++++++++++++ ' + str(s_sock.getpeername()))
     data = s_sock.recv(MSG_LEN)
+    logging.debug('get data from ------------ ' + str(s_sock.getpeername()))
     return data.decode('ISO-8859-1')
     
 
