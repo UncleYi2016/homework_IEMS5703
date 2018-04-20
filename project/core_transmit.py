@@ -49,7 +49,7 @@ def get_operation(s_sock):
     return msg
 
 def send_data(d_sock, msg):
-    logging.debug(str(d_sock.getsocksname()) + 'send: ' + msg)
+    logging.debug(str(d_sock.getsockname()) + 'send: ' + msg)
     data = bytes(msg, encoding = 'ISO-8859-1')
     d_sock.sendall(data)
 
