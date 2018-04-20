@@ -54,7 +54,7 @@ def send_data(d_sock, msg):
     d_sock.sendall(data)
 
 def get_data(s_sock):
-    logging.debug('waiting for ++++++++++++ ' + str(s_sock.getsockname()))
+    logging.debug('waiting for ++++++++++++ ' + str(s_sock.getpeername()))
     data = s_sock.recv(MSG_LEN)
     return data.decode('ISO-8859-1')
     
