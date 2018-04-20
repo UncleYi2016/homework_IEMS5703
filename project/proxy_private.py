@@ -32,7 +32,7 @@ app = Flask(__name__)
 
 def check_hold_connection():
     while True:
-        logging.info(PRIVATE_SOCKET_TABLE)
+        logging.info(str(len(PRIVATE_SOCKET_TABLE)))
         time.sleep(10)
 
 '''
