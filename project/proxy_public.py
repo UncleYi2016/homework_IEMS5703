@@ -118,7 +118,7 @@ def client_to_private(c_sock, c_address, pri_sock, app_name):
         c_sock.shutdown(socket.SHUT_RDWR)
         c_sock.close()
         disconn_packet = packet.packet(op_enum.OP_DISCONNECTED, op_enum.DES_DISCONNECTED, '', app_name, c_address)
-        disconn_json = json.dumps(data_packet)
+        disconn_json = json.dumps(disconn_packet)
         logging.debug('generate: ' + str(disconn_json))
         core_transmit.send_operation(pri_sock, disconn_json)
         for element in CLIENT_ADDRESS_TABLE:

@@ -67,7 +67,7 @@ def private_to_public(private_app_socket, client_address, app_name):
         private_app_socket.shutdown(socket.SHUT_RDWR)
         private_app_socket.close()
         disconn_packet = packet.packet(op_enum.OP_DISCONNECTED, op_enum.DES_DISCONNECTED, '', app_name, client_address)
-        disconn_json = json.dumps(data_packet)
+        disconn_json = json.dumps(disconn_packet)
         logging.debug('generate: ' + str(disconn_json))
         core_transmit.send_operation(public_socket, disconn_json)
         for element in CLIENT_ADDRESS_TABLE:
