@@ -55,7 +55,7 @@ def private_to_public(private_app_socket, client_address, app_name):
                 logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 logging.info('DETECT \'\'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                break
+                continue
             # After receive data
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, client_address)
             data_packet_json = json.dumps(data_packet)
