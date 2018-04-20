@@ -63,6 +63,7 @@ def private_to_public(private_app_socket, client_address, app_name):
             core_transmit.send_operation(public_socket, data_packet_json)
     except Exception as err:
         logging.debug(err)
+    finally:
         private_app_socket.shutdown(socket.SHUT_RDWR)
         private_app_socket.close()
         disconn_packet = packet.packet(op_enum.OP_DISCONNECTED, op_enum.DES_DISCONNECTED, '', app_name, c_address)
