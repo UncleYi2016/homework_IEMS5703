@@ -62,11 +62,16 @@ def private_to_public(private_app_socket, client_address, app_name):
             logging.debug('generate: ' + str(data_packet_json))
             core_transmit.send_operation(public_socket, data_packet_json)
     except Exception as err:
-        logging.info('Client disconnected')
         logging.debug(err)
         private_app_socket.shutdown(socket.SHUT_RDWR)
         private_app_socket.close()
-        
+        disconn_packet = packet.packet(op_enum.OP_DISCONNECTED, op_enum.DES_DISCONNECTED, '', app_name, c_address)
+        disconn_json = json.dumps(data_packet)
+        logging.debug('generate: ' + str(disconn_json))
+        core_transmit.send_operation(public_socket, disconn_json)
+        for element in CLIENT_ADDRESS_TABLE:
+            if client_address == element['client_address']:
+                CLIENT_ADDRESS_TABLE.remove(element)
 
 '''
     Get operation from private proxy and store into queue
@@ -137,10 +142,6 @@ def handle_operation():
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
             private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, app_name ), daemon=False, name='private_to_public:'+str(client_address))
             private_to_public_thread.start()
-            # Tell public server that private connection is build
-            # response_packet = packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'App socket build success', app_name, client_address)
-            # response_json = json.dumps(response_packet)
-            # core_transmit.send_operation(public_socket, response_json)
         elif op_code == op_enum.OP_SUCCESS:
             logging.debug(packet.packet(op_code, op_describe, msg, app_name, client_address))
         elif op_code == op_enum.OP_TRANSMIT_DATA:
@@ -149,6 +150,19 @@ def handle_operation():
                     private_socket = element['private_socket']
             if private_socket != None:
                 core_transmit.send_data(private_socket, msg)
+        '''
+            if client disconnected, close private socket of this client
+        '''
+        elif op_code == op_enum.OP_DISCONNECTED:
+            logging.debug(str(op_describe) + ':' + str(client_address))
+            for element in PRIVATE_SOCKET_TABLE:
+                if client_address == element['client_address']:
+                    private_socket = element['private_socket']
+                    private_socket.shutdown(socket.SHUT_RDWR)
+                    private_socket.close()
+                    for element in CLIENT_ADDRESS_TABLE:
+                        if client_address == element['client_address']:
+                            CLIENT_ADDRESS_TABLE.remove(element)
 
 @app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>')
 def register_app(app_name=None, app_address=None, app_port=None, public_server_port=None):

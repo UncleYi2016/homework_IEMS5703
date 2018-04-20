@@ -3,7 +3,8 @@ OP_BUILD_CONNECTION = 10001         #Build a new connection for new coming clien
 OP_REGISTER_APP = 10002
 
 OP_FAILED = 10010
-OP_CONNECTION_BROKEN = 10011
+OP_DISCONNECTED = 10011
+OP_CONNECTION_BROKEN = 10012
 
 OP_TRANSMIT_DATA = 10099
 
@@ -14,6 +15,7 @@ OP_REGISTER_APP = 10100
 DES_SUCCESS = 'success'
 DES_BUILD_CONNECTION = 'build_connection'
 DES_FAILED = 'failed'
+DES_DISCONNECTED = 'socket_disconnected'
 
 DES_TRANSMIT_DATA = 'transmit_data'
 

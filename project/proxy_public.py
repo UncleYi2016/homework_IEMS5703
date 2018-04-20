@@ -14,8 +14,8 @@ from threading import Thread
 PROXY_ADDRESS = '0.0.0.0'
 PROXY_PORT = 8000
 PROXY_SOCKET = None
-CLIENT_ADDRESS_TABLE = []
-PRIVATE_SOCKET_TABLE = []
+CLIENT_ADDRESS_TABLE = []       # client_address -> client_socket
+PRIVATE_SOCKET_TABLE = []       # app_name -> private_socket
 BIND_APP = {}
 OP_QUEUE = queue.Queue()
 
@@ -85,6 +85,19 @@ def handle_operation():
             if client_socket != None:
                 logging.debug('sent to client')
                 core_transmit.send_data(client_socket, msg)
+        '''
+            if private socket disconnected, close client of this private socket
+        '''
+        elif op_code == op_enum.OP_DISCONNECTED:
+            logging.debug(str(op_describe) + ':' + str(client_address))
+            for element in CLIENT_ADDRESS_TABLE:
+                if client_address == element['client_address']:
+                    client_socket = element['client_socket']
+                    client_socket.shutdown(socket.SHUT_RDWR)
+                    client_socket.close()
+                    for element in CLIENT_ADDRESS_TABLE:
+                        if client_address == element['client_address']:
+                            CLIENT_ADDRESS_TABLE.remove(element)
 
 '''
     Receive client data and transmit to private proxy
@@ -106,6 +119,13 @@ def client_to_private(c_sock, c_address, pri_sock, app_name):
         logging.info('Client disconnected')
         c_sock.shutdown(socket.SHUT_RDWR)
         c_sock.close()
+        disconn_packet = packet.packet(op_enum.OP_DISCONNECTED, op_enum.DES_DISCONNECTED, '', app_name, c_address)
+        disconn_json = json.dumps(data_packet)
+        logging.debug('generate: ' + str(disconn_json))
+        core_transmit.send_operation(pri_sock, disconn_json)
+        for element in CLIENT_ADDRESS_TABLE:
+            if c_address == element['client_address']:
+                CLIENT_ADDRESS_TABLE.remove(element)
 
 '''
     Used to accept client connection
