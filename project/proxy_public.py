@@ -94,7 +94,7 @@ def client_to_private(c_sock, c_address, pri_sock, app_name):
         while True:
             msg = core_transmit.get_data(c_sock)
             if msg == '':
-                continue
+                break
             # After receive data
             data_packet = packet.packet(op_enum.OP_TRANSMIT_DATA, op_enum.DES_TRANSMIT_DATA, msg, app_name, c_address)
             data_packet_json = json.dumps(data_packet)
