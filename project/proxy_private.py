@@ -26,7 +26,7 @@ PROXY_PORT = 8000
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 app = Flask(__name__)
 
 
@@ -110,7 +110,8 @@ def handle_operation():
     while True:
         operation = OP_QUEUE.get()
         logging.info('handle op')
-        logging.debug('operation get: ' + operation)
+        omatted_json = json.dumps(json.loads(operation), indent=4)
+        logging.debug(omatted_json)
         operation_packet = json.loads(operation)
         op_code = operation_packet['op_code']
         op_describe = operation_packet['op_describe']
