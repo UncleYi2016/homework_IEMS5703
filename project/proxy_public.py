@@ -85,9 +85,7 @@ def handle_operation():
             if client_socket != None:
                 logging.debug('sent to client')
                 core_transmit.send_data(client_socket, msg)
-        '''
-            if private socket disconnected, close client of this private socket
-        '''
+        # if private socket disconnected, close client of this private socket
         elif op_code == op_enum.OP_DISCONNECTED:
             logging.debug(str(op_describe) + ':' + str(client_address))
             for element in CLIENT_ADDRESS_TABLE:
