@@ -162,11 +162,11 @@ def handle_operation():
                     for element in PRIVATE_SOCKET_TABLE:
                         if client_address == element['client_address']:
                             PRIVATE_SOCKET_TABLE.remove(element)
-        elif op_code = op_enum.OP_REGISTER_SUCCESS:
+        elif op_code == op_enum.OP_REGISTER_SUCCESS:
             for in_wait in REGISTER_IN_WAIT:
                 if app_name == in_wait['app_name']:
                     in_wait['status'] = True
-        elif op_code = op_enum.OP_REGISTER_FAILED:
+        elif op_code == op_enum.OP_REGISTER_FAILED:
             for in_wait in REGISTER_IN_WAIT:
                 if app_name == in_wait['app_name']:
                     in_wait['status'] = False
