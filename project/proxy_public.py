@@ -167,7 +167,7 @@ def register_app(app_name=None, bind_port=None):
         get_op_thread.start()
         if app_name_failed_op != None:
             core_transmit.send_operation(private_socket, app_name_failed_op)
-            BIND_APP.remove(app_name)
+            del BIND_APP[app_name]
             private_socket.shutdown(socket.SHUT_RDWR)
             private_socket.close()
         # If register failed, do not start client_handle_socket
@@ -183,7 +183,7 @@ def register_app(app_name=None, bind_port=None):
     except Exception as err:
         failed_op = json.dumps(packet.packet(op_enum.OP_REGISTER_FAILED, op_enum.DES_REGISTER_FAILED, str(err), app_name, None))
         core_transmit.send_operation(private_socket, failed_op)
-        BIND_APP.remove(app_name)
+        del BIND_APP[app_name]
         private_socket.shutdown(socket.SHUT_RDWR)
         private_socket.close()
         client_handle_socket.close()
