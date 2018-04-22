@@ -16,6 +16,7 @@ PROXY_PORT = 8000
 PROXY_SOCKET = None
 CLIENT_ADDRESS_TABLE = []       # client_address -> client_socket
 PRIVATE_SOCKET_TABLE = []       # app_name -> private_socket
+REGISTER_TABLE = []             # private_socket -> registering app
 BIND_APP = {}
 OP_QUEUE = queue.Queue()
 
@@ -153,8 +154,9 @@ def client_accept(client_handle_socket, app_name):
     Register APP
 '''
 def register_app(app_name=None, bind_port=None):
+    app_name_failed_op = None
     if app_name in BIND_APP:
-        return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'APP \"' + app_name + '\" has already exist', app_name, None))
+        app_name_failed_op = json.dumps(packet.packet(op_enum.OP_REGISTER_FAILED, op_enum.DES_REGISTER_FAILED, 'APP \"' + app_name + '\" has already exist', app_name, None))
     BIND_APP[app_name] = bind_port
     try:
         (private_socket, private_address) = PROXY_SOCKET.accept()
@@ -163,6 +165,12 @@ def register_app(app_name=None, bind_port=None):
         PRIVATE_SOCKET_TABLE.append(private_socket_element)
         get_op_thread = Thread(target=get_operation, args=(private_socket,), daemon=False, name='get_operation: ' + app_name)
         get_op_thread.start()
+        if app_name_failed_op != None:
+            core_transmit.send_operation(private_socket, app_name_failed_op)
+            BIND_APP.remove(app_name)
+            private_socket.shutdown(socket.SHUT_RDWR)
+            private_socket.close()
+        # If register failed, do not start client_handle_socket
         client_handle_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_handle_socket.bind((PROXY_ADDRESS, bind_port))
         client_handle_socket.listen(20)
@@ -170,9 +178,15 @@ def register_app(app_name=None, bind_port=None):
         logging.debug(PRIVATE_SOCKET_TABLE)
         client_accept_thread = Thread(target=client_accept, args=(client_handle_socket, app_name, ), daemon=False, name='client_accept_thread: ' + app_name)
         client_accept_thread.start()
-        return json.dumps(packet.packet(op_enum.OP_SUCCESS, op_enum.DES_SUCCESS, 'APP \"' + app_name + '\" created', app_name, None))
+        success_op = json.dumps(packet.packet(op_enum.OP_REGISTER_SUCCESS, op_enum.DES_REGISTER_SUCCESS, 'APP \"' + app_name + '\" created', app_name, None))
+        core_transmit.send_operation(private_socket, success_op)
     except Exception as err:
-        return json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, str(err), app_name, None))
+        failed_op = json.dumps(packet.packet(op_enum.OP_REGISTER_FAILED, op_enum.DES_REGISTER_FAILED, str(err), app_name, None))
+        core_transmit.send_operation(private_socket, failed_op)
+        BIND_APP.remove(app_name)
+        private_socket.shutdown(socket.SHUT_RDWR)
+        private_socket.close()
+        client_handle_socket.close()
 
 
 
