@@ -164,11 +164,11 @@ def handle_operation():
                             PRIVATE_SOCKET_TABLE.remove(element)
         elif op_code == op_enum.OP_REGISTER_SUCCESS:
             for in_wait in REGISTER_IN_WAIT:
-                if app_name == in_wait['app_name']:
+                if app_name == in_wait['register_app_name']:
                     in_wait['status'] = True
         elif op_code == op_enum.OP_REGISTER_FAILED:
             for in_wait in REGISTER_IN_WAIT:
-                if app_name == in_wait['app_name']:
+                if app_name == in_wait['register_app_name']:
                     in_wait['status'] = False
 
 
