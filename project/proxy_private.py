@@ -198,7 +198,7 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
     register_app['public_socket'] = public_socket
     waiting_register_app = {'register_app_name': register_app['app_name'], 'status': None, 'msg': ''}
     REGISTER_IN_WAIT.append(waiting_register_app)
-    while 'status' == None:
+    while waiting_register_app['status'] == None:
         logging.debug('waiting for register')
     logging.debug(waiting_register_app)
     if waiting_register_app['status'] == True:
