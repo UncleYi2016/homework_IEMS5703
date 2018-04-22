@@ -205,7 +205,7 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
         REGISTER_IN_WAIT.remove(waiting_register_app)
     elif waiting_register_app['status'] == False:
         REGISTER_IN_WAIT.remove(waiting_register_app)
-        return 'Register failed because of \"' + msg + '\"'
+        return 'Register failed because of \"' + waiting_register_app['msg'] + '\"'
     REGISTERED_APPS.append(register_app)
     return 'Register success'
 
