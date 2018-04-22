@@ -103,10 +103,12 @@ def handle_operation():
                 if app_name == private_socket_element['app_name']:
                     p_sock = private_socket_element['private_socket']
                     p_sock.close()
+                    PRIVATE_SOCKET_TABLE.remove(private_socket_element)
             for client_handle_element in CLIENT_HANDLE_TABLE:
                 if app_name == client_handle_element['app_name']:
                     client_handle_socket = client_handle_element
                     client_handle_socket.close()
+                    CLIENT_HANDLE_TABLE.remove(client_handle_element)
 
 '''
     Receive client data and transmit to private proxy

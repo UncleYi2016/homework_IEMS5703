@@ -125,6 +125,11 @@ def handle_operation():
         app_name = operation_packet['app_name']
         client_address = operation_packet['client_address']
         private_socket = None
+        public_socket = None
+        for public_socket_element in PUBLIC_SOCKET_TABLE:
+            if app_name == public_socket_element['app_name']:
+                public_socket = public_socket_element['public_socket']
+
         '''
         proceduce operation
         '''
@@ -137,11 +142,12 @@ def handle_operation():
             if app_name == None or app_port == None:
                 response = json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'No such app', app_name, client_address))
                 logging.debug(response)
-                core_transmit.send_operation(response)
+                core_transmit.send_operation(public_socket, response)
             try:
                 tmp_private_socket.connect((app_address, app_port))
             except Exception as err:
                 failed_op = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION_FAILED, op_enum.DES_BUILD_CONNECTION_FAILED, str(err), app_name, client_address))
+                core_transmit.send_operation(public_socket, failed_op)
                 continue
             private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
