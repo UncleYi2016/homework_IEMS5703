@@ -170,6 +170,7 @@ def handle_operation():
             for in_wait in REGISTER_IN_WAIT:
                 if app_name == in_wait['register_app_name']:
                     in_wait['status'] = False
+                    in_wait['msg'] = msg
 
 
 @app.route('/register_app/<app_name>/<app_address>/<int:app_port>/<int:public_server_port>')
