@@ -97,6 +97,11 @@ def handle_operation():
                     for element in CLIENT_ADDRESS_TABLE:
                         if client_address == element['client_address']:
                             CLIENT_ADDRESS_TABLE.remove(element)
+        elif op_code == op_enum.OP_BUILD_CONNECTION_FAILED:
+            for private_socket_element in PRIVATE_SOCKET_TABLE:
+                if app_name == private_socket_element['app_name']:
+                    p_sock = private_socket_element['private_socket']
+                    p_sock.close()
 
 '''
     Receive client data and transmit to private proxy

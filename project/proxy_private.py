@@ -138,7 +138,11 @@ def handle_operation():
                 response = json.dumps(packet.packet(op_enum.OP_FAILED, op_enum.DES_FAILED, 'No such app', app_name, client_address))
                 logging.debug(response)
                 core_transmit.send_operation(response)
-            tmp_private_socket.connect((app_address, app_port))
+            try:
+                tmp_private_socket.connect((app_address, app_port))
+            except Exception as err:
+                failed_op = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION_FAILED, op_enum.DES_BUILD_CONNECTION_FAILED, str(err), app_name, client_address))
+                continue
             private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
             private_to_public_thread = Thread(target=private_to_public, args=(tmp_private_socket, client_address, app_name ), daemon=False, name='private_to_public:'+str(client_address))
