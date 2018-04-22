@@ -17,6 +17,7 @@ PROXY_SOCKET = None
 CLIENT_ADDRESS_TABLE = []       # client_address -> client_socket
 PRIVATE_SOCKET_TABLE = []       # app_name -> private_socket
 REGISTER_TABLE = []             # private_socket -> registering app
+CLIENT_HANDLE_TABLE = []        # app_name -> client_handle_socket
 BIND_APP = {}
 OP_QUEUE = queue.Queue()
 
@@ -102,6 +103,10 @@ def handle_operation():
                 if app_name == private_socket_element['app_name']:
                     p_sock = private_socket_element['private_socket']
                     p_sock.close()
+            for client_handle_element in CLIENT_HANDLE_TABLE:
+                if app_name == client_handle_element['app_name']:
+                    client_handle_socket = client_handle_element
+                    client_handle_socket.close()
 
 '''
     Receive client data and transmit to private proxy
@@ -135,25 +140,30 @@ def client_to_private(c_sock, c_address, pri_sock, app_name):
     Used to accept client connection
 '''
 def client_accept(client_handle_socket, app_name):
-    while True:
-        private_socket = None
-        (client_socket, client_address) = client_handle_socket.accept()
-        logging.info(str(client_address) + ' Connected')
-        logging.debug('accept client: ' + str(client_address))
-        c_address = json.loads(json.dumps(client_address))
-        client_address_element = {'client_address': c_address, 'client_socket': client_socket}
-        CLIENT_ADDRESS_TABLE.append(client_address_element)
-        # private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
-        # PRIVATE_SOCKET_TABLE.append(private_socket_element)
-        for element in PRIVATE_SOCKET_TABLE:
-            logging.debug(element)
-            if app_name == element['app_name']:
-                private_socket = element['private_socket']
-        build_connect_packet = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '', app_name, client_address))
-        if private_socket != None:
-            core_transmit.send_operation(private_socket, build_connect_packet)
-            client_to_private_thread = Thread(target=client_to_private, args=(client_socket, client_address, private_socket, app_name), daemon=False, name=app_name + str(client_address))
-            client_to_private_thread.start()
+    try:
+        while True:
+            private_socket = None
+            (client_socket, client_address) = client_handle_socket.accept()
+            logging.info(str(client_address) + ' Connected')
+            logging.debug('accept client: ' + str(client_address))
+            c_address = json.loads(json.dumps(client_address))
+            client_address_element = {'client_address': c_address, 'client_socket': client_socket}
+            CLIENT_ADDRESS_TABLE.append(client_address_element)
+            # private_socket_element = {'app_name': app_name, 'private_socket': private_socket}
+            # PRIVATE_SOCKET_TABLE.append(private_socket_element)
+            for element in PRIVATE_SOCKET_TABLE:
+                logging.debug(element)
+                if app_name == element['app_name']:
+                    private_socket = element['private_socket']
+            build_connect_packet = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION, op_enum.DES_BUILD_CONNECTION, '', app_name, client_address))
+            if private_socket != None:
+                core_transmit.send_operation(private_socket, build_connect_packet)
+                client_to_private_thread = Thread(target=client_to_private, args=(client_socket, client_address, private_socket, app_name), daemon=False, name=app_name + str(client_address))
+                client_to_private_thread.start()
+    except Exception as err:
+        logging.debug(err)
+        client_handle_socket.shutdown(socket.SHUT_RDWR)
+        client_handle_socket.close()
 
 '''
     Register APP
@@ -179,6 +189,8 @@ def register_app(app_name=None, bind_port=None):
         client_handle_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_handle_socket.bind((PROXY_ADDRESS, bind_port))
         client_handle_socket.listen(20)
+        client_handle_element = {'app_name': app_name, 'client_handle_socket': client_handle_socket}
+        CLIENT_HANDLE_TABLE.append(client_handle_element)
         logging.debug(BIND_APP)
         logging.debug(PRIVATE_SOCKET_TABLE)
         client_accept_thread = Thread(target=client_accept, args=(client_handle_socket, app_name, ), daemon=False, name='client_accept_thread: ' + app_name)
