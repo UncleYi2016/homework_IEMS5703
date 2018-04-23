@@ -52,17 +52,24 @@
     </head>
     <body>
         <table width=80% class="table table-striped">
+            <td>
             <tr>
-                    <td width=50%  class="table table-striped">
-                            <form name="register_form">
-                                <input type="text" class="form-control" placeholder="App name" id="app_name"   />
-                                <input type="text" class="form-control" placeholder="App address" id="app_address"   />
-                                <input type="text" class="form-control" placeholder="App port" id="app_port"   />
-                                <input type="text" class="form-control" placeholder="Public server port you want to bind in" id="public_server_port"   />
-                                </form>
-                                <button class="btn btn-default" onclick="register_app(app_name.value, app_address.value, app_port.value, public_server_port.value)">submit</button>
-                                <p id="register_result"></p>
-                    </td>
+                <input type="text" class="form-control" placeholder="App name" id="app_name"   />
+            </tr>
+            <tr>
+                <input type="text" class="form-control" placeholder="App address" id="app_address"   />
+            </tr>
+            <tr>
+                <input type="text" class="form-control" placeholder="App port" id="app_port"   />
+            </tr>
+            <tr>
+                <input type="text" class="form-control" placeholder="Public server port you want to bind in" id="public_server_port"   />
+            </tr> 
+                <button class="btn btn-default" onclick="register_app(app_name.value, app_address.value, app_port.value, public_server_port.value)">submit</button>
+            <tr> 
+                <p id="register_result"></p>
+            </tr>
+            </td>
                     <td>
                         <table id="list_app" onload="get_list_app()" class="table table-striped">
                         <tr>
@@ -72,7 +79,6 @@
                         </tr>
                         </table>
                     </td>
-            </tr>
             
         </table>
         
