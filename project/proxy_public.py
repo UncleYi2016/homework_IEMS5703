@@ -119,6 +119,7 @@ def handle_operation():
                     client_handle_socket.close()
                     CLIENT_HANDLE_TABLE.remove(client_handle_element)
                     del BIND_APP[app_name]
+    logging.debug('handle finished')
 
 '''
     Receive client data and transmit to private proxy
