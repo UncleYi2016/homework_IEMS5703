@@ -39,10 +39,10 @@
                         var reg=/\'/g;
                         result = result.replace(reg, "\"")
                         result = jQuery.parseJSON(result)
-                        for(element in result){
-                            result_table = result_table + "<tr><td>" + element["app_name"] + "</td><td>" + element["app_address"] + "</td><td>" + element["app_port"] + "</td><td>" + element["public_port"]
+                        for(index in result){
+                            result_table = result_table + "<tr><td>" + result[index]["app_name"] + "</td><td>" + result[index]["app_address"] + "</td><td>" + result[index]["app_port"] + "</td><td>" + result[index]["public_port"]
                         }
-                        result_table += '<button onclick="get_list_app()">update</button>'
+                        result_table += '<tr><td><button onclick="get_list_app()">update</button></tr></td>'
                         document.getElementById("list_app").innerHTML = result_table
                     }
                 }
