@@ -229,7 +229,8 @@ if __name__ == '__main__':
     PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     PROXY_SOCKET.bind(('0.0.0.0', proxy_port))
     PROXY_SOCKET.listen(20)
-    
+    check_app_thread = Thread(target=check_app, name='check_app_thread')
+    check_app_thread.start()
     while True:
         (register_socket, register_address) = get_op_socket.accept()
         logging.debug('get register')
