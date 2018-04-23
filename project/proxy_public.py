@@ -122,7 +122,9 @@ def handle_operation():
                         CLIENT_HANDLE_TABLE.remove(client_handle_element)
                         del BIND_APP[app_name]
             elif op_code == op_enum.OP_UNREGISTER_APP:
+                logging.debug(app_name)
                 if app_name in BIND_APP:
+                    logging.debug(app_name + 'in BIND_APP')
                     del BIND_APP[app_name]
             logging.debug('handle finished')
         except Exception as err:
