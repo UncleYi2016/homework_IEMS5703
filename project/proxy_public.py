@@ -126,6 +126,10 @@ def handle_operation():
                 if app_name in BIND_APP:
                     logging.debug(app_name + 'in BIND_APP')
                     del BIND_APP[app_name]
+                for private_socket_element in PRIVATE_SOCKET_TABLE:
+                    if app_name == private_socket_element['app_name']:
+                        p_sock = private_socket_element['private_socket']
+                        p_sock.close()
             logging.debug('handle finished')
         except Exception as err:
             continue
