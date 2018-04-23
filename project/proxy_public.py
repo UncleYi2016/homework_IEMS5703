@@ -40,6 +40,7 @@ def get_operation(private_sock):
     try:
         while True:
             op = core_transmit.get_operation(private_sock)
+            logging.debug('op: ' + str(op))
             # op = op.strip('[END]')
             if op == '':
                 break
