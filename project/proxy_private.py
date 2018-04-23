@@ -245,7 +245,11 @@ def unregister_app(app_name=None):
 
 @app.route('/list_app')
 def list_app():
-    return str(REGISTERED_APPS)
+    return_list = []
+    for element in REGISTERED_APPS:
+        element.remove('public_socket')
+        return_list.append(element)
+    return str(return_list)
 
 @app.route('/')
 def index():
