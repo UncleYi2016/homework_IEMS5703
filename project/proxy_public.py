@@ -177,7 +177,8 @@ def register_app(app_name=None, bind_port=None):
     app_name_failed_op = None
     if app_name in BIND_APP:
         app_name_failed_op = json.dumps(packet.packet(op_enum.OP_REGISTER_FAILED, op_enum.DES_REGISTER_FAILED, 'APP \"' + app_name + '\" has already exist', app_name, None))
-    BIND_APP[app_name] = bind_port
+    if app_name_failed_op == None:
+        BIND_APP[app_name] = bind_port
     try:
         (private_socket, private_address) = PROXY_SOCKET.accept()
         logging.debug('accept address: ' + str(private_address))
@@ -187,7 +188,6 @@ def register_app(app_name=None, bind_port=None):
         get_op_thread.start()
         if app_name_failed_op != None:
             core_transmit.send_operation(private_socket, app_name_failed_op)
-            del BIND_APP[app_name]
             private_socket.shutdown(socket.SHUT_RDWR)
             private_socket.close()
         # If register failed, do not start client_handle_socket
@@ -226,8 +226,9 @@ if __name__ == '__main__':
     while True:
         (register_socket, register_address) = get_op_socket.accept()
         logging.debug('get register')
-        get_register_thread = Thread(target=get_operation, args=(register_socket,), daemon=False, name='get_register_thread')
+        get_register_thread = Thread(target=get_operation, args=(register_socket,), daemon=False, name='get_register_thread : ' + str(register_address))
         get_register_thread.start()
+        logging.debug('register : '  + str(register_address))
     
     
 
