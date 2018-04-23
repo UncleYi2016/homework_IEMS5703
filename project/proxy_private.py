@@ -209,8 +209,13 @@ def register_app(app_name=None, app_address=None, app_port=None, public_server_p
     register_app['public_socket'] = public_socket
     waiting_register_app = {'register_app_name': register_app['app_name'], 'status': None, 'msg': ''}
     REGISTER_IN_WAIT.append(waiting_register_app)
+    waitcount = 200
     while waiting_register_app['status'] == None:
-        pass
+        time.sleep(0.1)
+        waitcount -= 1
+        if waitcount < 0:
+            waiting_register_app['status'] = False
+            waiting_register_app['msg'] = 'time out'
         # logging.debug('waiting for register')
     logging.debug(waiting_register_app)
     if waiting_register_app['status'] == True:
