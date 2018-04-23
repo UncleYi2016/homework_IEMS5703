@@ -247,7 +247,7 @@ def unregister_app(app_name=None):
 def list_app():
     return_list = []
     for element in REGISTERED_APPS:
-        return_list.append(element)
+        return_list.append(element.copy())
     for e in return_list:
         del e['public_socket']
     return str(return_list)
