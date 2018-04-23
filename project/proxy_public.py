@@ -114,7 +114,15 @@ def handle_operation():
                         p_sock = private_socket_element['private_socket']
                         p_sock.close()
                         PRIVATE_SOCKET_TABLE.remove(private_socket_element)
-                        del BIND_APP[app_name]
+                for element in CLIENT_ADDRESS_TABLE:
+                    if client_address == element['client_address']:
+                        client_socket = element['client_socket']
+                        client_socket.shutdown(socket.SHUT_RDWR)
+                        client_socket.close()
+                        for element in CLIENT_ADDRESS_TABLE:
+                            if client_address == element['client_address']:
+                                CLIENT_ADDRESS_TABLE.remove(element)
+                del BIND_APP[app_name]
                 for client_handle_element in CLIENT_HANDLE_TABLE:
                     if app_name == client_handle_element['app_name']:
                         client_handle_socket = client_handle_element['client_handle_socket']
@@ -126,10 +134,18 @@ def handle_operation():
                 if app_name in BIND_APP:
                     logging.debug(app_name + 'in BIND_APP')
                     del BIND_APP[app_name]
-                for private_socket_element in PRIVATE_SOCKET_TABLE:
-                    if app_name == private_socket_element['app_name']:
-                        p_sock = private_socket_element['private_socket']
-                        p_sock.close()
+                    for private_socket_element in PRIVATE_SOCKET_TABLE:
+                        if app_name == private_socket_element['app_name']:
+                            p_sock = private_socket_element['private_socket']
+                            p_sock.close()
+                    for element in CLIENT_ADDRESS_TABLE:
+                        if client_address == element['client_address']:
+                            client_socket = element['client_socket']
+                            client_socket.shutdown(socket.SHUT_RDWR)
+                            client_socket.close()
+                            for element in CLIENT_ADDRESS_TABLE:
+                                if client_address == element['client_address']:
+                                    CLIENT_ADDRESS_TABLE.remove(element)
             logging.debug('handle finished')
         except Exception as err:
             continue
