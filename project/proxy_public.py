@@ -27,6 +27,12 @@ logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
     level=logging.DEBUG)
 
+def check_app():
+    while True:
+        logging.debug(str(BIND_APP))
+        time.sleep(10)
+
+
 '''
     Get operation from private proxy and store into queue
 '''
@@ -223,6 +229,7 @@ if __name__ == '__main__':
     PROXY_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     PROXY_SOCKET.bind(('0.0.0.0', proxy_port))
     PROXY_SOCKET.listen(20)
+    
     while True:
         (register_socket, register_address) = get_op_socket.accept()
         logging.debug('get register')
