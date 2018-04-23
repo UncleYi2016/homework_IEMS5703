@@ -69,58 +69,61 @@ def get_operation(private_sock):
 '''
 def handle_operation():
     while True:
-        operation = OP_QUEUE.get()
-        logging.info('handle op')
-        omatted_json = json.dumps(json.loads(operation), indent=4)
-        logging.debug(omatted_json)
         try:
-            operation_packet = json.loads(operation)
+            operation = OP_QUEUE.get()
+            logging.info('handle op')
+            omatted_json = json.dumps(json.loads(operation), indent=4)
+            logging.debug(omatted_json)
+            try:
+                operation_packet = json.loads(operation)
+            except Exception as err:
+                logging.info(operation)
+                logging.info(err)
+            op_code = operation_packet['op_code']
+            op_describe = operation_packet['op_describe']
+            msg = operation_packet['msg']
+            app_name = operation_packet['app_name']
+            client_address = operation_packet['client_address']
+            client_socket = None
+            if op_code == op_enum.OP_REGISTER_APP:
+                logging.debug('REGISTER')
+                bind_port = int(msg)
+                register_app(app_name, bind_port)
+            elif op_code == op_enum.OP_TRANSMIT_DATA:
+                logging.debug('CLIENT_ADDRESS_TABLE!!!!!!!!' + str(CLIENT_ADDRESS_TABLE))
+                for element in CLIENT_ADDRESS_TABLE:
+                    if client_address == element['client_address']:
+                        client_socket = element['client_socket']
+                if client_socket != None:
+                    logging.debug('sent to client')
+                    core_transmit.send_data(client_socket, msg)
+            # if private socket disconnected, close client of this private socket
+            elif op_code == op_enum.OP_DISCONNECTED:
+                logging.debug(str(op_describe) + ':' + str(client_address))
+                for element in CLIENT_ADDRESS_TABLE:
+                    if client_address == element['client_address']:
+                        client_socket = element['client_socket']
+                        client_socket.shutdown(socket.SHUT_RDWR)
+                        client_socket.close()
+                        for element in CLIENT_ADDRESS_TABLE:
+                            if client_address == element['client_address']:
+                                CLIENT_ADDRESS_TABLE.remove(element)
+            elif op_code == op_enum.OP_BUILD_CONNECTION_FAILED:
+                for private_socket_element in PRIVATE_SOCKET_TABLE:
+                    if app_name == private_socket_element['app_name']:
+                        p_sock = private_socket_element['private_socket']
+                        p_sock.close()
+                        PRIVATE_SOCKET_TABLE.remove(private_socket_element)
+                        del BIND_APP[app_name]
+                for client_handle_element in CLIENT_HANDLE_TABLE:
+                    if app_name == client_handle_element['app_name']:
+                        client_handle_socket = client_handle_element['client_handle_socket']
+                        client_handle_socket.close()
+                        CLIENT_HANDLE_TABLE.remove(client_handle_element)
+                        del BIND_APP[app_name]
+            logging.debug('handle finished')
         except Exception as err:
-            logging.info(operation)
-            logging.info(err)
-        op_code = operation_packet['op_code']
-        op_describe = operation_packet['op_describe']
-        msg = operation_packet['msg']
-        app_name = operation_packet['app_name']
-        client_address = operation_packet['client_address']
-        client_socket = None
-        if op_code == op_enum.OP_REGISTER_APP:
-            logging.debug('REGISTER')
-            bind_port = int(msg)
-            register_app(app_name, bind_port)
-        elif op_code == op_enum.OP_TRANSMIT_DATA:
-            logging.debug('CLIENT_ADDRESS_TABLE!!!!!!!!' + str(CLIENT_ADDRESS_TABLE))
-            for element in CLIENT_ADDRESS_TABLE:
-                if client_address == element['client_address']:
-                    client_socket = element['client_socket']
-            if client_socket != None:
-                logging.debug('sent to client')
-                core_transmit.send_data(client_socket, msg)
-        # if private socket disconnected, close client of this private socket
-        elif op_code == op_enum.OP_DISCONNECTED:
-            logging.debug(str(op_describe) + ':' + str(client_address))
-            for element in CLIENT_ADDRESS_TABLE:
-                if client_address == element['client_address']:
-                    client_socket = element['client_socket']
-                    client_socket.shutdown(socket.SHUT_RDWR)
-                    client_socket.close()
-                    for element in CLIENT_ADDRESS_TABLE:
-                        if client_address == element['client_address']:
-                            CLIENT_ADDRESS_TABLE.remove(element)
-        elif op_code == op_enum.OP_BUILD_CONNECTION_FAILED:
-            for private_socket_element in PRIVATE_SOCKET_TABLE:
-                if app_name == private_socket_element['app_name']:
-                    p_sock = private_socket_element['private_socket']
-                    p_sock.close()
-                    PRIVATE_SOCKET_TABLE.remove(private_socket_element)
-                    del BIND_APP[app_name]
-            for client_handle_element in CLIENT_HANDLE_TABLE:
-                if app_name == client_handle_element['app_name']:
-                    client_handle_socket = client_handle_element['client_handle_socket']
-                    client_handle_socket.close()
-                    CLIENT_HANDLE_TABLE.remove(client_handle_element)
-                    del BIND_APP[app_name]
-        logging.debug('handle finished')
+            continue
 
 '''
     Receive client data and transmit to private proxy
