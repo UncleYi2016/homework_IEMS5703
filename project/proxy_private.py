@@ -236,7 +236,7 @@ def unregister_app(app_name=None):
             public_socket = app['public_socket']
             public_socket_address = public_socket.getsockname()
             unregister_op = json.dumps(op_enum.OP_UNREGISTER_APP, op_enum.DES_UNREGISTER_APP, str(public_socket_address), app_name, None)
-            core_transmit.send_operation)public_socket, unregister_op
+            core_transmit.send_operation(public_socket, unregister_op)
             REGISTERED_APPS.remove(app)
             return 'Unregister success'
     return 'There is no app named \"' + app_name + '\"'
