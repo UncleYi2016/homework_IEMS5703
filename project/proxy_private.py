@@ -13,6 +13,7 @@ from threading import Thread
 from flask import Flask
 from flask import request
 from flask import json
+from flask import render_template
 
 PRIVATE_APP_PORT = 50001
 PRIVATE_APP_ADDRESS = '192.168.56.101'
