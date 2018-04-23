@@ -36,7 +36,8 @@
                     url: list_url,
                     success: function(result){
                         var result_table = ""
-                        result = result.replace("\'", "\"")
+                        var reg=/\'/g;
+                        result = result.replace(reg, "\"")
                         result = jQuery.parseJSON(result)
                         for(element in result){
                             result_table = result_table + "<tr><td>" + element["app_name"] + "</td><td>" + element["app_address"] + "</td><td>" + element["app_port"] + "</td><td>" + element["public_port"]
