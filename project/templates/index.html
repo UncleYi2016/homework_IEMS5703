@@ -35,7 +35,7 @@
                     type: "GET",
                     url: list_url,
                     success: function(result){
-                        var result_li = ""
+                        var result_table = ""
                         for(element in result){
                             result_table = result_table + "<tr><td>" + element["app_name"] + "</td><td>" + element["app_address"] + "</td><td>" + element["app_port"] + "</td><td>" + element["public_port"]
                         }
