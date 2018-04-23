@@ -148,6 +148,7 @@ def handle_operation():
             except Exception as err:
                 failed_op = json.dumps(packet.packet(op_enum.OP_BUILD_CONNECTION_FAILED, op_enum.DES_BUILD_CONNECTION_FAILED, str(err), app_name, client_address))
                 core_transmit.send_operation(public_socket, failed_op)
+                unregister_app(app_name)
                 continue
             private_socket_element = {'client_address': client_address, 'private_socket': tmp_private_socket}
             PRIVATE_SOCKET_TABLE.append(private_socket_element)
