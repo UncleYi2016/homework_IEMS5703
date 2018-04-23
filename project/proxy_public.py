@@ -59,7 +59,7 @@ def get_operation(private_sock):
     except Exception as err:
         logging.debug(err)
         logging.debug('Error socket: ' + private_sock.getsockname())
-        private_sock.shutdown(socket.SHUT_RDWR)
+        # private_sock.shutdown(socket.SHUT_RDWR)
         private_sock.close()
 
 '''
