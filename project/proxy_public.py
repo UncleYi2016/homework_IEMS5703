@@ -30,7 +30,7 @@ logging.basicConfig(
 def check_app():
     while True:
         logging.debug(str(BIND_APP))
-        logging.debug(str(OP_QUEUE))
+        logging.debug(str(list(OP_QUEUE)))
         time.sleep(10)
 
 
