@@ -27,7 +27,7 @@ PROXY_PORT = 8000
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.INFO)
+    level=logging.DEBUG)
 app = Flask(__name__)
 
 
