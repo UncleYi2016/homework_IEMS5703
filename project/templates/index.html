@@ -40,7 +40,7 @@
                         result = result.replace(reg, "\"")
                         result = jQuery.parseJSON(result)
                         for(index in result){
-                            result_table = result_table + "<tr><td>" + result[index]["app_name"] + "</td><td>" + result[index]["app_address"] + "</td><td>" + result[index]["app_port"] + "</td><td>" + result[index]["public_port"] + "</td><td><button onclick=\"unregister_app(" + result[index]["app_name"] + ")\">Unregister</button>"
+                            result_table = result_table + "<tr><td>" + result[index]["app_name"] + "</td><td>" + result[index]["app_address"] + "</td><td>" + result[index]["app_port"] + "</td><td>" + result[index]["public_port"] + "</td><td><button onclick=\"unregister_app('" + result[index]["app_name"] + "')\">Unregister</button>"
                         }
                         result_table += '<tr><td><button onclick="get_list_app()">update</button></tr></td>'
                         document.getElementById("list_app").innerHTML = result_table
