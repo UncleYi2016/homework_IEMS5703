@@ -29,6 +29,17 @@
                 }
                 )
             }
+            function unregister_app(app_name){
+                var register_url = "./unregister_app/" + app_name
+                var htmlobj = $.ajax({
+                    type: "GET",
+                    url: register_url,
+                    success: function(result){
+                        document.getElementById("register_result").innerHTML = result
+                    }
+                }
+                )
+            }
             function get_list_app(){
                 var list_url = "./list_app"
                 var htmlobj = $.ajax({
