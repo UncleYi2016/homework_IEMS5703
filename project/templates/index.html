@@ -37,8 +37,9 @@
                     success: function(result){
                         var result_li = ""
                         for(element in result){
-                            result_li = result_li + "<tr><td>" + element["app_name"] + "</td><td>" + element["app_address"] + "</td><td>" + element["app_port"] + "</td><td>" + element["public_port"]
+                            result_table = result_table + "<tr><td>" + element["app_name"] + "</td><td>" + element["app_address"] + "</td><td>" + element["app_port"] + "</td><td>" + element["public_port"]
                         }
+                        result_table += '<button onclick="get_list_app()">update</button>'
                         document.getElementById("list_app").innerHTML = result
                     }
                 }
