@@ -29,10 +29,25 @@
                 }
                 )
             }
+            function get_list_app(){
+                var list_url = "./list_app"
+                var htmlobj = $.ajax({
+                    type: "GET",
+                    url: list_url,
+                    success: function(result){
+                        var result_li = ""
+                        for(element in result){
+                            result_li = result_li + "<tr><td>" + element["app_name"] + "</td><td>" + element["app_address"] + "</td><td>" + element["app_port"] + "</td><td>" + element["public_port"]
+                        }
+                        document.getElementById("list_app").innerHTML = result
+                    }
+                }
+                )
+            }
         </script>
     </head>
     <body>
-        <table width=80%  margin="10px auto">
+        <table width=80%>
             <tr>
                     <td width=50%>
                             <form name="register_form">
@@ -52,7 +67,15 @@
                                 <button class="btn btn-default" onclick="register_app(app_name.value, app_address.value, app_port.value, public_server_port.value)">submit</button>
                                 <p id="register_result"></p>
                     </td>
-                    <td>sdfsd</td>
+                    <td>
+                        <table id="list_app" onload="get_list_app()">
+                        <tr>
+                            <td>
+                                <button onclick="get_list_app()">update</button>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
             </tr>
             
         </table>
