@@ -225,6 +225,7 @@ if __name__ == '__main__':
     PROXY_SOCKET.listen(20)
     while True:
         (register_socket, register_address) = get_op_socket.accept()
+        logging.debug('get register')
         get_register_thread = Thread(target=get_operation, args=(register_socket,), daemon=False, name='get_register_thread')
         get_register_thread.start()
     
