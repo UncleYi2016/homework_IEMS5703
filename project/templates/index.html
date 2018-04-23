@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <script>
+            function register_app(app_name, app_address, app_port, public_server_port){
+                var register_url = "./register_app/" + app_name + "/" + app_address + "/" + app_port + "/" + public_server_port
+                var htmlobj = $.ajax({
+                    type: "GET",
+                    url: register_url,
+                    success: function(result){
+                        document.getElementById("register_result").innerHTML = result
+                    }
+                }
+                )
+            }
+        </script>
+    </head>
+    <body>
+        <form name="register_form">
+            <input type="text" placeholder="App name" id="app_name"   />
+            <input type="text" placeholder="App address" id="app_address"   />
+            <input type="text" placeholder="App port" id="app_port"   />
+            <input type="text" placeholder="Public server port you want to bind in" id="public_server_port"   />
+            <button onclick="register_app(app_name.value, app_address.value, app_port.value, public_server_port.value)">submit</button>
+        </form>
+        <p id="register_result"></p>
+    </body>
+</html>

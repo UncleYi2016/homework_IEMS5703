@@ -245,6 +245,10 @@ def unregister_app(app_name=None):
 def list_app():
     return str(REGISTERED_APPS)
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 if __name__ == '__main__':
     handle_operation_thread = Thread(target=handle_operation, name='handle_operation_thread')
     handle_operation_thread.start()
