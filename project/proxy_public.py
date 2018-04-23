@@ -123,8 +123,7 @@ def handle_operation():
                         del BIND_APP[app_name]
             elif op_code == op_enum.OP_UNREGISTER_APP:
                 if app_name in BIND_APP:
-                    if msg == BIND_APP[app_name]:
-                        del BIND_APP[app_name]
+                    del BIND_APP[app_name]
             logging.debug('handle finished')
         except Exception as err:
             continue
