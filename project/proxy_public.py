@@ -25,7 +25,7 @@ OP_QUEUE = queue.Queue()
 
 logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] [%(processName)s] [%(threadName)s] : %(message)s',
-    level=logging.DEBUG)
+    level=logging.INFO)
 
 def check_app():
     while True:
