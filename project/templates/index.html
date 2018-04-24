@@ -50,10 +50,11 @@
                         var reg=/\'/g;
                         result = result.replace(reg, "\"")
                         result = jQuery.parseJSON(result)
+                        result_table += "<th><td>#</td><td>App name</td><td>App address</td><td>App port</td><td>Public port</td><td>Option</td></th>"
                         for(index in result){
-                            result_table = result_table + "<tr><td>" + result[index]["app_name"] + "</td><td>" + result[index]["app_address"] + "</td><td>" + result[index]["app_port"] + "</td><td>" + result[index]["public_port"] + "</td><td><button onclick=\"unregister_app('" + result[index]["app_name"] + "')\">Unregister</button>"
+                            result_table = result_table + "<tr><td>"+index+"</td><td>" + result[index]["app_name"] + "</td><td>" + result[index]["app_address"] + "</td><td>" + result[index]["app_port"] + "</td><td>" + result[index]["public_port"] + "</td><td><button class='btn btn-danger' onclick=\"unregister_app('" + result[index]["app_name"] + "')\">Unregister</button>"
                         }
-                        result_table += '<tr><td><button onclick="get_list_app()">update</button></tr></td>'
+                        result_table += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick="get_list_app()" class="btn btn-default">update</button></td></tr>'
                         document.getElementById("list_app").innerHTML = result_table
                     }
                 }
@@ -62,27 +63,39 @@
         </script>
     </head>
     <body>
-        <table width=80% class="table table-striped">
-            <td width=50% margin=30px>
-                <input type="text" class="form-control" placeholder="App name" id="app_name"   />
-                <input type="text" class="form-control" placeholder="App address" id="app_address"   />
-                <input type="text" class="form-control" placeholder="App port" id="app_port"   />
-                <input type="text" class="form-control" placeholder="Public server port you want to bind in" id="public_server_port"   />
-                <button class="btn btn-default" onclick="register_app(app_name.value, app_address.value, app_port.value, public_server_port.value)">submit</button>
-            </tr>
-            </td>
+        <div class="container">
+            <table id="list_app" onload="get_list_app()" class="table table-striped">
+                <th>
+                    <td>#</td>
+                    <td>App name</td>
+                    <td>App address</td>
+                    <td>App port</td>
+                    <td>Public port</td>
+                    <td>Option</td>
+                </th>
+                <tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr>
                     <td>
-                        <table id="list_app" onload="get_list_app()" class="table table-striped">
-                        <tr>
-                            <td>
-                                <button onclick="get_list_app()">update</button>
-                            </td>
-                        </tr>
-                        </table>
+                        
                     </td>
-            
-        </table>
-        <p id="register_result"></p>
-
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button onclick="get_list_app()" class="btn btn-default">update</button></td>
+                </tr>
+            </table>
+            <p id="register_result"></p>
+        </div>
+        <div class="container">
+            <input type="text" class="form-control" placeholder="App name" id="app_name"   />
+            <input type="text" class="form-control" placeholder="App address" id="app_address"   />
+            <input type="text" class="form-control" placeholder="App port" id="app_port"   />
+            <input type="text" class="form-control" placeholder="Public server port you want to bind in" id="public_server_port"   />
+            <button class="btn btn-primary" onclick="register_app(app_name.value, app_address.value, app_port.value, public_server_port.value)">submit</button>
+        </div>
     </body>
 </html>
