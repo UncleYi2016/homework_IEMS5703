@@ -54,7 +54,7 @@
                         for(index in result){
                             result_table = result_table + "<tr><td>"+index+"</td><td>" + result[index]["app_name"] + "</td><td>" + result[index]["app_address"] + "</td><td>" + result[index]["app_port"] + "</td><td>" + result[index]["public_port"] + "</td><td><button class='btn btn-danger' onclick=\"unregister_app('" + result[index]["app_name"] + "')\">Unregister</button>"
                         }
-                        result_table += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick="get_list_app()" class="btn btn-default">update</button></td></tr>'
+                        result_table += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><button onclick="get_list_app()" class="btn btn-default">update</button></td></tr>'
                         document.getElementById("list_app").innerHTML = result_table
                     }
                 }
@@ -73,9 +73,9 @@
                     <td>Public port</td>
                     <td>Option</td>
                 </th>
-                <tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                 <tr>
                     <td>
                         
