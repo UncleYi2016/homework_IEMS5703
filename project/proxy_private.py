@@ -265,6 +265,7 @@ if __name__ == '__main__':
         port = int(sys.argv[1])
         OP_PORT = int(sys.argv[2])
         PROXY_PORT = int(sys.argv[3])
+        PUBLIC_SERVER_ADDRESS = sys.argv[4]
     except Exception as err:
         logging.debug('Please input the proxy app console port number')
         logging.debug(err)
